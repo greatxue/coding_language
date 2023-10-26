@@ -1,4 +1,4 @@
-## 9. Dynamic Memory Management
+# 9. Dynamic Memory Management
 
 *Last Update: 23-10-18*
 
@@ -240,12 +240,145 @@ int a, b, c;
 a = b = c = 10;
 ```
 
-The default behavior of C++ is to **copy** only the top-level fields in an object, which means that all dynamically allocated memory is shared between the original and the copy, sometimes called ***shallow copying***.
+The default behavior of C++ is to **copy** only the top-level fields in an object, which means that all dynamically allocated memory is shared between the original and the copy, sometimes called ***shallow copying***, which is counterpart of ***deep copying***.
 
-*Shallow copying* violates the **semantics** of data structures such as the collection classes. The collection classes in C++ are defined so that copying one collection to another creates an entirely new copy of the collection called ***deep copying***, which copies the data in the dynamically allocated memory as well.
++ A ***shallow copy*** allocates new fields for the object itself and copies the information from the original. Unfortunately, the dynamic array is copied as an address, not the data.
++ A ***deep copy*** also copies the contents of the dynamic array and therefore creates two independent structures
+
+Here we implement a ***deep copy***. These methods make it possible to pass a `CharStack` by value or assign one `CharStack` to another.
+```cpp
+CharStack::CharStack(const CharStack & src) {
+   deepCopy(src);
+}
+
+CharStack & CharStack::operator=(const CharStack & src) {
+   if (this != &src) {
+      delete[] array;
+      deepCopy(src);
+   }
+   return *this;
+}
+
+void CharStack::deepCopy(const CharStack & src) {
+   array = new char[src.capacity];
+   for (int i = 0; i < src.count; i++) {
+      array[i] = src.array[i];
+   }
+   count = src.count;
+   capacity = src.capacity;
+}
+```
 
 ## 9.4 Unit Testing
 
+One of the most important responsibilities you have as a programmer is to test your code as thoroughly as you can. Thus we adpat **unit test** of the `assert` macro from the `<cassert>` library:
 
+![image-20231026114422636](../../../Library/Application Support/typora-user-images/image-20231026114422636.png)
 
-## 9.5 The Uses of `const`
+## 9.5 `const` and `static`
+
+### 9.5.1 The Uses of `const`
+
+The `const` keyword has many distinct purposes in C++. This text uses it in the following three contexts:
+
++ **Constant definitions**. Adding the keyword `const` to a variable definition tells the compiler to disallow subsequent assignments to that variable, thereby making it constant.
+
+  ```cpp
+  const double PI = 3.14159265358979323846;
+  static const int INITIAL_CAPACITY = 10;
+  ```
++ **Constant call by reference**. Adding `const` to the declaration of a reference parameter signifies that the function will not change the value of that parameter. 
+
+  ```cpp
+  void deepCopy (const CharStack & src);
+  ```
++ **Constant methods**. Adding `const` after the parameter list of a method guarantees that the method will not change the object.
+
+  ```cpp
+  int CharStack::size() const
+  ```
+
+Classes that use the `const` specification for all appropriate parameters and methods are said to be `const`-correct. 
+
+As an example,
+
+```cpp
+#include <iostream>
+using namespace std;
+
+class A {
+public:
+   const int c1;
+   const int c2;
+   A();
+   A(int x, int y);
+};
+
+A::A():c1(3),c2(4){}
+A::A(int x, int y):c1(x),c2(y){}
+
+int main()
+{
+   A a;
+   A b(5, 6);
+   cout << a.c1 << a.c2 << endl; // 34
+   cout << b.c1 << b.c2 << endl; // 56
+}
+```
+
+also
+
+```cpp
+#include <iostream>
+using namespace std;
+
+class A {
+public:
+   const int c1 = 1; // Since C++11
+   const int c2 = 2; // Since C++11
+};
+
+int main() {
+   A a, b;
+   cout << a.c1 << a.c2 << endl; 			// 12
+   cout << b.c1 << b.c2 << endl;			// 12
+   cout << (&a.c1 == &b.c1) << endl;	// 0
+   cout << (&a.c2 == &b.c2) << endl;	// 0
+}
+```
+
+### 9.5.2 The Uses of `static`
+
+The lifetime of `static` variables begins the first time the program flow encounters the declaration and it ends at program termination:
+
+| Applied to                           | Meaning                                                      |
+| ------------------------------------ | ------------------------------------------------------------ |
+| a local variable                     | The variable is "permanent", in the sense that it is initialized only once and retains its value from one function call to the next. It is like having a global variable with local scope. |
+| a global constant                    | Since a global constant has internal linkage by default (unlike global variables, which have external linkage by default), meaning it is only available for use in the file in which it is defined (and is therefore, in effect, static const). |
+| a global variable or a free function | The scope of the function, or the variable, is limited to the file in which it is defined. Without a static qualifier, any free function or global variable in a file has the extern qualifier by default, making it visible from other files in the compilation unit. |
+| a member variable of a class         | There is only one such variable for the class, no matter how many objects of the class are created. In other words, it turns the member variable from an "instance variable" into a "class variable". |
+| a member function of a class         | The function may access only static members of the class. That is, it may not access any instance members (since there may not be any, if no objects of the class have been created). |
+
+```cpp
+#include <iostream>
+using namespace std;
+
+class A {
+public:
+   static const int c = 1;
+   static int i;
+};
+
+int A::i = 2;
+
+int main() {
+   A a, b;
+   cout << a.c << a.i << endl;			// 12
+   cout << b.c << b.i << endl;			// 12
+   cout << (&a.c == &b.c) << endl;	// 1
+   cout << (&a.i == &b.i) << endl;	// 1
+   a.i = 3;
+   cout << b.i << endl;							// 3
+}
+```
+
