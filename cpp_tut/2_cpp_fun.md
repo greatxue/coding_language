@@ -1,12 +1,10 @@
-# 2. Functions & Libraries
+# 2. Functions & Libraries I
 
 *Last update: 2023-09-19*
 
 ## 2.1 Functions in Programming
 
-A ***function*** is a block of code that has been organized into a separate unit and given a name. The act of using the name to invoke that code is known as *calling* that function, with the variables known as ***parameters*** replaced by ***arguments*** each time. 
-
-When a function is called, the arguments are the data (actual values) you pass into the function's parameters (local variables). Here are their definitions:
+A ***function*** is a block of code that has been organized into a separate unit and given a name. The act of using the name to invoke that code is known as *calling* that function, with the variables known as ***parameters*** replaced by ***arguments*** each time:
 
 + ***parameter:*** A parameter is a variable in a function declaration and definition, and a placeholder for the argument.
 + ***argument:*** An argument is an expression used when calling the function, and an actualization of the parameter.
@@ -22,22 +20,24 @@ The advantages of using functions could be concluded as:
 
 Derived from C, the general form of a function looks like:
 
-<img src="https://pic.imgdb.cn/item/65101924c458853aef828d83.png" alt="2-1" style="zoom: 50%;" />
+```cpp
+type name (parameter list) {
+    statements in the function body
+}
+```
 
-For the syntax within, we have details as
+Here are some further explanations:
 
-+ **type:** what type the function returns;
-+ **name:** the name of the function;
-+ **parametre list:** a list of variable declarations;
-+ **statements in the function body:** implementation of the function, with at least `return` syntax included.
++ **type:** What type the function returns.
++ **name:** The name of the function.
++ **parametre list:** A list of variable declarations.
++ **statements in the function body:** Implementation of the function, including at least a `return` .
 
-Specially, functions that return `bool` results are called *predicate functions*, and the function using `void` as the result type (which returns no value at all) are called *procedure* .
-
-
+Specially, a functions that returns `bool` is called a *predicate function*, and the`void` function (which returns no value at all) is called a *procedure* .
 
 **Function Prototype**
 
-A ***function prototype*** is simply the header line of the function followed by a semicolon, which you put in front of the main function, before you actually define the function.
+A ***function prototype*** is simply the header line of the function followed by a semicolon, before the main function or you actually define it.
 
 ```cpp
 #include <iostream>
@@ -54,11 +54,10 @@ int add(int a, int b) {
 }
 ```
 
-If you always **define functions before you call them**, prototypes are not required. However, this strategy can be counterintuitive by a *top-down design*, and there might be situations where you cannot always define functions before you call them like *mutual recursion*.
+If you always define functions **before** you call them, prototypes are not required. However, this strategy can be counterintuitive by a *top-down design*, and there might be situations where you cannot always define functions before you call them, like *mutual recursion*.
 
 ```cpp
 #include <iostream>
-
 int add(int a, int b) {
     return a + b;
 }
@@ -70,12 +69,9 @@ int main() {
 }
 ```
 
-
-
 **Functions and Algorithms**
 
-Now we continue with **functions and algorithms**. Algorithms for solving a particular problem can vary widely in their efficiency (or complexity), and function could be seen as a structure to express them. Here we will take the example for **greatest common divisor** as an example.
-
+Now we continue with **functions and algorithms**. Algorithms for solving a particular problem can vary widely in their efficiency (or complexity), and function could be seen as a structure to express them. Here we will take the example of **greatest common divisor**.
 
 Here is what we call ***Brute-Froce Approach***, which is literally **trying every possibility**, so as to count backwards from the smaller value until you find one that divides evenly into both.
 
@@ -89,17 +85,7 @@ int gcd(int x, int y) {
 }
 ```
 
-It is a reminder that `int guess = (x < y) ? x : y;` is a kind of story like:
-
-```cpp
-int guess;
-if (x < y) {
-   guess = x;
-}
-else guess = y;
-```
-
-Also we have the **Euclid’s Algorithm**. A fact is applied: The greatest common divisor of `x` and `y` must also be the greatest common divisor of `y` and the remainder of `x` divided by `y`. 
+Also we have the **Euclid’s Algorithm**. A fact is applied: The greatest common divisor of `x` and `y` must also be the greatest common divisor of `y` and the remainder of `x` (divided by `y`). 
 
 ```cpp
 int gcd(int x, int y) {
@@ -112,8 +98,6 @@ int gcd(int x, int y) {
    return y;
 }
 ```
-
-
 
 **Function Overloading**
 
@@ -151,7 +135,9 @@ Functions can specify *optional parameters* by including an initializer after th
 void setMargin(int margin = 72);
 ```
 
-While giving *default values* to the parameters make them optional:
+In C++, the specification of the default arguments appears **only** in the *function prototype* and **NOT** in the function definition, and any optional parameters must appear **at the end of the parameter list**. 
+
+Here is an example:
 
 ```cpp
 void setInitialLocation(double x = 0, double y = 0);
@@ -159,15 +145,13 @@ void setInitialLocation(double x, double y = 0);
 void setInitialLocation(double x = 0, double y);   
 ```
 
-In C++, the specification of the default arguments appears **only** in the *function prototype* and **NOT** in the function definition, and any optional parameters must appear **at the end of the parameter list**. 
-
-What shall we do if we want to keep the users from calling the function with only one argument (*i.e.*, the user can provide either all arguments or no arguments at all)?
+If we want to keep the users from calling the function with only one argument, but provide either all arguments or no arguments at all, we could use
 
 ```cpp
 void setInitialLocation(double x = 0, double y = 0);
 ```
 
-In the case one parameter is given, it will be assigned to `x`, which may not be the case we are satisfied with. As a subsitution, we may kindly refer to *overloading* for a safer approach: //TODO!!!
+However, it will be assigned to `x` if only one parameter is given, which may not be that robust. Instead, we could apply *overloading* as a safer approach: 
 
 ```cpp
 void setInitialLocation(double x, double y);
@@ -181,20 +165,14 @@ void setInitialLocation() {
 
 When you invoke a function, the following actions occur:
 
-+ The calling function evaluates the argument expressions in its own context.
++ **Argument Evaluation**: Expressions for arguments are evaluated in the caller's context.
 
-+ C++ then ***copies*** each argument value into the corresponding parameter variable by order, which is allocated in a newly assigned region of memory called a ***stack frame***. 
++ **Argument Copying**: Copies argument values into parameter variables in a new stack frame.
++ **Function Execution**: Executes function body using the stack frame for local variables.
++ **Return Statement**: Computes return value, substituting it in place of the function call.
++ **Stack Frame Discard**: Discards function's stack frame and returns control to the caller.
 
-+ C++ then evaluates the statements in the function body, using the new stack frame to look up the values of local variables. 
-
-+ When C++ encounters a ***return*** statement, it computes the return value and substitutes that value in place of the call. 
-
-+ C++ then discards the stack frame for the called function and returns to the caller, continuing from where it left off. 
-  
-
-<img src="https://pic.imgdb.cn/item/6510193fc458853aef82a9d7.png" alt="2-2" style="zoom: 33%;" />
-
-Under this machanism, given the following function,
+![2-2](pictures/2-2.png)Under this machanism, global  `n1` and `n2` remain the initial values after execution.
 
 ```cpp
 void swap(int x, int y) {
@@ -207,15 +185,13 @@ int n1 = 1, n2 = 2;
 swap(n1, n2);
 ```
 
-`n1` and `n2` remain the initial values after execution. Why?
-
-
-
 **Reference Variables**
 
-If you have worked it out, then we continue with ***reference variables*** in C++. 
+To bring this value out, could apply ***reference variables*** in C++. 
 
-A *reference variable* is an alias for an already existing variable, indicated by a prefix `&` character. A reference must be initialized when it is declared, after which it cannot be reassigned.
+A *reference variable* could be thought of as an alias for an already existing variable, indicated by a prefix `&` character. 
+
+A reference must be initialized when it is declared, after which it cannot be reassigned.
 
 ```cpp
 void swap(int & x, int & y) {
@@ -225,7 +201,7 @@ void swap(int & x, int & y) {
 }
 ```
 
-To "return more than one value", the `&` could actually be handy. C++ allows callers and functions to share information using a technique known as ***call by reference***, with a single function often having both *value parameters* and *reference parameters*, like
+This way for callers and functions to share information is known as ***call by reference***, with a single function often having both *value parameters* and *reference parameters*, like
 
 ```cpp
 int main() {
@@ -247,6 +223,11 @@ void solveQuadratic(double a, double b, double c,
 }
 ```
 
-In conclusion, a *reference* is a simple reference datatype that is **less powerful but safer** than the ***pointer type*** inherited from C. It can be considered as **a new name for an existing object**, but **NOT** a copy of the object it refers to.
+The `&` could actually be handy if you want to "return" multiple values.
+
+In fact, a *reference* is a simple reference datatype that is **less powerful but safer** compared to ***pointer*** inherited from C. It can be considered as a new name for an existing object, but **NOT** a copy of the object it refers to.
 
 We will delay the discussion of references until when we have a deeper understanding of pointers. 
+
+---
+

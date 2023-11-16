@@ -4,7 +4,7 @@
 
 ## 4.1 Introduction
 
-Actually, there had been multiple [functions in `<cstdio>`](https://pic.imgdb.cn/item/650ab935c458853aef6661fd.png) powered by C standard library, like `printf`, which is out-of-scope of the text. For details about specific symbols called *specifier*, kindly refer to [this diagram]().
+Actually, there had been multiple functions for streams in `<cstdio>` from C standard library, like `printf`, which is out-of-scope of the text. For details about specific symbols called *specifier*, kindly refer to [this diagram]().
 
 ```cpp
 #include <cstdio>
@@ -99,7 +99,7 @@ For input, C++ includes the **>>** operator, which is called the ***extraction o
 
 Here is a critical comparison of *manipulators* concerning `ws`:
 
-<img src="pictures/4-2.png" alt="4-2" style="zoom: 50%;" />
+![4-2](pictures/4-2.png)
 
 Here is an example:
 
@@ -137,9 +137,9 @@ To use data from a **text file**, it takes steps like
 
 Here are some **methods** for the processing of the file:
 
-<img src="pictures/4-3.png" alt="4-3" style="zoom: 33%;" />
+![4-3](pictures/4-3.png)
 
-<img src="pictures/4-4.png" alt="4-4" style="zoom:33%;" />
+![4-4](pictures/4-4.png)
 
 
 The following program does not uppercase the first character in a file. As `get` is executed, the head will automatically move to the next. For example, if the initial one is **"text"**, it will actually convert into **"tTxt"**. For an appropriate conversion, apply `file.seekp(0);` instead.
@@ -245,9 +245,9 @@ int main() {
 
 Here are some references of corresponding libraries:
 
-<img src="pictures/4-5.png" alt="4-5" style="zoom: 50%;" />
+![4-5](pictures/4-5.png)
 
-<img src="pictures/4-6.png" alt="4-6" style="zoom:50%;" />
+![4-6](pictures/4-6.png)
 
-<img src="pictures/4-7.png" alt="4-7" style="zoom:50%;" />
+![4-7](pictures/4-7.png)
 

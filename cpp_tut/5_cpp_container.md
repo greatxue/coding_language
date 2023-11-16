@@ -1,4 +1,4 @@
-# 5. Containers
+# 5. Collections
 
 ## 5.1 The collection classes
 ### 5.1.1 Abstract Data Type
@@ -11,7 +11,7 @@ In C++, parameterized containers are implemented as *template* classes. The *C++
 
 Here you could have a look at the ***container*** class templates:
 
-<img src="pictures/5-1.png" alt="5-1" style="zoom:50%;" />
+![5-1](pictures/5-1.png)
 
 ### 5.1.2 The Stanford Collection Classes
 
@@ -83,7 +83,7 @@ Here are methods that are most frequently used:
 
 There are even more:
 
-<img src="pictures/5-4.png" alt="5-4" style="zoom: 67%;" />
+![5-4](pictures/5-4.png)
 
 For example, it works as
 
@@ -116,7 +116,7 @@ vec.set(3, 70); // vec[3] = 70;
 | `set(i, j, value)`, `grid[i][j] = value` | Sets the element at the specified row and column to the new value. |
 | `grid[i][j]`                             | Selects the element in the `i`th row and `j`th column.       |
 
-<img src="pictures/5-6.png" alt="5-6" style="zoom:67%;" />
+![5-6](pictures/5-6.png)
 
 ### 5.2.3 The `Stack<type>` Class
 
@@ -133,7 +133,7 @@ A ***stack*** is a data structure in which the elements are accessible only in a
 | `stack.peek()`      | Returns the top value from the stack without removing it. |
 | `stack.clear()`     | Removes all values from the stack.                        |
 
-<img src="pictures/5-8.png" alt="5-8" style="zoom: 50%;" />
+![5-8](pictures/5-8.png)
 
 **Methods in the STL stack Class (Omitted)**
 
@@ -177,7 +177,7 @@ The library offers two flavors of maps, ***Map*** and ***HashMap*** (more about 
 | `map.remove(key)`                         | Removes `key` from the map along with its associated value, if any. |
 | `map.clear()`                             | Removes all `key`/`value` pairs from the map.                |
 
-<img src="pictures/5-12.png" alt="5-12" style="zoom: 60%;" />
+![5-12](pictures/5-12.png)
 
 **Methods in the STL map Classes**
 
@@ -200,9 +200,9 @@ This class is used to model the mathematical abstraction of a ***set***, which i
 
 ***Set*** also supports several mathematical operations (via operator *overloading*) based on mathematical *set theory*, in addition to the usual methods exported by the other collection classes.
 
-<img src="pictures/5-15.png" alt="5-15" style="zoom:50%;" />
+![5-15](pictures/5-15.png)
 
-<img src="pictures/5-16.png" alt="5-16" style="zoom: 60%;" />
+![5-16](pictures/5-16.png)
 
 The implementation of the `<cctype>` is highly based on ***Set***.
 
@@ -245,7 +245,7 @@ Lexicon english("EnglishWords.txt");
 | `lexicon.containsPrefix(prefix)`     | Returns `true` if the lexicon contains any word beginning with `prefix`. |
 | `lexicon.clear()`                    | Removes all words from the lexicon.                          |
 
-<img src="pictures/5-18.png" alt="5-18" style="zoom:60%;" />
+![5-18](pictures/5-18.png)
 
 The ***Lexicon*** representation is extremely space-efficient. It makes it possible to implement a `containsPrefix` method that is useful in many applications, makeing it easy for *iterators* to process the words in alphabetical order.
 

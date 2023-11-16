@@ -1,4 +1,4 @@
-# 6. Designing Classes
+# 6. OOP I: Classes
 
 ## 6.1 Data Types in C++
 
@@ -495,6 +495,5 @@ Rational operator*(Rational r1, Rational r2) {
 Rational operator/(Rational r1, Rational r2) {
    return Rational(r1.num * r2.den, r1.den * r2.num);
 }
-
 ```
 

@@ -1,9 +1,5 @@
 # Notes for Utilities
-- - -
-author: Kevin Shuey  
-title: Notes for Utilities   
-date: 2023-05-02  
-- - -
+*Last update: 2023-05-02*  
 
 **Coverage:**  
 

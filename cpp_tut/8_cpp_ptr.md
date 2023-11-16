@@ -8,11 +8,11 @@
 
 Bytes and words can be used to represent integers of different sizes by interpreting the bits as a number in *binary notation*.
 
-<img src="pictures/8-1.png" alt="8-1" style="zoom:33%;" />
+![8-1](pictures/8-1.png)
 
 There are *octal* (base 8) or *hexadecimal* (base 16) notations as well:
 
-<img src="pictures/8-2.png" alt="8-2" style="zoom: 33%;" />
+![8-2](pictures/8-2.png)
 
 It is a reminder that every four *binary* digits can be tranformed to one *hexadecimal* digit, thus the hexadecimal is also of vital importance.
 
@@ -28,8 +28,6 @@ It is a reminder that every four *binary* digits can be tranformed to one *hexad
 
   The number of bits in a word vary from machine to machine because of architectures. For example, a word in *x86-64* (the 64-bit version of the x86 instruction set), is 64-bit.
 
-
-
 **Word size and Address length**
 
 + ***word size:*** A word is usually the largest piece of data that can be transferred to/from the memory in a single operation of a particular processor, so the ***word size*** is an important characteristic of any specific processor/architecture. 
@@ -37,8 +35,6 @@ It is a reminder that every four *binary* digits can be tranformed to one *hexad
 + ***address length:*** The largest possible ***address length***, used to designate a location in memory, is typically a word, allowing one memory address to be efficiently stored in one word. 
 
 In theory, modern *N-bit* computers can address $2^N$ bytes of memory, but in practice the amount of memory is limited by the CPU, the memory controller, etc.
-
-
 
 **The Allocation of Memory to Variables**
 
@@ -50,8 +46,6 @@ When you declare a variable in a program, C++ allocates space for that variable 
 + ***heap:*** It is also possible to allocate memory **dynamically** from this pool of memory.
 
 In classical architectures, the stack and heap grow toward each other to *maximize the available space*.
-
-
 
 **Sizes of the Fundamental Types**
 
@@ -74,8 +68,6 @@ The memory space required to represent a value depends on the *type* of value. A
 + **Pointers** take up the space needed to hold an address, which is usually the size of a hardware word.
 
 It is a reminder that `sizeof(t)` returns the actual number of bytes required to store a value of the type `t`, while `sizeof x` returns the actual memory size of the variable `x`.
-
-
 
 **Variables**
 
@@ -115,8 +107,6 @@ It can be manipulated just like any other kind of data, and you could even assig
 
 + **Linked structures:** *Pointers can be used to record relationships among data items*. 
 
-
-
 **Declaring a Pointer Variable**
 
 To declare a variable as a pointer:
@@ -125,8 +115,6 @@ To declare a variable as a pointer:
 double * px;		// a pointer to a double value
 Point * pptr;		// a pointer to a Point structure
 ```
-
-
 
 **Pointer Operators**
 
@@ -147,7 +135,7 @@ double y = * px;
 
 For a corresponding vivid diagram:
 
-<img src="pictures/8-4.png" alt="8-4" style="zoom:33%;" />
+![8-4](pictures/8-4.png)
 
 Here is a detailed example illustrating **why pointers are dangerous**:
 
@@ -341,10 +329,6 @@ double arr[5];
 double * dp = arr;
 ```
 
-These two groups of syntaxes are equivalent, with the second pointing to the first:
-
-<img src="../../../../Library/Application Support/typora-user-images/Screenshot 2023-10-24 at 9.10.56 PM.png" alt="Screenshot 2023-10-24 at 9.10.56 PM" style="zoom:50%;" />
-
 To make it clear, here are some conclusions for 
 
 ```cpp
@@ -361,8 +345,6 @@ int * p = a; // &a[0]
 |    *    |                  0                   |      `ADDRESS1`      |          0           |          0           |
 |    &    |              `ADDRESS1`              |         N/A          |         N/A          |      `ADDRESS2`      |
 |   +1    |     `ADDRESS1` +1`* int` length      | `ADDRESS1` +4`* int` | `ADDRESS1` +1`* int` | `ADDRESS1` +1`* int` |
-
-
 
 **C-String are Pointers to Characters**
 

@@ -70,19 +70,19 @@ If you instead allocate space for an object in the *heap* using `new`, you must 
 
 Here we will use a **heap-stack diagram**, where a block of memory to the **heap** side of the diagram will be added when using `new`, and a new **stack** frame will be created whenever a program calls a *method* (with its memory reclaimed when a method returns).
 
-<img src="pictures/9-1.png" alt="9-1" style="zoom:50%;" />
+![9-1](pictures/9-1.png)
 
 **Dynamic Allocation in C**
 
 Supported in `<cstdlib>` (for the header file`stdlib.h`):
 
-<img src="pictures/9-2.png" alt="9-2" style="zoom:35%;" />
+![9-2](pictures/9-2.png)
 
 ## 9.2 Linked Structures
 
 Pointers are important in programming because they make it possible to represent the relationship among objects by **linking them together** in various ways.
 
-![Screenshot 2023-10-25 at 11.57.47 PM](../../../Library/Application Support/typora-user-images/Screenshot 2023-10-25 at 11.57.47 PM.png)
+![9-3](pictures/9-3.png)
 
 C++ marks the end of linked list using the constant `NULL`, which signifies a pointer that does not have an actual target.
 
@@ -271,9 +271,9 @@ void CharStack::deepCopy(const CharStack & src) {
 
 ## 9.4 Unit Testing
 
-One of the most important responsibilities you have as a programmer is to test your code as thoroughly as you can. Thus we adpat **unit test** of the `assert` macro from the `<cassert>` library:
+One of the most important responsibilities you have as a programmer is to test your code as thoroughly as you can. Thus we adpat **unit test** of the `assert` macro from the `<cassert>` library on the implementation of a stack:
 
-![image-20231026114422636](../../../Library/Application Support/typora-user-images/image-20231026114422636.png)
+![9-4](pictures/9-4.png)
 
 ## 9.5 `const` and `static`
 

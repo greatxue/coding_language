@@ -4,21 +4,17 @@
 
 ## 3.1 Introduction
 
-Text data nowadays are as important as numeric data. Conceptually, a ***string*** is simply a sequence of ***characters***, which is precisely how strings are implemented in C.
+Though all our codes are executed in C++ compiler, some of them are in *C-style*. Different strategies used by C and C++ on strings show the differences between *programming paradigms*.
 
-As a newly designed language, C++ supports a higher-level view of strings as ***objects***.
-
-It is a statement that all our codes are executed in C++ compiler, though some of them are in *C-style*. Anyway, the different strategies used by C and C++ on strings show the differences between different *programming paradigms*.
+Conceptually, a ***string*** is simply a sequence of ***characters***, which is precisely how strings are implemented in C. As a newly designed language, C++ supports a higher-level view of strings as ***objects***. Both of them are useful and effctive.
 
 ## 3.2 Characters
 
-As the string is basically a sequence of characters, so we begin with ***characters***.
+Both C and C++ use ***ASCII*** as their encoding for a ***character*** representation. The data type `char` therefore fits in a single eight-bit byte. 
 
-Both C and C++ use ***ASCII*** as their *encoding* for character representation. The data type `char` therefore fits in a single eight-bit byte. 
+ASCII supports only $$2^8=256$$ characters, thus the C++ libraries define the wide-character type `wchar_t`. In most modern language, it has been superseded by ***Unicode***.
 
-In most modern language, ASCII (supporting only $$2^8=256$$ characters) has been superseded by ***Unicode***. However, the C++ libraries define the type `wchar_t` to represent “wide characters”, which is out of the scope of the text.
-
-You could specify the ASCII code for the corresponding character:
+You could specify a character with the ASCII code:
 
 ```cpp
 char ch;
@@ -88,7 +84,7 @@ If you put double quotation marks `" ` around a sequence of characters, you get 
 
 That's why `'a'` and `''a''` are actually quite different.
 
-<img src="pictures/3-2.png" alt="https://pic.imgdb.cn/item/6507e628204c2e34d38b1c90.png" style="zoom: 50%;" />
+![3-2](pictures/3-2.png)
 
 The reminder is that character positions in a C string are identified by an *index* that begins at **0** and extends up to one less than the length of the string.
 
@@ -145,8 +141,6 @@ int main() {
 For most compilers, the outputs are `hello`, `6`, `5`; `hello world`, `6` and `11  `respectively. 
 
 The 5th answer is `6`, because the function will return once a `\0` is found. Also, for the 4th there is possibility you will see weird output like `"hello weirdthing"` for *memory overwriting*, especially when hardware resource is extremely restricted.
-
-
 
 **C-String Libraries**
 
@@ -233,8 +227,6 @@ int main() {
 }
 ```
 
-
-
 **String Methods**
 
 Now we continue with *String Methods*. First I need to emphasize that `c_str` methods could be applied to C++ string, with objects automatically converted into the C string literal.
@@ -270,8 +262,6 @@ str[index] = 'H'; // won't check if it is in-range
 str.at(index) = 'H'; // always check if it is in-range
 ```
 
-
-
 **Iterating through characters**
 
 It requies codes like:
@@ -280,8 +270,6 @@ It requies codes like:
 for (int i = 0; i < str.length(); i++) 
 for (int i = str.length() - 1; i >= 0; i--)
 ```
-
-
 
 **Modifying Contents of a String**
 
@@ -292,8 +280,6 @@ C++ strings are **immutable**, allows for methods like
 | `str.erase(pos, count)`         | Deletes `count` characters from `str` at `pos`            |
 | `str.insert(pos, text)`         | Inserts `text` into `str` at `pos`                        |
 | `str.replace(pos, count, text)` | Replaces `count` characters in `str` with `text` at `pos` |
-
-
 
 **Avoiding the use of destructive operations**
 
@@ -331,8 +317,6 @@ For three possible solutions, we could make a comparison:
      return str;
   }
   ```
-
-
 
 **Conclusion for `#include`**
 
