@@ -1,5 +1,7 @@
 # 6. OOP I: Classes
 
+*Last Update: 23-11-18*
+
 ## 6.1 Data Types in C++
 
 There are numerous data types provided in C++:
@@ -22,9 +24,9 @@ An enumerated type can be roughly considered as a subset of `int` with special n
 
   ```cpp
   enum Coin {
-    PENNY = 1,
-    NICKEL = 5,
-    DIME = 10
+     PENNY = 1,
+     NICKEL = 5,
+     DIME = 10
   };
   ```
 
@@ -34,8 +36,8 @@ There are compound values in which the individual components are specified by na
 
 ```cpp
 struct Point {
-  int x;
-  int y;
+   int x;
+   int y;
 };
 ```
 
@@ -63,14 +65,12 @@ For example, you could represent points using a Class like:
 class Point {
     public:
     private:
-  		  int x;
-  			int y;
+       int x;
+       int y;
 };
 ```
 
 The entries in a class definition is divided into two categories: a ***public*** section available to clients of the class; a ***private*** section restricted to the implementation.
-
-
 
 **Implementing Methods**
 
@@ -80,7 +80,18 @@ Although methods can be implemented within, it is stylistically preferable to de
 
 Here is a case of the ***accessors/getters*** and ***mutators/setters***. Part of the reason for making instance variables private is to ensure security, with many designed in an even higher level of security by making it **immutable**.
 
+```cpp
+public:
+   Point(int xc, int yc): x(xc), y(yc) {}
 
+   int getX() const {
+     return x;
+   }
+
+   int getY() const {
+     return y;
+   }
+```
 
 **Constructor**
 
@@ -90,8 +101,6 @@ Class definitions typically include one or more ***constructors***, which are us
 
 + It may or may not take arguments, with the one taking none a **default** constructor.
 + A single class can have multiple constructors, as a form of *overloading*.
-
-
 
 **Initializer List**
 
@@ -118,8 +127,6 @@ Here is a comparison between ***initialization by assignments*** and the ***init
   ```cpp
   Point(int xc = 0, int yc = 0) : x(xc), y(yc) {}
   ```
-
-
 
 **Detailed Example**
 
@@ -198,7 +205,7 @@ Here is a complete implementation of the `point` class:
   or the initializer list:
 
   ```cpp
-  Point(int xc = 0, int yc = 0):x(xc), y(yc) {}
+  Point(int xc = 0, int yc = 0): x(xc), y(yc) {}
   ```
 
   However, this approach does not keep the user from calling it with **one** argument.
@@ -207,7 +214,7 @@ Here is a complete implementation of the `point` class:
 
 One of the most powerful features of C++ is the ability to **extend the existing operators** so that they apply to new types:
 
-![image-20231028142817288](../../../Library/Application Support/typora-user-images/image-20231028142817288.png)
+![6-1](pictures/6-1.png)
 
 After overloading `<<` in the `Point` class in the prototype of
 
@@ -237,12 +244,12 @@ we will have multiple ways to display the value:
   cout << pt;  // print(pt) in Python
   ```
 
-Concerning the issues about *pass by reference* `&`:
+Concerning the issues about *passing by reference* `&`:
 
 + Since stream variables cannot be copied, the `ostream` argument must be passed by *reference*. 
 + The `<<` operator has a chaining behavior of returning the output stream, it must also return its result by *reference*. 
 
-**class methods and free functions**
+**Class methods and free functions**
 
 You can define operators for a class either as ***class methods*** or as ***free functions***. Take it as an example to overload the `==` operator to allow statements of `if (p1 == p2)`:
 
@@ -280,11 +287,7 @@ You can define operators for a class either as ***class methods*** or as ***free
 
 ## 6.3 Case: Rational Numbers
 
-Here we define a class called `Rational` that represents *rational numbers*, which are simply the quotient of two integers.
-
-Rational numbers can be useful in cases in which you need exact calculation with fractions like 1/3, even for 1/10 = 0.1 which looks exact (actually an approximation when using `double`).
-
-Rational numbers support the standard arithmetic operations of *addition*, *substraction*, *multiplication* and *division*.
+Here we define a class called `Rational` that represents *rational numbers*, which are simply the quotient of two integers. Rational numbers can be useful in cases in which you need exact calculation with fractions like 1/3, even for 1/10 = 0.1 which "looks" exact (actually an approximation when using `double`). Additionally, it should support the standard arithmetic operations of *addition*, *substraction*, *multiplication* and *division*.
 
 For implementation details, we draw a mind-map like:
 
@@ -336,7 +339,7 @@ public:
  *        Rational num(n);
  *        Rational r(x, y);
  * ------------------------
- * Creates a Rational object.  The default constructor creates the
+ * Creates a Rational object. The default constructor creates the
  * rational number 0.  The single-argument form creates a rational
  * equal to the specified integer, and the two-argument form
  * creates a rational number corresponding to the fraction x/y.
@@ -367,10 +370,9 @@ public:
  
 private:
 
-/* Instance variables */
-
-   int num;    /* The numerator of this Rational object   */
-   int den;    /* The denominator of this Rational object */
+  /* Instance variables */
+   int num;    // the numerator of this Rational object  
+   int den;    // the denominator of this Rational object
 
 };
 
@@ -402,9 +404,8 @@ std::ostream & operator<<(std::ostream & os, Rational rat);
 #include "strlib.h"
 using namespace std;
 
-/* Function prototypes */
-
-int gcd(int x, int y); // Why is this protype presented in .cpp file?
+/* Function prototypes in .cpp file */
+int gcd(int x, int y); 
 
 /* Constructors */
 Rational::Rational() {
@@ -428,8 +429,8 @@ Rational::Rational(int x, int y) {
       if (y < 0) num = -num;
    }
 }
-/* Implementation of the arithmetic operators */
 
+/* Implementation of the arithmetic operators */
 Rational Rational::operator+(Rational r2) {
    return Rational(num * r2.den + r2.num * den, den * r2.den);
 }
@@ -445,6 +446,7 @@ Rational Rational::operator*(Rational r2) {
 Rational Rational::operator/(Rational r2) {
    return Rational(num * r2.den, den * r2.num);
 }
+
 string Rational::toString() {
    if (den == 1) {
       return integerToString(num);
@@ -496,4 +498,8 @@ Rational operator/(Rational r1, Rational r2) {
    return Rational(r1.num * r2.den, r1.den * r2.num);
 }
 ```
+
+Either of them will be more suitable under some circumstances.
+
+---
 

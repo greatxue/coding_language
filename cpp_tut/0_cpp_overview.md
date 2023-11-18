@@ -22,10 +22,10 @@ At the end of the note, I will also recommend practice projects with high qualit
 8. **Pointers & Arrays**
 9. **Dynamic Memory Management**
 10. **Recursion**
-11. **Algorithmic Analysis** 
+11. **Algorithmic Analysis**
 12. **Efficiency Analysis**
-13. **Linear structures**
-14. 
+13. **Linear Structures**
+14. **Map Implementation**
 
 ## 0.4 Useful Materials
 
@@ -64,3 +64,6 @@ The materials have been kindly reviewed by my good friends like **DONG, Haoze** 
 Edited by [Kevin (Zhongkai) Xue](https://greatxue.cn/). For correspondence, kindly reach out at [*greatxue33@gmail.com*](mailto:greatxue33@gmail.com).
 
 Please use this under the [**MIT**](https://opensource.org/license/mit/) License. For content with original authors, adhere to their respective licenses.
+
+---
+

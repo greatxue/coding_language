@@ -1,5 +1,7 @@
 # 5. Collections
 
+*Last Update: 23-11-17*
+
 ## 5.1 The collection classes
 ### 5.1.1 Abstract Data Type
 
@@ -15,7 +17,7 @@ Here you could have a look at the ***container*** class templates:
 
 ### 5.1.2 The Stanford Collection Classes
 
-The Stanford C++ Library includes the simplified version of such containers of the Standard C++ Libraries, such as ***Vector***, ***Grid***, ***Stack***, ***Queue***, ***Map***, ***Set*** and ***Lexicon***. Here are some general guidelines:
+In order to let students have a brief understanding of the *Colletions*, the Stanford C++ Library is implemented. The Stanford C++ Library includes a simplified version of that in Standard C++ Libraries, such as ***Vector***, ***Grid***, ***Stack***, ***Queue***, ***Map***, ***Set*** and ***Lexicon***. Here are some general rules:
 
 + These classes represent *ADTs* whose details are hidden.
 
@@ -31,9 +33,9 @@ The Stanford C++ Library includes the simplified version of such containers of t
 
 ### 5.2.1 The `Vector<type>` Class
 
-The ***Vector*** class provides a facility similar to list in Python, and the underlying implementation is based on **array** in C++.
+The ***Vector*** class provides a facility similar to *list* in Python, and the underlying implementation is based on **array** in C++.
 
-After including it like `#include "vector.h"`, you should think as follows like a **client** of the class.
+Start by `#include "vector.h"`, you could think as a **client** of the class.
 
 **Declaring a Vector object**
 
@@ -42,7 +44,7 @@ For the instance to be created:
 | Syntax                        | Description                                                  |
 | ----------------------------- | ------------------------------------------------------------ |
 | `Vector<Type> vec;`           | Initializes an empty vector of the specified element type.   |
-| `Vector<Type> vec(n);`        | Initializes a vector with `n` elements all set to the default value of the type. |
+| `Vector<Type> vec(n);`        | Initializes a vector with `n` elements set to default value of the type. |
 | `Vector<Type> vec(n, value);` | Initializes a vector with `n` elements all set to `value`.   |
 
 The Stanford C++ library implementation of *Vector* includes a shorthand form for initializing an array given a list of values:
@@ -54,13 +56,13 @@ digits += 0, 1, 2, 3, 4, 5, 6, 7, 8, 9;
 
 It is possible to create **nested** vectors, but the spaces around the inner type parameter are necessary, in case it is recognized as the extraction operator`>>` . 
 
-For example, it represents a two-dimensional vector of characters, as 
+For example, declare a two-dimensional vector of characters as 
 
 ```cpp
 Vector< Vector<char> > nestedVector;
 ```
 
-The type parameter can be any C++ type. The following definition to represent a list of chess positions (a three-dimensional vector):
+The type parameter can be of any C++ type. The following definition to represent a list of chess positions (a three-dimensional vector):
 
 ```cpp
 Vector< Grid<char> > chessPositions; 
@@ -76,12 +78,12 @@ Here are methods that are most frequently used:
 | `vec.isEmpty()`                        | Returns `true` if the vector is empty.                 |
 | `vec.get(i)`, `vec[i]`                 | Returns the `i`th element of the vector.               |
 | `vec.set(i, value)`, `vec[i] = value;` | Sets the `i`th element of the vector to `value`.       |
-| `vec.add(value)`, `vec += value;`      | Adds a new element to the end of the vector.           |
+| `vec.add(value)`, `vec += value`       | Adds a new element to the **end** of the vector.       |
 | `vec.insert(index, value)`             | Inserts the value before the specified index position. |
 | `vec.remove(index)`                    | Removes the element at the specified index.            |
 | `vec.clear()`                          | Removes all elements from the vector.                  |
 
-There are even more:
+There are even more for references:
 
 ![5-4](pictures/5-4.png)
 
@@ -110,7 +112,7 @@ vec.set(3, 70); // vec[3] = 70;
 | `Grid<type> grid(nrows, ncols);`         | Constructs a grid with the specified dimensions.             |
 | `grid.numRows()`                         | Returns the number of rows in the grid.                      |
 | `grid.numCols()`                         | Returns the number of columns in the grid.                   |
-| `resize(nrows, ncols)`                   | Changes the dimensions of the grid and clears any previous contents. |
+| `resize(nrows, ncols)`                   | Changes the dimension of the grid and clears any previous contents. |
 | `inBounds(row, col)`                     | Returns `true` if the specified row and column position is within the grid. |
 | `get(i, j)`, `grid[i][j]`                | Returns the element at the specified row and column.         |
 | `set(i, j, value)`, `grid[i][j] = value` | Sets the element at the specified row and column to the new value. |
@@ -124,14 +126,14 @@ A ***stack*** is a data structure in which the elements are accessible only in a
 
 **Methods in the Stack Class**
 
-| Method              | Description                                               |
-| ------------------- | --------------------------------------------------------- |
-| `stack.size()`      | Returns the number of values pushed onto the stack.       |
-| `stack.isEmpty()`   | Returns `true` if the stack is empty.                     |
-| `stack.push(value)` | Pushes a new value onto the stack.                        |
-| `stack.pop()`       | Removes and returns the top value from the stack.         |
-| `stack.peek()`      | Returns the top value from the stack without removing it. |
-| `stack.clear()`     | Removes all values from the stack.                        |
+| Method              | Description                                                  |
+| ------------------- | ------------------------------------------------------------ |
+| `stack.size()`      | Returns the number of values pushed onto the stack.          |
+| `stack.isEmpty()`   | Returns `true` if the stack is empty.                        |
+| `stack.push(value)` | Pushes a new value onto the stack.                           |
+| `stack.pop()`       | **Removes and returns** the top value from the stack.        |
+| `stack.peek()`      | Returns the top value from the stack **without removing it**. |
+| `stack.clear()`     | Removes all values from the stack.                           |
 
 ![5-8](pictures/5-8.png)
 
@@ -147,8 +149,8 @@ A data structure that stores items using a **FIFO** discipline is called a ***qu
 | ---------------------- | ------------------------------------------------------------ |
 | `queue.size()`         | Returns the number of values in the queue.                   |
 | `queue.isEmpty()`      | Returns `true` if the queue is empty.                        |
-| `queue.enqueue(value)` | Adds a new value to the end of the queue (which is called its tail). |
-| `queue.dequeue()`      | Removes and returns the value at the front of the queue (which is called its head). |
+| `queue.enqueue(value)` | Adds a new value to the *tail* of the queue.                 |
+| `queue.dequeue()`      | **Removes and returns** the value at its head.               |
 | `queue.peek()`         | Returns the value at the head of the queue without removing it. |
 | `queue.clear()`        | Removes all values from the queue.                           |
 
@@ -161,7 +163,7 @@ A ***map*** is conceptually similar to a dictionary in real life (and in Python)
 Map<key_type, value_type> map;
 ```
 
-The type for the keys stored in a `Map` must define a natural ordering, usually through a `less` function and/or `<` operator so that the keys can be compared and ordered.
+The type for the keys stored in a `Map` must define **a natural ordering**, usually through a `less` function and/or `<` operator so that the keys can be compared and ordered.
 
 **Methods in the Map Classes**
 
@@ -183,7 +185,7 @@ The library offers two flavors of maps, ***Map*** and ***HashMap*** (more about 
 
 ### 5.2.5 The `Set<type>` Class
 
-This class is used to model the mathematical abstraction of a ***set***, which is a collection in which the elements are unordered and in which each value appears only once (no duplicate). The easy way to implement the `Set` class is to build it on top of the `Map` class.
+This class is used to model the mathematical abstraction of a ***set***, which is a collection in which the elements are **unordered** and in which each value appears only once (**no duplicate**). The easy way to implement the `Set` class is to build it on top of the `Map` class.
 
 **Methods in the Set Classes**
 
@@ -210,14 +212,14 @@ The implementation of the `<cctype>` is highly based on ***Set***.
 
 ### 5.2.6 The Lexicon Class
 
-A **set of words** with no associated definitions is called a ***lexicon***. Creating an English word list like:
+**A set of words** with no associated definitions is called a ***lexicon***. Creating an English word list like:
 
 ```cpp
 Set<string> english;
 ifstream infile;
 infile.open("EnglishWords.txt");
-if (infile.fail())
-   error("Can't open EnglishWords.txt");
+if (infile.fail()) error("Can't open EnglishWords.txt");
+
 string word;
 while (getline(infile, word)) {
    english.add(word);
@@ -239,7 +241,7 @@ Lexicon english("EnglishWords.txt");
 | ------------------------------------ | ------------------------------------------------------------ |
 | `lexicon.size()`                     | Returns the number of words in the lexicon.                  |
 | `lexicon.isEmpty()`                  | Returns `true` if the lexicon is empty.                      |
-| `lexicon.add(word)`                  | Adds `word` to the lexicon, always in lowercase.             |
+| `lexicon.add(word)`                  | Adds `word` to the lexicon, always in **lowercase**.         |
 | `lexicon.addWordsFromFile(filename)` | Adds all the words in the specified file to the lexicon.     |
 | `lexicon.contains(word)`             | Returns `true` if the lexicon contains the specified `word`. |
 | `lexicon.containsPrefix(prefix)`     | Returns `true` if the lexicon contains any word beginning with `prefix`. |
@@ -267,7 +269,7 @@ While it is easy to implement iteration for vectors and grids using `for` loops,
   foreach (string key in map) {}
   ```
 
-For the iterator order, you could kindly refer to the documentation. In Stanford C++ Library,
+For the iterator order, you could kindly refer to the documentation. In Stanford C++ Library, iterators work as follows:
 
 - Iterators for the `Vector` class operate in index order.
 - Iterators for the `Grid` class operate in *row-major order*, which means that the iterator runs through every element in row 0, then every element in row 1, and so on.

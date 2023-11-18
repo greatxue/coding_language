@@ -32,8 +32,6 @@ char ch = 13;   // '\r' (Return)
 
 It's a reminder that to break a line, Mac uses `\r`, Unix uses `\n`, and Windows uses `\r\n`.
 
-
-
 **Character Functions**
 
 For libraries, we have the `<cctype>` interface (from `type.h`). It is a cluster of C character classification functions, with part of them shown as below:
@@ -90,7 +88,7 @@ The reminder is that character positions in a C string are identified by an *ind
 
 **C String Functions**
 
-Now we continue to introduce *C-String Functions*. The `<cstring>` (`string.h`) interface offers a lot of functions you can use to operate C strings. 
+Now we continue to introduce *C String Functions*. The `<cstring>` (`string.h`) interface offers a lot of functions you can use to operate C strings. 
 
 Though it is in C-style, we could initialize it like
 
@@ -102,7 +100,7 @@ char cstr1[] = "world";
 char cstr2[] { "world" }; // available since C++11
 ```
 
-To determine the **length** of a C-string `cstr`, we have (`sizeof` as an operator):
+To determine the **length** of a C String `cstr`, we have (`sizeof` as an operator):
 
 ```cpp
 char cstr[] = "hello";
@@ -130,7 +128,7 @@ int main() {
     cout << cstr << endl
          << sizeof cstr << endl
          << strlen(cstr) << endl;
-    strcpy(cstr, "hello world"); // dangerous overflow
+    strcpy(cstr, "hello world"); // ERR: dangerous overflow
     cout << cstr << endl
          << sizeof cstr << endl
          << strlen(cstr) << endl;
@@ -144,7 +142,7 @@ The 5th answer is `6`, because the function will return once a `\0` is found. Al
 
 **C-String Libraries**
 
-For libraries supporting C-String, we have the `<cctype>` interface (from `type.h`):
+For libraries supporting C String, we have the `<cctype>` interface (from `type.h`):
 
 | Category            | Function  | Description                   |
 | ------------------- | --------- | ----------------------------- |
@@ -176,11 +174,9 @@ For libraries supporting C-String, we have the `<cctype>` interface (from `type.
 
 As introduced initially, older `char` type is retained in C++ by including `<cctype>` and `<cstring>`. As a newly-designed language, C++ supports a high-level view of strings as *objects*, which is provided in the `<string>` library.
 
-Assume `name`, `", "` and `"hello"` are in *C-string* forms in the following example. 
+Assume `name`, `", "` and `"hello"` are in *C String* forms in the following example. In this way, there are a few you should be aware about concerning ***concentration*** of strings:
 
-There are a few you should be aware about concerning ***concentration*** of strings:
-
-+ C++ allows *concentration* with the stream. `name` could either be *C++ String object* or *C-String array*.
++ C++ allows *concentration* with the stream. `name` could either be *C++ String object* or *C String array*.
 
   ```cpp
   cout << "Hello, " << name << "!" << endl;
@@ -190,7 +186,7 @@ There are a few you should be aware about concerning ***concentration*** of stri
 
   ```cpp
   string str = "hello, world";
-  string str = "hello" + ", " + "world";  
+  string str = "hello" + ", " + "world"; // ERR
   ```
 
 + To solve the issue, just convert one *literal* to the *object*:
@@ -221,17 +217,15 @@ int main() {
     std::string name2 = "Ray";
     std::cout << "Hello, " << name1 << std::endl;
     std::cout << "Hello, " << name2 << std::endl;
-    std::cout << "Hello, " + name1 << std::endl; 
-    std::cout << "Hello, " + name2 << std::endl; // pointer operation
+    std::cout << "Hello, " + name1 << std::endl; // ERR: add a char array with a const char*
+    std::cout << "Hello, " + name2 << std::endl; 
     return 0;
 }
 ```
 
-**String Methods**
+Now we continue with *String Methods*. First I need to emphasize that `c_str` methods could be applied to C++ string, with objects automatically converted into the C String literal.
 
-Now we continue with *String Methods*. First I need to emphasize that `c_str` methods could be applied to C++ string, with objects automatically converted into the C string literal.
-
-Recall that Python has both `len(str)` and `str.__len__()`. For C++ as an *OOP* language, it is actually the same. As `string` is a class, we have coresponding methods like 
+Recall that Python has both `len(str)` and `str.__len__()`. C++ is an *OOP* language, and behaves exactly the same. As `string` is a class, we have coresponding methods like 
 
 ```cpp
 int len = str.length();
@@ -246,19 +240,17 @@ int len = strlen(str.c_str()); // Correct, but tedious.
 instead of
 
 ```cpp
-int len = strlen(str); //bug
+int len = strlen(str); // ERR
 ```
 
 Here we will introduce more useful functions for C++ Strings:
-
-
 
 **Selecting characters in strings**
 
 The string in C++ is ***mutable***, which is a great difference from Python. Anyway, the `<string>` library offers two machanisms for selecting individual characters:
 
 ```cpp
-str[index] = 'H'; // won't check if it is in-range
+str[index] = 'H'; 	 // won't check if it is in-range
 str.at(index) = 'H'; // always check if it is in-range
 ```
 
@@ -273,7 +265,7 @@ for (int i = str.length() - 1; i >= 0; i--)
 
 **Modifying Contents of a String**
 
-C++ strings are **immutable**, allows for methods like
+C++ strings are **mutable**! It allows for methods like
 
 | Function                        | Description                                               |
 | ------------------------------- | --------------------------------------------------------- |
@@ -281,9 +273,11 @@ C++ strings are **immutable**, allows for methods like
 | `str.insert(pos, text)`         | Inserts `text` into `str` at `pos`                        |
 | `str.replace(pos, count, text)` | Replaces `count` characters in `str` with `text` at `pos` |
 
+### 3.3.3 Technics for C++ Strings
+
 **Avoiding the use of destructive operations**
 
-For three possible solutions, we could make a comparison:
+As you have seen initially, Strings in C++ is mutable, thus we need to emphasis more about the philosophy of using that. Among three possible solutions, we could make a comparison:
 
 + **Case convertion without changing the original:** Safe, but not that efficient.
 
@@ -322,14 +316,14 @@ For three possible solutions, we could make a comparison:
 
 At last there is a conclusion for various `#include` syntax.
 
-| Include Statement      | Description                                                 |
-| ---------------------- | ----------------------------------------------------------- |
-| `#include <cstring>`   | C string library (for C++)                                  |
-| `#include <string.h>`  | C string library (for C, also acceptable in C++)            |
-| `#include "string.h"`  | Risky: may conflict if you've defined your own "string.h"   |
-| `#include <string>`    | C++ string library                                          |
-| `#include "cstring.h"` | Incorrect unless you've defined your own "cstring.h"        |
-| `#include <cstring.h>` | Likely an error even if you've defined your own "cstring.h" |
+| Include Statement      | Description                                                  |
+| ---------------------- | ------------------------------------------------------------ |
+| `#include <cstring>`   | C string library (for C++)                                   |
+| `#include <string.h>`  | C string library (for C, also acceptable in C++)             |
+| `#include "string.h"`  | **Risky:** may conflict if you've defined your own "string.h" |
+| `#include <string>`    | C++ string library                                           |
+| `#include "cstring.h"` | **Incorrect** unless you've defined your own "cstring.h"     |
+| `#include <cstring.h>` | Likely an **error** even if you've defined your own "cstring.h" |
 
 ## 3.4 OOP as a Programming Paradigm
 
@@ -346,9 +340,8 @@ Here are some characteristics about the *OOP* paradigm:
 + **Procedural**: Imperative programming with procedures operating on data.
 
 + **Object-Oriented**: Objects have/combine states/data and behavior/methods; Computation is effected by sending messages to objects (receivers).
-
-  + **Class-based**: Objects get their states and behavior based on membership in a class.
-
-  + **Prototype-based**: Objects get their behavior from a prototype object.
++ **Class-based**: Objects get their states and behavior based on membership in a class.
+  
++ **Prototype-based**: Objects get their behavior from a prototype object.
 
 We will further extend these topics later.

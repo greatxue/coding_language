@@ -4,7 +4,7 @@
 
 ## 4.1 Introduction
 
-Actually, there had been multiple functions for streams in `<cstdio>` from C standard library, like `printf`, which is out-of-scope of the text. For details about specific symbols called *specifier*, kindly refer to [this diagram]().
+Actually, there had been multiple functions for streams in `<cstdio>` from C standard library, like `printf` with *specifiers*, which is out-of-scope of the text. 
 
 ```cpp
 #include <cstdio>
@@ -19,7 +19,7 @@ int main() {
    // C style, acceptable in C++
    printf("This is a character: %c\n", c);
    printf("This is an integer: %d\n", i);
-   printf("This is a double: %.2f\n", d);   // floating number, with 2 digits reserved
+   printf("This is a double: %.2f\n", d);  // floating number, with 2 digits reserved
    // C++ style
    cout << "This is a character: " << c << endl;
    cout << "This is an integer: " << i << endl;
@@ -29,11 +29,11 @@ int main() {
 }
 ```
 
-For standard output in C++, we will introduce *C++ streams* with syntax like`std::cin` and `std::cout`.
+For a standard output in C++, we will introduce *C++ streams* with syntax like`std::cin` and `std::cout`.
 
 Here we introduce the important *object* called a ***stream***. A stream is an *abstraction* (object) that represents an input **source** or output **destination** of characters of indefinite length, on which *input* and *output* operations can be performed, like:
 
-+ **file stream:** a disk file
++ **File stream:** a disk file
 + **Keyboard:** standard input stream `cin`
 + **Console:** the output stream `cout`
 
@@ -95,11 +95,26 @@ int main() {
 
 ### 4.2.2 Output: Extraction
 
-For input, C++ includes the **>>** operator, which is called the ***extraction operator***. The `>>` operator is symmetrical to the `<<` operator and reads **formatted data from the stream** on the left **into** the variables that appear on the right.
+For input, C++ includes the `>>` operator, which is called the ***extraction operator***. The `>>` operator is symmetrical to the `<<` operator and reads **formatted data from the stream** on the left **into** the variables that appear on the right.
 
 Here is a critical comparison of *manipulators* concerning `ws`:
 
 ![4-2](pictures/4-2.png)
+
+To conclude in one sentence,
+
+- `skipws` is a **persistent** setting that automatically skips any leading whitespace characters before all read operations.
+
+  ```cpp
+  std::cin >> std::skipws >> variable;
+  ```
+
+- `ws` is a **one-time** stream manipulator used to clear all leading whitespace characters before a specific read operation, often set before `getline` and so on.
+
+  ```cpp
+  std::cin >> ws;
+  std::getline(std::cin, line);
+  ```
 
 Here is an example:
 
@@ -111,14 +126,14 @@ int main() {
     std::istringstream iss("   123");
     int value;
 
-    iss >> noskipws >> value;  // Whitespace is not skipped so reading fails.
-    std::cout << value << std::endl;  // undefined value
+    iss >> noskipws >> value;  			 // Whitespace is not skipped so reading fails.
+    std::cout << value << std::endl; // undefined value
 
     iss.clear();  // Clear error flags
-    iss.seekg(0);  // Reset stream position
+    iss.seekg(0); // Reset stream position
 
-    iss >> ws >> value;  // Use ws to skip leading whitespace.
-    std::cout << value << std::endl;  // Outputs 123
+    iss >> ws >> value; // Use ws to skip leading whitespace.
+    std::cout << value << std::endl; // Output: 123
 
     return 0;
 }
@@ -131,11 +146,11 @@ A *file* is the generic name for any named collection of **multiple types** of d
 To use data from a **text file**, it takes steps like
 
 + **Declare the variables:** Construct a new `ifstream` object by declaring a stream variable for the reference to the file.
-+ **Open the file: **Call the `open` method for the stream. For historical reasons, the argument to open is a **C string literal** rather than a C++ string object.
++ **Open the file: **Call the `open` method for the stream. For historical reasons, the argument to open is applied for a **C string literal** rather than a C++ String object.
 + **Call the function:** Call the methods provided by the `<ifstream>` class to read data from the file in sequential order.
 + **Close the file:** Break the association between the reader and the file by calling the stream’s `close` method.
 
-Here are some **methods** for the processing of the file:
+Here are some **methods** for processing the file:
 
 ![4-3](pictures/4-3.png)
 
@@ -156,11 +171,13 @@ int main() {
    char c;
    cout << "Input file name: ";
    cin >> filename;
+   
    file.open(filename.c_str());
-   file.get(c); // or c = file.get();
+   file.get(c); // Equivalent: c = file.get();
    c = toupper(c);
    file.put(c);
    file.close();
+   
    return 0;
 }
 ```
@@ -189,14 +206,14 @@ Here are some more details about `get`:
 
 Also, the effect of `getline` is to store the next line of data from the file into the string variable after **discarding the end-of-line character**.
 
-+ The *free function* `std::getline` is defined in `<string>` and works as
++ To work with C++ String, the *free function* `std::getline` is defined in `<string>` and works as
 
   ```cpp
   istream & getline(istream & is, string & str, char delim);
   istream & getline(istream & is, string & str);
   ```
 
-+ Another **overloaded version** is the one from `istream` class, which is `std::stream::getline`
++ To work with C String, another **overloaded version** is the one from `istream` class, which is `std::stream::getline`
 
   ```cpp
   istream & getline(char * s, streamsize n);
@@ -212,7 +229,7 @@ Compared with strings, text files have characteristics including:
 + The information stored in a file is **permanent**;
 + Data in files are usually accessed **sequentially**.
 
-A ***string*** is a collection of characters, a ***stream*** is an object to manipulate a flow of data (e.g., characters), and a ***string stream*** is a special stream object that lets you use a string as the source and destination of the flow of data.
+A ***string*** is a collection of characters, a ***stream*** is an object to manipulate a flow of data (e.g. characters), and a ***string stream*** is a special stream object that lets you use a string as the source and destination of the flow of data.
 
 Given that files and strings are both sequences of characters, we have the following libraries
 
@@ -243,11 +260,8 @@ int main() {
 }
 ```
 
-Here are some references of corresponding libraries:
+Here are some references for more libraries:
 
 ![4-5](pictures/4-5.png)
 
 ![4-6](pictures/4-6.png)
-
-![4-7](pictures/4-7.png)
-
