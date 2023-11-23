@@ -228,6 +228,7 @@ string directionToString(Direction dir) {
    }
 }
 
+/* Implementaion: arithmetic operations */
 std::ostream & operator<<(std::ostream & os, Direction dir) {
    return os << directionToString(dir);
 }
@@ -251,6 +252,7 @@ If you want to use a constant defined in one file in other files as well, you ne
 ```cpp
 // in constants.h
 extern const double PI;
+
 // in constants.cpp
 #include "constants.h"
 extern const double PI = 3.141592653589793;
@@ -356,6 +358,7 @@ bool randomChance(double p);
  * -------------------------------
  * Returns <code>true</code> with 50% probability.
  */
+
 bool randomBool();
 
 /*
@@ -373,7 +376,7 @@ void setRandomSeed(int seed);
 #endif
 ```
 
-Here is the detailed `random.cpp` implemetation:
+Here is the `random.cpp` implemetation with detailed comments:
 ```cpp
 /*
  * File: random.cpp

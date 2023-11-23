@@ -1,6 +1,6 @@
 # 3. Strings
 
-*Last Update: 2023-09-18*
+*Last Update: 23-09-18*
 
 ## 3.1 Introduction
 
@@ -345,3 +345,5 @@ Here are some characteristics about the *OOP* paradigm:
 + **Prototype-based**: Objects get their behavior from a prototype object.
 
 We will further extend these topics later.
+
+---

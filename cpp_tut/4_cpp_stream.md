@@ -1,6 +1,6 @@
 # 4. Streams
 
-*Last Update: 2023-09-20*
+*Last Update: 23-09-20*
 
 ## 4.1 Introduction
 
@@ -16,11 +16,11 @@ int main() {
    char c = 'a';
    int i = 1;
    double d = 3.14159265358979323846;
-   // C style, acceptable in C++
+   /* C style, acceptable in C++ */
    printf("This is a character: %c\n", c);
    printf("This is an integer: %d\n", i);
    printf("This is a double: %.2f\n", d);  // floating number, with 2 digits reserved
-   // C++ style
+   /* C++ style */
    cout << "This is a character: " << c << endl;
    cout << "This is an integer: " << i << endl;
    cout << "This is a double: " << fixed 
@@ -77,12 +77,17 @@ int main() {
    cout << scientific << setprecision(15) << PI << endl;
    cout << uppercase << scientific << setprecision(6) << PI << endl;
    cout << fixed << setw(16) << setprecision(9) << PI << endl;
-   cout << fixed << setfill('0') << setw(10) << setprecision(4) << PI << endl;
-   cout << fixed << setfill('0') << setw(10) << setprecision(4) << left << PI << endl;
+   cout << fixed << setfill('0') << setw(10) 
+     		<< setprecision(4) << PI << endl;
+   cout << fixed << setfill('0') << setw(10) 
+     		<< setprecision(4) << left << PI << endl;
    return 0;
 }
+```
 
-/* The corresponding outputs:
+The corresponding output is:
+
+```txt
 314.15926535897932581065
 314.159265
 3.141592653589793e+02
@@ -90,7 +95,6 @@ int main() {
    314.159265359
 00314.1593
 314.159300
-*/
 ```
 
 ### 4.2.2 Output: Extraction
@@ -126,8 +130,8 @@ int main() {
     std::istringstream iss("   123");
     int value;
 
-    iss >> noskipws >> value;  			 // Whitespace is not skipped so reading fails.
-    std::cout << value << std::endl; // undefined value
+    iss >> noskipws >> value; // ERR: ws is not skipped so it fails.
+    std::cout << value << std::endl; // ERR: undefined value
 
     iss.clear();  // Clear error flags
     iss.seekg(0); // Reset stream position
@@ -260,8 +264,5 @@ int main() {
 }
 ```
 
-Here are some references for more libraries:
+---
 
-![4-5](pictures/4-5.png)
-
-![4-6](pictures/4-6.png)

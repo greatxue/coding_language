@@ -287,7 +287,11 @@ You can define operators for a class either as ***class methods*** or as ***free
 
 ## 6.3 Case: Rational Numbers
 
-Here we define a class called `Rational` that represents *rational numbers*, which are simply the quotient of two integers. Rational numbers can be useful in cases in which you need exact calculation with fractions like 1/3, even for 1/10 = 0.1 which "looks" exact (actually an approximation when using `double`). Additionally, it should support the standard arithmetic operations of *addition*, *substraction*, *multiplication* and *division*.
+Here we define a class called `Rational` that represents *rational numbers*, which are simply the **quotient of two integers**. 
+
+Rational numbers can be useful in cases in which you need exact calculation with fractions like 1/3, even for 1/10 = 0.1 which "looks" exact (actually an approximation when using `double`).
+
+Additionally, it should support the standard arithmetic operations of *addition*, *substraction*, *multiplication* and *division*.
 
 For implementation details, we draw a mind-map like:
 
@@ -308,198 +312,206 @@ For implementation details, we draw a mind-map like:
 
 + The class needs to overload the standard arithmetic operations like  `+`, `-`, `*` and `/`.
 
-**The `rational.h` Interface**
+We will show source codes for reference:
 
-```cpp
-/*
- * File: rational.h
- * ----------------
- * This interface exports a class representing rational numbers.
- */
++ **The `rational.h` Interface**
 
-#ifndef _rational_h
-#define _rational_h
-
-#include <string>
-#include <iostream>
-
-/*
- * Class: Rational
- * ---------------
- * The Rational class is used to represent rational numbers, which
- * are defined to be the quotient of two integers.
- */
-
-class Rational {
-public:
-
-/*
- * Constructor: Rational
- * Usage: Rational zero;
- *        Rational num(n);
- *        Rational r(x, y);
- * ------------------------
- * Creates a Rational object. The default constructor creates the
- * rational number 0.  The single-argument form creates a rational
- * equal to the specified integer, and the two-argument form
- * creates a rational number corresponding to the fraction x/y.
- */
-
-   Rational();
-   Rational(int n);
-   Rational(int x, int y);
-/*
- * Operators: +, -, *, /
- * ---------------------
- * Define the arithmetic operators.
- */
-
-   Rational operator+(Rational r2);
-   Rational operator-(Rational r2);
-   Rational operator*(Rational r2);
-   Rational operator/(Rational r2);
-
-/*
- * Method: toString()
- * Usage: string str = r.toString();
- * ---------------------------------
- * Returns the string representation of this rational number.
- */
-
-   std::string toString();
- 
-private:
-
+  ```cpp
+  /*
+   * File: rational.h
+   * ----------------
+   * This interface exports a class representing rational numbers.
+   */
+  
+  #ifndef _rational_h
+  #define _rational_h
+  
+  #include <string>
+  #include <iostream>
+  
+  /*
+   * Class: Rational
+   * ---------------
+   * The Rational class is used to represent rational numbers, which
+   * are defined to be the quotient of two integers.
+   */
+  
+  class Rational {
+  public:
+  
+  /*
+   * Constructor: Rational
+   * Usage: Rational zero;
+   *        Rational num(n);
+   *        Rational r(x, y);
+   * ------------------------
+   * Creates a Rational object. The default constructor creates the
+   * rational number 0.  The single-argument form creates a rational
+   * equal to the specified integer, and the two-argument form
+   * creates a rational number corresponding to the fraction x/y.
+   */
+  
+     Rational();
+     Rational(int n);
+     Rational(int x, int y);
+    
+  /*
+   * Operators: +, -, *, /
+   * ---------------------
+   * Define the arithmetic operators.
+   */
+  
+     Rational operator+(Rational r2);
+     Rational operator-(Rational r2);
+     Rational operator*(Rational r2);
+     Rational operator/(Rational r2);
+  
+  /*
+   * Method: toString()
+   * Usage: string str = r.toString();
+   * ---------------------------------
+   * Returns the string representation of this rational number.
+   */
+  
+     std::string toString();
+   
+  private:
   /* Instance variables */
-   int num;    // the numerator of this Rational object  
-   int den;    // the denominator of this Rational object
+     int num;    // the numerator of this Rational object  
+     int den;    // the denominator of this Rational object
+  
+  };
+  
+  /*
+   * Operator: <<
+   * Usage: cout << rat;
+   * -------------------
+   * Overloads the << operator so that it is able to display
+   * Rational values.
+   */
+  
+  std::ostream & operator<<(std::ostream & os, Rational rat);
+  
+  #endif
+  ```
+  
++ **The `rational.cpp` Implementation**
 
-};
+  ```cpp
+  /*
+   * File: rational.cpp
+   * ------------------
+   * This file implements the Rational class.
+   */
+  
+  #include <string>
+  #include <cstdlib>
+  #include "rational.h"
+  #include "strlib.h"
+  using namespace std;
+  
+  /* Function prototypes in .cpp file */
+  int gcd(int x, int y); 
+  
+  /* Constructors */
+  Rational::Rational() {
+     num = 0;
+     den = 1;
+  }
+  
+  Rational::Rational(int n) {
+     num = n;
+     den = 1;
+  }
+  
+  Rational::Rational(int x, int y) {
+     if (x == 0) {
+        num = 0;
+        den = 1;
+     } else {
+        int g = gcd(abs(x), abs(y));
+        num = x / g;
+        den = abs(y) / g;
+        if (y < 0) num = -num;
+     }
+  }
+  
+  /* Implementation: arithmetic operators */
+  Rational Rational::operator+(Rational r2) {
+     return Rational(num * r2.den + r2.num * den, den * r2.den);
+  }
+  
+  Rational Rational::operator-(Rational r2) {
+     return Rational(num * r2.den - r2.num * den, den * r2.den);
+  }
+  
+  Rational Rational::operator*(Rational r2) {
+     return Rational(num * r2.num, den * r2.den);
+  }
+  
+  Rational Rational::operator/(Rational r2) {
+     return Rational(num * r2.den, den * r2.num);
+  }
+  
+  /* Implementation: toString */
+  string Rational::toString() {
+     if (den == 1) {
+        return integerToString(num);
+     } else {
+        return integerToString(num) + "/" + integerToString(den);
+     }
+  }
+  
+  /* Implementation: gcd */
+  int gcd(int x, int y) {
+     int r = x % y;
+     while (r != 0) {
+        x = y;
+        y = r;
+        r = x % y;
+     }
+     return y;
+  }
+  
+  /* Implementation: << */
+  ostream & operator<<(ostream & os, Rational rat) {
+     os << rat.toString();
+     return os;
+  }
+  ```
 
-/*
- * Operator: <<
- * Usage: cout << rat;
- * -------------------
- * Overloads the << operator so that it is able to display
- * Rational values.
- */
++ If we overload it as *free functions*:
 
-std::ostream & operator<<(std::ostream & os, Rational rat);
+  ```cpp
+  // in rational.h, inside the class Rational definition
+  friend Rational operator+(Rational r1, Rational r2);
+  friend Rational operator-(Rational r1, Rational r2);
+  friend Rational operator*(Rational r1, Rational r2);
+  friend Rational operator/(Rational r1, Rational r2);
+  
+  // in rational.h, outside the class Rational definition
+  Rational operator+(Rational r1, Rational r2);
+  Rational operator-(Rational r1, Rational r2);
+  Rational operator*(Rational r1, Rational r2);
+  Rational operator/(Rational r1, Rational r2);
+  
+  // in rational.cpp
+  Rational operator+(Rational r1, Rational r2) {
+     return Rational(r1.num * r2.den + r2.num * r1.den, r1.den * r2.den);
+  }
+  Rational operator-(Rational r1, Rational r2) {
+     return Rational(r1.num * r2.den - r2.num * r1.den, r1.den * r2.den);
+  }
+  Rational operator*(Rational r1, Rational r2) {
+     return Rational(r1.num * r2.num, r1.den * r2.den);
+  }
+  Rational operator/(Rational r1, Rational r2) {
+     return Rational(r1.num * r2.den, r1.den * r2.num);
+  }
+  ```
+  
 
-#endif
-```
-
-**The `rational.cpp` Implementation**
-
-```cpp
-/*
- * File: rational.cpp
- * ------------------
- * This file implements the Rational class.
- */
-
-#include <string>
-#include <cstdlib>
-#include "rational.h"
-#include "strlib.h"
-using namespace std;
-
-/* Function prototypes in .cpp file */
-int gcd(int x, int y); 
-
-/* Constructors */
-Rational::Rational() {
-   num = 0;
-   den = 1;
-}
-
-Rational::Rational(int n) {
-   num = n;
-   den = 1;
-}
-
-Rational::Rational(int x, int y) {
-   if (x == 0) {
-      num = 0;
-      den = 1;
-   } else {
-      int g = gcd(abs(x), abs(y));
-      num = x / g;
-      den = abs(y) / g;
-      if (y < 0) num = -num;
-   }
-}
-
-/* Implementation of the arithmetic operators */
-Rational Rational::operator+(Rational r2) {
-   return Rational(num * r2.den + r2.num * den, den * r2.den);
-}
-
-Rational Rational::operator-(Rational r2) {
-   return Rational(num * r2.den - r2.num * den, den * r2.den);
-}
-
-Rational Rational::operator*(Rational r2) {
-   return Rational(num * r2.num, den * r2.den);
-}
-
-Rational Rational::operator/(Rational r2) {
-   return Rational(num * r2.den, den * r2.num);
-}
-
-string Rational::toString() {
-   if (den == 1) {
-      return integerToString(num);
-   } else {
-      return integerToString(num) + "/" + integerToString(den);
-   }
-}
-
-int gcd(int x, int y) {
-   int r = x % y;
-   while (r != 0) {
-      x = y;
-      y = r;
-      r = x % y;
-   }
-   return y;
-}
-
-ostream & operator<<(ostream & os, Rational rat) {
-   os << rat.toString();
-   return os;
-}
-```
-
-If we overload it as *free functions*:
-
-```cpp
-// in rational.h, inside the class Rational definition
-friend Rational operator+(Rational r1, Rational r2);
-friend Rational operator-(Rational r1, Rational r2);
-friend Rational operator*(Rational r1, Rational r2);
-friend Rational operator/(Rational r1, Rational r2);
-// in rational.h, outside the class Rational definition
-Rational operator+(Rational r1, Rational r2);
-Rational operator-(Rational r1, Rational r2);
-Rational operator*(Rational r1, Rational r2);
-Rational operator/(Rational r1, Rational r2);
-// in rational.cpp
-Rational operator+(Rational r1, Rational r2) {
-   return Rational(r1.num * r2.den + r2.num * r1.den, r1.den * r2.den);
-}
-Rational operator-(Rational r1, Rational r2) {
-   return Rational(r1.num * r2.den - r2.num * r1.den, r1.den * r2.den);
-}
-Rational operator*(Rational r1, Rational r2) {
-   return Rational(r1.num * r2.num, r1.den * r2.den);
-}
-Rational operator/(Rational r1, Rational r2) {
-   return Rational(r1.num * r2.den, r1.den * r2.num);
-}
-```
-
-Either of them will be more suitable under some circumstances.
+**Either** of them will be more suitable under some circumstances.
 
 ---
 

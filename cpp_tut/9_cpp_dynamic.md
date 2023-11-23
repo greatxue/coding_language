@@ -4,15 +4,15 @@
 
 ## 9.1 Dynamic Allocation
 
-### 9.1.2 Basic Memory Allocation
+### 9.1.1 Basic Memory Allocation
 
 Here are two basic C++ syntaxes of memory allocation, and always pair these two when using:
 
 + The `new` operator to allocate memory on the heap
 
   ```cpp
-  int * pi = new int; // allocate space for a int on the heap
-  int * arr = new int[10]; // allocate an array of 10 integers
+  int * pi = new int; 			// allocate space for a int on the heap
+  int * arr = new int[10];  // allocate an array of 10 integers
   ```
   
 + The `delete` operator frees memory previously allocated.
@@ -34,8 +34,8 @@ Here are two basic C++ syntaxes of memory allocation, and always pair these two 
 Here is an example of ***dynamic arrays***:
 
 ```cpp
-int* createIndexArray(int n) {
-   int* array = new int[n];
+int *createIndexArray(int n) {
+   int *array = new int[n];
    for (int i = 0; i < n; i++) {
       array[i] = i;
    }
@@ -50,11 +50,11 @@ int main() {
 
 **Garbage collection**
 
-The big challenge in working with dynamic memory allocation is freeing the heap memory you allocate, or it will cause ***memory leaks***.
+The biggest challenge in working with dynamic memory allocation is to free the heap memory you allocate, or it will cause ***memory leaks***.
 
-Garbage collection frees the programmer from manually dealing with *memory deallocation*, but is not always efficient in performances and manual allocations. In C++, objects can be allocated **either on the stack or in the heap**, and programmers must manage heap memory allocation **explicitly**.
+Garbage collection frees the programmer from manually dealing with *memory deallocation*, but is not always efficient in performances as manual allocations. In C++, objects can be allocated **either on the stack or in the heap**, and programmers must manage heap memory allocation **explicitly**.
 
-### 9.1.3 Destructor
+### 9.1.2 Destructor
 
 In C++, class definitions often include a ***destructor***, which specifies how to free the storage used to represent an instance of that class.
 
@@ -74,7 +74,12 @@ Here we will use a **heap-stack diagram**, where a block of memory to the **heap
 
 Supported in `<cstdlib>` (for the header file`stdlib.h`):
 
-![9-2](pictures/9-2.png)
+| Function  | Description                        |
+| --------- | ---------------------------------- |
+| `calloc`  | Allocate and zero-initialize array |
+| `free`    | Deallocate memory block            |
+| `malloc`  | Allocate memory block              |
+| `realloc` | Reallocate memory block            |
 
 ## 9.2 Linked Structures
 
@@ -89,17 +94,17 @@ Here is a vivid example of passing the message via the towers:
 ```cpp
 struct Tower {
    string name;    
-   Tower * link;  
+   Tower *link;  
 };
 
-Tower * createTower(string name, Tower * link) {
-   Tower * tp = new Tower;
+Tower *createTower(string name, Tower *link) {
+   Tower *tp = new Tower;
    tp->name = name;
    tp->link = link;
    return tp;
 }
  
-void signal(Tower * start) {
+void signal(Tower *start) {
    if (start != NULL) {
       cout << "Lighting " << start->name << endl;
       signal(start->link);
@@ -117,11 +122,11 @@ For a better understanding, we implement a `CharStack` Class using dynamic alloc
   
   class CharStack {
   public:
-     /* Constructor and Destructor */
+  /* Constructor and Destructor */
      CharStack();
      ~CharStack();
     	
-     /* Public Class Methods */
+  /* Public Class Methods */
      int size();
      bool isEmpty();
      void clear();
@@ -134,15 +139,15 @@ For a better understanding, we implement a `CharStack` Class using dynamic alloc
   #endif
   ```
 
-+ Here is the even deeper `charstackpriv.h` file:
++ Here is what in the even deeper `charstackpriv.h` file:
 
   ```cpp
   private:
-     char * array;          
+     char *array;          
      int capacity; // allocated size of the array  
-     int count; // crt count of chars pushed 
+     int count; 	 // crt count of chars pushed 
   
-  	 /* Private function prototypes */
+  /* Private function prototypes */
      void expandCapacity();
   ```
 
@@ -155,6 +160,7 @@ For a better understanding, we implement a `CharStack` Class using dynamic alloc
   
   const int INITIAL_CAPACITY = 10;
   
+  /* Constructor and Destructor */
   CharStack::CharStack() {
      capacity = INITIAL_CAPACITY;
      array = new char[capacity];
@@ -164,6 +170,8 @@ For a better understanding, we implement a `CharStack` Class using dynamic alloc
   CharStack::~CharStack() {
      delete[] array;
   }
+  
+  /* Implementation: methods */
   int CharStack::size() {
      return count;
   }
@@ -187,7 +195,7 @@ For a better understanding, we implement a `CharStack` Class using dynamic alloc
   }
   
   void CharStack::expandCapacity() {
-     char * oldArray = array; 
+     char *oldArray = array; 
      capacity *= 2;
      array = new char[capacity];
      for (int i = 0; i < count; i++) {
@@ -201,7 +209,7 @@ From the codes above, there are two which deserves paying attention to:
 
 + **`array` and `oldArray`:** 
 
-  In the code, `array` is the original character array pointer, and `oldArray` is a backup pointer used to save the original address of `array`. When you reallocate memory for `array` (using `new`), `array` will point to the new memory address, while `oldArray` still points to the original memory address.
+  In the code, `array` is the **original** character array pointer, and `oldArray` is a **backup** pointer used to save the original address of `array`. When you reallocate memory for `array` (using `new`), `array` will point to the new memory address, while `oldArray` still points to the original memory address.
 
 + **Here `++i` and `i++` are quite different:** 
 
@@ -227,18 +235,16 @@ When you are defining a new *ADT* in C++, you typically need to define two metho
 
 Call/return by value might cause unnecessary calls to the copy constructor. **Constant call by reference** protects the source.
 
-
-
 **Assignment and Copy Constructors**
 
-An assignment operator can return anything it wants, but the standard C/C++ *assignment operators* return a reference to the left-hand operand, which allows you to **chain** assignments together:
+An assignment operator can return anything it wants, but the standard C/C++ *assignment operators* return a *reference* to the left-hand operand, which allows you to **chain** assignments together:
 
 ```cpp
 int a, b, c;
 a = b = c = 10;
 ```
 
-The default behavior of C++ is to **copy** only the top-level fields in an object, which means that all dynamically allocated memory is shared between the original and the copy, sometimes called ***shallow copying***, which is counterpart of ***deep copying***.
+The default behavior of C++ is to **copy** only the top-level fields in an object, which means that all dynamically allocated memory is shared between the original and the copy, known as ***shallow copying***:
 
 + A ***shallow copy*** allocates new fields for the object itself and copies the information from the original. Unfortunately, the dynamic array is copied as an address, not the data.
 + A ***deep copy*** also copies the contents of the dynamic array and therefore creates two independent structures
@@ -288,7 +294,7 @@ The `const` keyword has many distinct purposes in C++. This text uses it in the 
 + **Constant call by reference**. Adding `const` to the declaration of a reference parameter signifies that the function will not change the value of that parameter. 
 
   ```cpp
-  void deepCopy (const CharStack & src);
+  void deepCopy(const CharStack & src);
   ```
 + **Constant methods**. Adding `const` after the parameter list of a method guarantees that the method will not change the object.
 
@@ -315,8 +321,7 @@ public:
 A::A():c1(3),c2(4){}
 A::A(int x, int y):c1(x),c2(y){}
 
-int main()
-{
+int main() {
    A a;
    A b(5, 6);
    cout << a.c1 << a.c2 << endl; // 34
@@ -347,15 +352,15 @@ int main() {
 
 ### 9.5.2 The Uses of `static`
 
-The lifetime of `static` variables begins the first time the program flow encounters the declaration and it ends at program termination:
+The lifetime of `static` variables **begins** the first time the program flow **encounters the declaration** and it **ends** at program **termination**:
 
 | Applied to                           | Meaning                                                      |
 | ------------------------------------ | ------------------------------------------------------------ |
-| a local variable                     | The variable is "permanent", in the sense that it is initialized only once and retains its value from one function call to the next. It is like having a global variable with local scope. |
-| a global constant                    | Since a global constant has internal linkage by default (unlike global variables, which have external linkage by default), meaning it is only available for use in the file in which it is defined (and is therefore, in effect, static const). |
-| a global variable or a free function | The scope of the function, or the variable, is limited to the file in which it is defined. Without a static qualifier, any free function or global variable in a file has the extern qualifier by default, making it visible from other files in the compilation unit. |
-| a member variable of a class         | There is only one such variable for the class, no matter how many objects of the class are created. In other words, it turns the member variable from an "instance variable" into a "class variable". |
-| a member function of a class         | The function may access only static members of the class. That is, it may not access any instance members (since there may not be any, if no objects of the class have been created). |
+| a local variable                     | The variable is permanent, in the sense that it is **initialized only once** and retains its value from one function call to the next. It is like having a *global variable* (life span), but only with local scope (effective scope). |
+| a global constant                    | Since a global constant has **internal linkage** by default, meaning it is only available for use in the file in which it is defined thus in effect, `static const`. |
+| a global variable or a free function | The scope is limited to the file in which it is defined with a `static` qualifier, or any free function or global variable in a file has the extern qualifier by default. |
+| a member variable                    | There is **only one** such variable for the class, no matter how many objects of the class are created, turning the member variable from an *instance variable* into a *class variable*. |
+| a member function                    | The function may access **only static members** of the class, not any *instance members*. |
 
 ```cpp
 #include <iostream>
@@ -379,4 +384,6 @@ int main() {
    cout << b.i << endl;							// 3
 }
 ```
+
+---
 

@@ -14,7 +14,7 @@ There are *octal* (base 8) or *hexadecimal* (base 16) notations as well:
 
 ![8-2](pictures/8-2.png)
 
-It is a reminder that every four *binary* digits can be tranformed to one *hexadecimal* digit, thus the hexadecimal is also of vital importance.
+Every four *binary* digits can be tranformed to one *hexadecimal* digit, thus the hexadecimal is also of vital importance.
 
 ### 8.1.2 Memory and Variables
 
@@ -49,25 +49,25 @@ In classical architectures, the stack and heap grow toward each other to *maximi
 
 **Sizes of the Fundamental Types**
 
-The memory space required to represent a value depends on the *type* of value. Although there remains some flexibility, the following sizes are typical:
+The memory space required to represent a value depends on the *type* of value. Although there remains some flexibility                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         , the following sizes are typical:
 
-|        Size         |  Datatypes   |
-| :-----------------: | :----------: |
-|   1 byte (8 bits)   |  char, bool  |
-|  2 bytes (16 bits)  |    short     |
-|  4 bytes (32 bits)  |  int, float  |
-|  8 bytes (64 bits)  | long, double |
-| 16 bytes (128 bits) | long double  |
+|        Size         |    Datatypes     |
+| :-----------------: | :--------------: |
+|   1 byte (8 bits)   |  `char`, `bool`  |
+|  2 bytes (16 bits)  |     `short`      |
+|  4 bytes (32 bits)  |  `int`, `float`  |
+|  8 bytes (64 bits)  | `long`, `double` |
+| 16 bytes (128 bits) |  `long double`   |
 
-+ `enum` types are typically assigned the space of an`int`.
++ `enum` types are typically assigned the space of an `int`.
 
 + `struct` types have a size equal to the sum of their fields.
 
 + **Arrays** take up the *element size* times *the number of elements*.
 
-+ **Pointers** take up the space needed to hold an address, which is usually the size of a hardware word.
++ **Pointers** take up the space needed to hold an address, usually the size of a hardware *word*.
 
-It is a reminder that `sizeof(t)` returns the actual number of bytes required to store a value of the type `t`, while `sizeof x` returns the actual memory size of the variable `x`.
+It is a reminder that `sizeof(t)` returns the actual number of bytes **required** to store a value of the type `t`, while `sizeof x` returns the **actual memory size** of the variable `x`.
 
 **Variables**
 
@@ -101,11 +101,11 @@ A data item whose value is an address in memory is called a ***pointer***.
 
 It can be manipulated just like any other kind of data, and you could even assign one pointer value to another. Here are some characteris brought by pointers:
 
-+ **Call by pointers:** *Pointers allow you to refer to a large data structure in a compact way.* 
++ **Call by pointers:** Pointers allow you to refer to a large data structure in a compact way. 
 
-+ **Dynamic allocation:** *Pointers make it possible to reserve new memory during program execution*. 
++ **Dynamic allocation:** Pointers make it possible to reserve new memory during program execution. 
 
-+ **Linked structures:** *Pointers can be used to record relationships among data items*. 
++ **Linked structures:** Pointers can be used to record relationships among data items. 
 
 **Declaring a Pointer Variable**
 
@@ -144,10 +144,10 @@ Here is a detailed example illustrating **why pointers are dangerous**:
 using namespace std;
 
 int main() {
-    /* Here is a diagram:
-    *    pi -> i = 1
-    *    pd -> d = 2.0
-    */
+/* Here is a diagram:
+ *   pi -> i = 1
+ *   pd -> d = 2.0
+ */
     int i = 1;
     int * pi = &i;
     double d = 2.0;
@@ -155,9 +155,9 @@ int main() {
     cout << * pi << endl; // Output: 1
     cout << * pd << endl; // Output: 2, "default precision" of cout
     int * pi1 = (int *) pd;		
-    cout << * pi1 << endl;     // Output: 0, unpredictable
+    cout << * pi1 << endl;   // Output: 0, ERR
     double * pd1 = (double *) pi;
-    cout << * pd1 << endl;     // Output: 1.05845e+230, unpredictable
+    cout << * pd1 << endl;   // Output: 1.05845e+230, ERR
 }
 ```
 
@@ -192,14 +192,12 @@ Here is the conclusion:
 |                               |               Pointer                |                Reference                |
 | :---------------------------: | :----------------------------------: | :-------------------------------------: |
 |          Definition           |   The memory address of an object    | An alternative identifier for an object |
-|          Declaration          |   `int i = 5;`<br>`int * p = &i;`    |     `int i = 5;`<br>`int & r = i;`      |
+|          Declaration          |    `int i = 5;`<br>`int *p = &i;`    |     `int i = 5;`<br>`int & r = i;`      |
 |         Dereferencing         |                `* p`                 |                   `r`                   |
 |        Has an address         |             Yes (`& p`)              |         No (the same as `& i`)          |
 | Pointing/referring to nothing | Yes (`NULL` / `nullptr` since C++11) |                   No                    |
 | Reassignments to new objects  |                 Yes                  |                   No                    |
 |         Supported by          |              C and C++               |                   C++                   |
-
-
 
 **Pointers to Objects**
 
@@ -213,14 +211,14 @@ Point * pp = & pt;
 Given a pointer to an object, we need to *deference* the pointers before selecting a field or calling a method. To invoke the method `getX()` of the object, you could not use
 
 ```cpp
-pp.getX(); // FORBIDDEN!!!
+pp.getX(); // ERR
 ```
 
 As `.` takes precedence over `*`, you could not use equivalent syntaxes:
 
 ```cpp
-* pp.get();
-*(pp.get());
+* pp.get();  // ERR
+*(pp.get()); // ERR
 ```
 
 These are legal calls of methods:
@@ -237,7 +235,7 @@ In the implementation of methods within a class, you could refer to the private 
 
 + Parameters or local variables declared in the **current method**
 + Instance variables of the **current object**
-+ Global variables defined in this scope (NOT available in C++)
++ Global variables defined in this scope (NOT available here)
 
 To use the same names for parameters and instance variables, use the keyword `this` (defined as a pointer to the current object), just as `self` in Python:
 
@@ -266,8 +264,10 @@ To overload `==` operator, we have such approaches:
   ```cpp
   // in point.h, inside the class Point definition
   friend bool operator==(Point p1, Point p2);
+  
   // in point.h, outside the class Point definition
   bool operator==(Point p1, Point p2);
+  
   // in point.cpp
   bool operator==(Point p1, Point p2) {
      return p1.x == p2.x && p1.y == p2.y;
@@ -279,6 +279,7 @@ To overload `==` operator, we have such approaches:
   ```cpp
   // in point.h, inside the class Point definition
   bool operator==(Point pt);
+  
   // in point.cpp
   bool Point::operator==(Point pt) {
      return this->x == pt.x && this->y == pt.y;
@@ -298,9 +299,9 @@ char cstr[] = { 'h', 'e', 'l', 'l', 'o', '\0' };
 
 We find ***Arrays*** have characteristics like
 
-+ The only operator is selection with `[]`;
++ The only operator is *selection* with `[]`;
 + Array selection does not check whether index is in range;
-+ The **declared length** of an array is fixed after it is initialised;
++ The **declared length** of an array is fixed after it is initialized;
 + Arrays don't store their **actual length**, only the declared one.
 
 The size of the array specified in the declaration is called the **allocated size**. The number of elements actively in use is called the **effective size**. To determine how many elements there are in a strange array, use `sizeof MY_ARRAY / sizeof MY_ARRAY[0]`.
@@ -318,8 +319,6 @@ Although an array is often treated as a *pointer*, they are not entirely equival
 
 When you pass an array to a function, only the *address* of the array is copied into the parameter. This strategy has the effect of **calling by pointer**.
 
-
-
 **Pointer Arithmetic**
 
 Unlike C, C++ defines `+` and `-` operations to work with pointers. For the following declarations:
@@ -336,27 +335,29 @@ int a[] = {0, 1, 2, 3};
 int * p = a; // &a[0]
 ```
 
-|         |                  a                   |          &a          |        &a[0]         |          p           |
-| :-----: | :----------------------------------: | :------------------: | :------------------: | :------------------: |
-|  Type   | array or used as pointer to an `int` | address of an array  | address of an `int`  | pointer to an `int`  |
-| Size of |         16 (4`* int` length)         |      4 (a word)      |      4 (a word)      |      4 (a word)      |
-| Lvalue  |         Yes (non-modifiable)         |          No          |          No          |         Yes          |
-|  Value  |              `ADDRESS1`              |      `ADDRESS1`      |      `ADDRESS1`      |      `ADDRESS1`      |
-|    *    |                  0                   |      `ADDRESS1`      |          0           |          0           |
-|    &    |              `ADDRESS1`              |         N/A          |         N/A          |      `ADDRESS2`      |
-|   +1    |     `ADDRESS1` +1`* int` length      | `ADDRESS1` +4`* int` | `ADDRESS1` +1`* int` | `ADDRESS1` +1`* int` |
+|         |                  a                   |           &a            |          &a[0]          |            p            |
+| :-----: | :----------------------------------: | :---------------------: | :---------------------: | :---------------------: |
+|  Type   | array or used as pointer to an `int` |   address of an array   |   address of an `int`   |   pointer to an `int`   |
+| Size of |         16 (4`*int` length)          |       4 (a word)        |       4 (a word)        |       4 (a word)        |
+| lvalue  |         Yes (non-modifiable)         |           No            |           No            |           Yes           |
+|  Value  |               `ADDR1`                |         `ADDR1`         |         `ADDR1`         |         `ADDR1`         |
+|    *    |                  0                   |         `ADDR1`         |            0            |            0            |
+|    &    |               `ADDR1`                |           N/A           |           N/A           |         `ADDR2`         |
+|   +1    |        `ADDR1`+1`*int` length        | `ADDR1` +4`*int` length | `ADDR1` +1`*int` length | `ADDR1` +1`*int` length |
 
-**C-String are Pointers to Characters**
+`&a` is a pointer at the entire array, and that is why the address will increase by a size of **the entire array**.
 
-C++ supports the old *C-Strings*, which is a pointer to a character, which is the first element of a character array, terminated by the *null character* `\0`:
+**C String are Pointers to Characters**
+
+C++ supports the old *C Strings*, which is a pointer to a character, which is the first element of a character array, terminated by the *null character* `\0`:
 
 ```cpp
 char* msg = "hello, world";
 ```
 
-Here are two implementations of the C-String Functions:
+Here are two implementations of the C String Functions:
 
-+ C-library function `strlen(cstr)` that returns the length of C-String `cstr`;
++ C Library function `strlen(cstr)` that returns the length of C-String `cstr`;
 
   ```cpp
   int strlen(char str[]) {
@@ -382,7 +383,7 @@ Here are two implementations of the C-String Functions:
   }
   ```
 
-+ C library function `strcpy(dst, src)`, which copies the characters from the string `src` into the character array indicated by `dst`.
++ C Library function `strcpy(dst, src)`, which copies the characters from the string `src` into the character array indicated by `dst`.
 
   ```cpp
   void strcpy(char * dst, char * src) {
@@ -394,3 +395,6 @@ Here are two implementations of the C-String Functions:
   + The pointer expression `* p++` is equivalent to `*(p++)`, because ***unary operators*** in C++ are evaluated in right-to-left order.
   + The `*p++` idiom means dereference `p` and return as an lvalue the object to which it currently points, and increment the value of `p` so that the new `p` points to the next element in the array.
   + Be careful with ***buffer overflow errors***.
+
+---
+

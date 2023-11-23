@@ -1,6 +1,6 @@
 # 2. Functions & Libraries I
 
-*Last update: 2023-09-19*
+*Last update: 23-09-19*
 
 ## 2.1 Functions in Programming
 
@@ -103,8 +103,6 @@ int gcd(int x, int y) {
 
 In C++, Functions can be ***overloaded***, which means that you can define several different functions with the same name as long as the adaptable version can be determined by looking at the ***signature*** (also called the pattern of arguments: **the number and types of the arguments**, but **NOT** the parameter names).
 
-In the example below, which lines are inappropriate? After modification, what is the output?
-
 ```cpp
 #include <iostream>
 
@@ -121,7 +119,7 @@ int main() {
 double add1(int x) {    
    return x + 1;
 
-int add1(int y) {
+int add1(int y) { //ERR
    return y + 1;
 }
 double add1(double x) {
@@ -172,7 +170,7 @@ When you invoke a function, the following actions occur:
 + **Return Statement**: Computes return value, substituting it in place of the function call.
 + **Stack Frame Discard**: Discards function's stack frame and returns control to the caller.
 
-![2-2](pictures/2-2.png)Under this machanism, global  `n1` and `n2` remain the initial values after execution.
+![2-2](pictures/2-2.png)Under this machanism, global `n1` and `n2` remain the initial values after execution.
 
 ```cpp
 void swap(int x, int y) {
@@ -212,8 +210,7 @@ int main() {
    return 0;
 }
 
-void solveQuadratic(double a, double b, double c,
-                    double & r1, double & r2) {
+void solveQuadratic(double a, double b, double c, double & r1, double & r2) {
    if (a == 0) error("The coefficient a must be nonzero.");
    double disc = b * b - 4 * a * c;
    if (disc < 0) error("This equation has no real roots.");
