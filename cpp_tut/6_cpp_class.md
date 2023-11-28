@@ -140,22 +140,23 @@ Here is a complete implementation of the `point` class:
   
   #include <string>
   class Point {
-      public:
-      	  /* Constructor to create a Point object. */
-    			Point();
-          Point(int xc, int yc);
-    			/* Returns the x and y coordinates of the point. */
-          int getX();
-    	    int getY();
-    			/* Returns a string representation of the Point (x, y). */
-          std::string toString();
-      private:
-      		int x; // x-coordinate
-          int y; // y-coordinate
+  public:
+  /* Constructor to create a Point object. */
+    	Point();
+      Point(int xc, int yc);
+  /* Returns the x and y coordinates of the point. */
+      int getX();
+      int getY();
+  /* Returns a string representation of the Point (x, y). */
+      std::string toString();
+  private:
+      int x; // x-coordinate
+      int y; // y-coordinate
   };
   
   /* Overloads the << operator to display Point. */
   std::ostream & operator<<(std:ostream & os, Point pt);
+  
   #endif
   ```
   

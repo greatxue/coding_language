@@ -4,7 +4,7 @@
 
 ## 0.1 Statements
 
-This note is mainly adapted from what I have recorded from my CSC3002 study. Rather than a complete tutorial (which could be easy to find within the useful materials mentioned below), it works as a listing of C++ knowledge, which could be useful for a general review.
+This note is mainly adapted from what I have recorded from my CSC3002 study. Rather than a complete tutorial (which could be easy to find within the useful materials mentioned below), it works as a listing of C++ knowledge, which could be useful for a general review. For this reason, some comments of the implementation has been removed as well.
 
 Also, in the subpages I extend with some supplement for what is only briefly mentioned in the course. Hope it works as a seed, which broadens the readers' horizon and inspires them for further explorations. 
 
@@ -12,9 +12,15 @@ At the end of the note, I will also recommend practice projects with high qualit
 
 ## 0.2 Catalogue 
 
+
+
 ## 0.3 More to explore
 
+
+
 ## 0.4 Practice Projects
+
+
 
 ## 0.4 Useful Materials
 

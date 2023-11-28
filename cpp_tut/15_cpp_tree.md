@@ -73,6 +73,7 @@ Node* findNode(Node* t, string key) {
       return findNode(t->right, key);
    }
 }
+
 /*
  * Function: insertNode
  * Usage: insertNode(t, key);
@@ -236,14 +237,14 @@ A ***heap*** (no relationship to that of dynamic allocation) is hence an array-b
 And ***heapsort*** is a **comparison-based** sorting algorithm utilizing the *heap* data structure:
 
 + Heapsort can be thought of as an **improved selection sort**. But Unlike selection sort, heapsort does not waste time with a linear-time scan of the unsorted region, but maintain them in a *heap* data structure to more quickly find **the largest element in each step**.
-
 + Although slower in practice than a well-implemented *quicksort*, it has the advantage of **a more favorable worst-case** $O(NlogN)$ runtime.
-
 + Heapsort is an **in-place** algorithm, but it is **not** a **stable** sort.
+
+![image-20231128084154978](../../../Library/Application Support/typora-user-images/image-20231128084154978.png)![15-4](pictures/15-4.png)
 
 Here is a brief illustration:
 
-+ Heapify: Build an initial heap from the input list.
++ **Heapify:** Build an initial heap from the input list.
 
   + Bottom-up *SiftDown* with $O(N)$
 
@@ -265,3 +266,6 @@ Here is a conclusion of sorting technics introduced:
 | Merge sort          | $NlogN$ | $NlogN$ | $NlogN$ |
 | Heap sort           | $NlogN$ | $NlogN$ | $NlogN$ |
 | Quicksort           | $NlogN$ | $NlogN$ |  $N^2$  |
+
+---
+

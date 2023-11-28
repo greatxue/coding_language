@@ -93,15 +93,15 @@ The implementations of those functions appear in the corresponding `.cpp` file:
  * This file implements the error.h interface.
  */
 
-#include <iostream>	// cerr, endl
-#include <cstdlib>	// exit, EXIT_FAILURE
-#include <string>		// string
+#include <iostream>	/* cerr, endl */
+#include <cstdlib>	/* exit, EXIT_FAILURE */
+#include <string>		/* string */
 #include "error.h" 
 using namespace std;
 
 void error(string msg) {
    cerr << msg << endl;
-   exit(EXIT_FAILURE); // represent a standard failure code.
+   exit(EXIT_FAILURE); /* represent a standard failure code. */
 }
 ```
 
@@ -211,12 +211,31 @@ Here we further implement it:
 #include "direction.h"
 using namespace std;
 
+/*
+ * Implementation notes: leftFrom, rightFrom
+ * -----------------------------------------
+ * These functions use the remainder operator to cycle through the
+ * internal values of the enumeration type.  Note that the leftFrom
+ * function cannot subtract 1 from the direction because the result
+ * might then be negative; adding 3 achieves the same effect but
+ * ensures that the values remain positive.
+ */
+
 Direction leftFrom(Direction dir) {
    return Direction((dir + 3) % 4);
 }
+
 Direction rightFrom(Direction dir) {
    return Direction((dir + 1) % 4);
 }
+
+/*
+ * Implementation notes: directionToString
+ * ---------------------------------------
+ * Most C++ compilers require the default clause to make sure that this
+ * function always returns a string, even if the direction is not one
+ * of the legal values.
+ */
 
 string directionToString(Direction dir) {
    switch (dir) {
@@ -228,10 +247,27 @@ string directionToString(Direction dir) {
    }
 }
 
-/* Implementaion: arithmetic operations */
+/*
+ * Implementation notes: <<
+ * ------------------------
+ * This operator must return the stream by reference after printing
+ * the value.  The operator << returns this stream, so the function
+ * can be implemented as a single line.
+ */
+
 std::ostream & operator<<(std::ostream & os, Direction dir) {
    return os << directionToString(dir);
 }
+
+/*
+ * Implementation notes: ++
+ * ------------------------
+ * The int parameter in the signature for this operator is a marker used
+ * by the C++ compiler to identify the suffix form of the operator.  Note
+ * that the value after incrementing a variable containing WEST will be
+ * out of the Direction range.  That fact will not cause a problem if
+ * this operator is used only in the for loop idiom for which it is defined.
+ */
 
 Direction operator++(Direction & dir) {
    dir = Direction(dir + 1);

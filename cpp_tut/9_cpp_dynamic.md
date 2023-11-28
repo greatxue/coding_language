@@ -92,10 +92,15 @@ C++ marks the end of linked list using the constant `NULL`, which signifies a po
 Here is a vivid example of passing the message via the towers:
 
 ```cpp
-struct Tower {
-   string name;    
-   Tower *link;  
+   string name;  /* The name of this tower    */
+   Tower *link;  /* Pointer to the next tower */
 };
+
+/*
+ * Function: createTower(name, link);
+ * ----------------------------------
+ * Creates a new Tower with the specified values.
+ */
 
 Tower *createTower(string name, Tower *link) {
    Tower *tp = new Tower;
@@ -103,6 +108,12 @@ Tower *createTower(string name, Tower *link) {
    tp->link = link;
    return tp;
 }
+
+/*
+ * Function: signal(start);
+ * ------------------------
+ * Generates a signal beginning at start.
+ */
  
 void signal(Tower *start) {
    if (start != NULL) {
@@ -117,16 +128,35 @@ For a better understanding, we implement a `CharStack` Class using dynamic alloc
 + Here we have the `charstack.h` interface:
 
   ```cpp
+  /*
+   * File: charstack.h
+   * -----------------
+   * This interface defines the CharStack class.
+   */
+  
   #ifndef _charstack_h
   #define _charstack_h
   
   class CharStack {
   public:
-  /* Constructor and Destructor */
+  
+  /*
+   * CharStack constructor and destructor
+   * ------------------------------------
+   * The constructor initializes an empty stack.  The destructor
+   * is responsible for freeing heap storage.
+   */
+  
      CharStack();
      ~CharStack();
-    	
-  /* Public Class Methods */
+    
+  /*
+   * Methods: size, isEmpty, clear, push, pop
+   * ----------------------------------------
+   * These methods work exactly as they do for the Stack class.
+   * The peek method is deleted here to save space.
+   */
+  
      int size();
      bool isEmpty();
      void clear();
@@ -134,6 +164,7 @@ For a better understanding, we implement a `CharStack` Class using dynamic alloc
      char pop();
   
   #include "charstackpriv.h"
+  
   }
   
   #endif
@@ -142,25 +173,55 @@ For a better understanding, we implement a `CharStack` Class using dynamic alloc
 + Here is what in the even deeper `charstackpriv.h` file:
 
   ```cpp
+  /*
+   * File: charstackpriv.h
+   * ---------------------
+   * This file contains the private data for the CharStack class.
+   */
+  
   private:
-     char *array;          
-     int capacity; // allocated size of the array  
-     int count; 	 // crt count of chars pushed 
+  
+  /* Instance variables */
+  
+     char *array;          /* Dynamic array of characters   */
+     int capacity;         /* Allocated size of that array  */
+     int count;            /* Current count of chars pushed */
   
   /* Private function prototypes */
+  
      void expandCapacity();
   ```
 
 + Thus we implement the `charstack.cpp` file:
 
   ```cpp
+  /*
+   * File: charstack.cpp
+   * -------------------
+   * This file implements the CharStack class.
+   */
+  
   #include "charstack.h"
   #include "error.h"
   using namespace std;
   
+  /*
+   * Constant: INITIAL_CAPACITY
+   * --------------------------
+   * This constant defines the initial allocated size of the dynamic
+   * array used to hold the elements.  If the stack grows beyond its
+   * capacity, the implementation doubles the allocated size.
+   */
+  
   const int INITIAL_CAPACITY = 10;
   
-  /* Constructor and Destructor */
+  /*
+   * Implementation notes: constructor and destructor
+   * ------------------------------------------------
+   * The constructor allocates dynamic array storage to hold the
+   * stack elements.  The destructor must free these elements
+   */
+  
   CharStack::CharStack() {
      capacity = INITIAL_CAPACITY;
      array = new char[capacity];
@@ -171,7 +232,6 @@ For a better understanding, we implement a `CharStack` Class using dynamic alloc
      delete[] array;
   }
   
-  /* Implementation: methods */
   int CharStack::size() {
      return count;
   }
@@ -194,8 +254,18 @@ For a better understanding, we implement a `CharStack` Class using dynamic alloc
      return array[--count];
   }
   
+  /*
+   * Implementation notes: expandCapacity
+   * ------------------------------------
+   * This private method doubles the capacity of the elements array
+   * whenever it runs out of space.  To do so, it must copy the
+   * pointer to the old array, allocate a new array with twice the
+   * capacity, copy the characters from the old array to the new
+   * one, and finally free the old storage.
+   */
+  
   void CharStack::expandCapacity() {
-     char *oldArray = array; 
+     char *oldArray = array;
      capacity *= 2;
      array = new char[capacity];
      for (int i = 0; i < count; i++) {
@@ -251,6 +321,13 @@ The default behavior of C++ is to **copy** only the top-level fields in an objec
 
 Here we implement a ***deep copy***. These methods make it possible to pass a `CharStack` by value or assign one `CharStack` to another.
 ```cpp
+/*
+ * Implementation notes: copy constructor and assignment operator
+ * --------------------------------------------------------------
+ * These methods make it possible to pass a CharStack by value or
+ * assign one CharStack to another.
+ */
+
 CharStack::CharStack(const CharStack & src) {
    deepCopy(src);
 }
@@ -264,13 +341,14 @@ CharStack & CharStack::operator=(const CharStack & src) {
 }
 
 void CharStack::deepCopy(const CharStack & src) {
-   array = new char[src.capacity];
-   for (int i = 0; i < src.count; i++) {
+   array = new char[src.count];
+   for (int i = 0; i < src.capacity; i++) {
       array[i] = src.array[i];
    }
    count = src.count;
    capacity = src.capacity;
 }
+
 ```
 
 ## 9.4 Unit Testing

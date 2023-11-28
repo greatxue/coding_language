@@ -29,10 +29,24 @@ The type for the keys stored in a `Map` must define a natural ordering, usually 
   #include "vector.h"
   
   class StringMap {
+  
   public:
-     
-  /* Constructor and Destructor */
+  
+  /*
+   * Constructor: StringMap
+   * Usage: StringMap map;
+   * ---------------------
+   * Initializes a new empty StringMap.
+   */
+  
      StringMap();
+  
+  /*
+   * Destructor: ~StringMap
+   * ----------------------
+   * Frees any heap storage associated with this map.
+   */
+  
      ~StringMap();
   
   /*
@@ -41,25 +55,27 @@ The type for the keys stored in a `Map` must define a natural ordering, usually 
    * -----------------------------------
    * Returns the value for key or the empty string, if key is unbound.
    */
-     
+  
      std::string get(const std::string & key) const;
   
-   /*
-    * Method: put
-    * Usage: map.put(key, value);
-    * ---------------------------
-    * Associates key with value in this map.
-    */
-     
+  /*
+   * Method: put
+   * Usage: map.put(key, value);
+   * ---------------------------
+   * Associates key with value in this map.
+   */
+  
      void put(const std::string & key, const std::string & value);
-     
+  
+  /* Private section */
+  
   private:
   
-   /*
-    * Type: KeyValuePair
-    * ------------------
-    * This type combines a key and a value into a single structure.
-    */
+  /*
+   * Type: KeyValuePair
+   * ------------------
+   * This type combines a key and a value into a single structure.
+   */
   
      struct KeyValuePair {
         std::string key;
@@ -67,17 +83,19 @@ The type for the keys stored in a `Map` must define a natural ordering, usually 
      };
   
   /* Instance variables */
+  
      Vector<KeyValuePair> bindings;
   
   /* Private function prototypes */
+  
      int findKey(const std::string & key) const;
   
   };
   
   #endif
   ```
-
-+ Here is the detailed implementation:
+  
++ Here is the detailed implementation `stringmap.cpp`:
 
   ```cpp
   /*
@@ -91,7 +109,7 @@ The type for the keys stored in a `Map` must define a natural ordering, usually 
   using namespace std;
   
   /*
-   * Implementation: StringMap constructor and destructor
+   * Implementation notes: StringMap constructor and destructor
    * ----------------------------------------------------------
    * All dynamic allocation is handled by the Vector class.
    */
@@ -99,29 +117,39 @@ The type for the keys stored in a `Map` must define a natural ordering, usually 
   StringMap::StringMap() { }
   StringMap::~StringMap() { }
   
-  /* Implementation: put, get */
-  string StringMap::get(cosnt string & key) const {
+  /*
+   * Implementation notes: put, get
+   * ------------------------------
+   * These methods use findKey to search for the specified key.
+   */
+  
+  string StringMap::get(const string & key) const {
      int index = findKey(key);
-     return (index == -1) ? "" : bindings.get(index).value
+     return (index == -1) ? "" : bindings.get(index).value;
   }
   
   void StringMap::put(const string & key, const string & value) {
      int index = findKey(key);
      if (index == -1) {
-       	KeyValuePair entry;
-        entry.key = key
-        index = bindings.size()
+        KeyValuePair entry;
+        entry.key = key;
+        index = bindings.size();
         bindings.add(entry);
      }
      bindings[index].value = value;
   }
   
-  /* Private Implementation: findKey */
+  /*
+   * Private method: findKey
+   * -----------------------
+   * Returns the index at which the key appears, or -1 if the key is not found.
+   */
+  
   int StringMap::findKey(const string & key) const {
-      for (int i = 0; i < bindings.size(); i++) {
-         if (bindings.get(i).key == key) return i;
-      }
-      return -1;
+     for (int i = 0; i < bindings.size(); i++) {
+        if (bindings.get(i).key == key) return i;
+     }
+     return -1;
   }
   ```
 
@@ -169,9 +197,9 @@ To achieve the **high level of efficiency** that hashing offers, a hash function
 Here is one implementation of the *djb2* algorithm:
 
 ```cpp
-const int HASH_SEED = 5381; // Starting point for first cycle
-const int HASH_MULTIPLIER = 33; // Multiplier for each cycle 
-const int HASH_MASK = unsigned(-1) >> 1; // Largest positive integer
+const int HASH_SEED = 5381; /* Starting point for first cycle */
+const int HASH_MULTIPLIER = 33; /* Multiplier for each cycle */
+const int HASH_MASK = unsigned(-1) >> 1; /* Largest positive integer */
 
 /*
  * Function: hashCode
@@ -180,6 +208,9 @@ const int HASH_MASK = unsigned(-1) >> 1; // Largest positive integer
  * This function takes a string key and uses it to derive a hash code,
  * which is nonnegative integer related to the key by a deterministic
  * function that distributes keys well across the space of integers.
+ * The specific algorithm used here is called djb2 after the initials
+ * of its inventor, Daniel J. Bernstein, Professor of Mathematics at
+ * the University of Illinois at Chicago.
  */
 
 int hashCode(const string & str) {
@@ -218,8 +249,12 @@ Here is part of the entire `StringMap`:
 + Private Section of the `StringMap` Class:
 
   ```cpp
+  /* Private section */
+  
   private:
+  
   /* Type definition for cells in the bucket chain */
+  
      struct Cell {
         std::string key;
         std::string value;
@@ -227,17 +262,19 @@ Here is part of the entire `StringMap`:
      };
   
   /* Instance variables */
-  	 Cell* *buckets;  // Dynamic array of pointers to cells 
-     int nBuckets;    // The number of buckets in the array 
-     int count;       // The number of entries in the map   
+  
+     Cell* *buckets;    /* Dynamic array of pointers to cells */
+     int nBuckets;      /* The number of buckets in the array */
+     int count;         /* The number of entries in the map   */
   
   /* Private method prototypes */
+  
      Cell* findCell(int bucket, std::string key);
   
   /* Make copying illegal */
+  
      StringMap(const StringMap & src) { }
      StringMap & operator=(const StringMap & src) { return *this; }
-  
   ```
   
 + The `stringmap.cpp` Implementation:
@@ -254,8 +291,13 @@ Here is part of the entire `StringMap`:
   #include "stringmap.h"
   using namespace std;
   
+  /*
+   * Implementation notes: StringMap constructor and destructor
+   * ----------------------------------------------------------
+   * The constructor allocates the array of buckets and initializes each
+   * bucket to the empty list.  The destructor frees the allocated cells.
+   */
   
-  /* Constructor and Destructor */
   StringMap::StringMap() {
      nBuckets = INITIAL_BUCKET_COUNT;
      buckets = new Cell*[nBuckets];
@@ -276,13 +318,27 @@ Here is part of the entire `StringMap`:
      delete [] buckets;
   }
   
-  /* Implementation: get */
+  /*
+   * Implementation notes: get
+   * -------------------------
+   * This method calls findCell to search the linked list for the matching
+   * key.  If no key is found, get returns the empty string.
+   */
+  
   string StringMap::get(const string & key) const {
      Cell *cp = findCell(hashCode(key) % nBuckets, key);
      return (cp == NULL) ? "" : cp->value;
   }
   
-  /* Implementation: put */
+  /*
+   * Implementation notes: put
+   * -------------------------
+   * The put method calls findCell to search the linked list for the
+   * matching key.  If a cell already exists, put simply resets the
+   * value field.  If no matching key is found, put adds a new cell
+   * to the beginning of the list for that chain.
+   */
+  
   void StringMap::put(const string & key, const string & value) {
      int bucket = hashCode(key) % nBuckets;
      Cell *cp = findCell(bucket, key);
@@ -295,7 +351,16 @@ Here is part of the entire `StringMap`:
      cp->value = value;
   }
   
-  /* Private Implementation: findCell */
+  /*
+   * Private method: findCell
+   * Usage: Cell *cp = findCell(bucket, key);
+   * ----------------------------------------
+   * Finds a cell in the chain for the specified bucket that matches key.
+   * If a match is found, the return value is a pointer to the cell
+   * containing the matching key.  If no match is found, findCell
+   * returns NULL.
+   */
+  
   StringMap::Cell *StringMap::findCell(int bucket, const string & key) const {
      Cell *cp = buckets[bucket];
      while (cp != NULL && key != cp->key) {
