@@ -1,5 +1,7 @@
 # 18. Inheritance
 
+*Last Update: 23-11-29*
+
 ## 18.1 Simple Inheritance
 
 ### 18.1.1 Inheritance Strategies

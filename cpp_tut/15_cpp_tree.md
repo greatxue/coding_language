@@ -1,5 +1,7 @@
 # 15. Trees
 
+*Last Update: 23-11-27*
+
 ## 15.1 Motivation
 
 Despite its extraordinary $O(1)$ efficiency, *hashing* is not always the best strategy for implementing maps:
@@ -129,11 +131,11 @@ The `BSTNode` structure must be expanded to include a `value` field, and the cod
 
 The order in which keys are processed depends on when you process the current node with respect to the recursive calls:
 
-![15-3](pictures/15-3.png)
+![image-20231129162341114](pictures/15-5.png)
 
 Here are traversal methods that reach the nodes in the same order known as ***Depth-First Traversal (DFT)***:
 
-+ If you process the current node before either recursive call, the result is a ***preorder traversal***.
++ If you process the current node before either recursive call, the result is a ***pre-order traversal***.
 
   ```cpp
   void preorderTraversal(Node *t) {
@@ -154,7 +156,7 @@ Here are traversal methods that reach the nodes in the same order known as ***De
   Happy
   Sneezy
 
-+ If you process the current node after the recursive call on the left subtree but before the recursive call on the right subtree, the result is an ***inorder traversal***, which often appears in a good order.
++ If you process the current node after the recursive call on the left subtree but before the recursive call on the right subtree, the result is an ***in-order traversal***, which often appears in a good order.
 
   ```cpp
   void inorderTraversal(Node *t) {
@@ -178,7 +180,7 @@ Here are traversal methods that reach the nodes in the same order known as ***De
   Sneezy
   ```
 
-+ If you process the current node after completing both recursive calls, the result is a ***postorder** **traversal***. Postorder traversals are particularly useful if you are trying to **free all the nodes** in a tree.
++ If you process the current node after completing both recursive calls, the result is a ***post-order** **traversal***. Postorder traversals are particularly useful if you are trying to **free all the nodes** in a tree.
 
   ```cpp
   void postorderTraversal(Node *t) {
