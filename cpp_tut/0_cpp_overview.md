@@ -1,5 +1,7 @@
 # 0. Overview
 
+> Statements, Catalogue, Useful Materials, Notation, Acknowledgements, Author & License
+
 *Last Update: 23-10-16*
 
 ## 0.1 Statements
@@ -12,17 +14,27 @@ At the end of the note, I will also recommend practice projects with high qualit
 
 ## 0.2 Catalogue 
 
+1. Introduction to C++
+2. Functions & Libraries I
+3. String
+4. Stream
+5. Collection
+6. Class
+7. Functions & Libraries II
+8. Pointers & Arrays
+9. Dynamic Memory Management
+10. Recursion
+11. Algorithm
+12. Efficiency
+13. Linear Structure
+14. Map
+15. Tree
+16. Set
+17. Graph
+18. Inheritance
+19. Iterator and Functional Programming
 
-
-## 0.3 More to explore
-
-
-
-## 0.4 Practice Projects
-
-
-
-## 0.4 Useful Materials
+## 0.3 Useful Materials
 
 Here are some materials I find useful during my study:
 
@@ -36,7 +48,7 @@ Here are some materials I find useful during my study:
 
 * Official C/C++ reference: Accessed [here](https://en.cppreference.com/w/).
 
-## 0.5 Notation
+## 0.4 Notation
 
 Here are notations and symbols with specific meanings:
 
@@ -46,13 +58,13 @@ Here are notations and symbols with specific meanings:
 + [Hyperlink](https://cplusplus.com/): Directs to external resources or references.
 + Bug icon: Indicates the presence of a bug.
 
-## 0.6 Acknowledgements
+## 0.5 Acknowledgements
 
 This note is heavily reliant on [Prof. HUANG, Rui](https://sse.cuhk.edu.cn/en/faculty/huangrui)'s course: **CSC3002 (C/C++ Programming)**, offered at The Chinese University of Hong Kong (Shenzhen). In the process of writing, I have also referred to materials like Stanford CS106L, official C++ documents and other references.
 
 The materials have been kindly reviewed by my good friends like **DONG, Haoze** and **JIN, Zhengda**. Highly appreciate it for their time and devotions.
 
-## 0.7 Author & License
+## 0.6 Author & License
 
 Edited by [Kevin (Zhongkai) Xue](https://greatxue.cn/). For correspondence, kindly reach out at [*greatxue33@gmail.com*](mailto:greatxue33@gmail.com).
 

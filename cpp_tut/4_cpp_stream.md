@@ -1,10 +1,12 @@
 # 4. Streams
 
+> Introduction, Input and Output, File Streams, String Streams
+
 *Last Update: 23-09-20*
 
 ## 4.1 Introduction
 
-Actually, there had been multiple functions for streams in `<cstdio>` from C standard library, like `printf` with *specifiers*, which is out-of-scope of the text. 
+Actually, there had been multiple functions for streams in `<cstdio>` from C standard library, like `printf` with *specifiers*, which is out-of-scope of the text.  
 
 ```cpp
 #include <cstdio>
@@ -213,8 +215,8 @@ Also, the effect of `getline` is to store the next line of data from the file in
 + To work with C++ String, the *free function* `std::getline` is defined in `<string>` and works as
 
   ```cpp
-  istream & getline(istream & is, string & str, char delim);
   istream & getline(istream & is, string & str);
+  istream & getline(istream & is, string & str, char delim); // the boundary between separate
   ```
 
 + To work with C String, another **overloaded version** is the one from `istream` class, which is `std::stream::getline`
@@ -224,7 +226,7 @@ Also, the effect of `getline` is to store the next line of data from the file in
   istream & getline(char * s, streamsize n, char delim);
   ```
 
-The `istream` is in the parameter list of the first version but not in the second one.
+The `istream` is in the parameter list of the first version, but not in the second one.
 
 ## 4.4 String Streams
 

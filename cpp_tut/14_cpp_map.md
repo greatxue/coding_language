@@ -1,4 +1,4 @@
-# 14. Maps
+# 14. Map
 
 *Last Update: 23-11-22*
 

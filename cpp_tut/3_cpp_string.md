@@ -1,10 +1,12 @@
 # 3. Strings
 
+> Introduction, Characters, Strings
+
 *Last Update: 23-09-18*
 
 ## 3.1 Introduction
 
-Though all our codes are executed in C++ compiler, some of them are in *C-style*. Different strategies used by C and C++ on strings show the differences between *programming paradigms*.
+Though all our codes are executed in C++ compiler, some of them are in C-style. Different strategies used by C and C++ on strings show the differences in *programming paradigms*.
 
 Conceptually, a ***string*** is simply a sequence of ***characters***, which is precisely how strings are implemented in C. As a newly designed language, C++ supports a higher-level view of strings as ***objects***. Both of them are useful and effctive.
 
@@ -12,7 +14,7 @@ Conceptually, a ***string*** is simply a sequence of ***characters***, which is 
 
 Both C and C++ use ***ASCII*** as their encoding for a ***character*** representation. The data type `char` therefore fits in a single eight-bit byte. 
 
-ASCII supports only $$2^8=256$$ characters, thus the C++ libraries define the wide-character type `wchar_t`. In most modern language, it has been superseded by ***Unicode***.
+ASCII supports only $$2^8=256$$ characters, thus the C++ libraries define the wide-character type `wchar_t`. In most modern language, it has been superseded by *Unicode*.
 
 You could specify a character with the ASCII code:
 
@@ -22,7 +24,7 @@ char ch = 'a';
 char ch = 97;   // ASCII for the character
 ```
 
-For *special control characters*, we have
+For special control characters, we have
 
 ```cpp
 char ch = 9;    // '\t' (Tab)
@@ -78,13 +80,13 @@ char cstr[] = { 'h', 'e', 'l', 'l', 'o', '\0' };
 
 After definition, we could refer to `cstr` as a ***C-String array***.
 
-If you put double quotation marks `" ` around a sequence of characters, you get what is called a ***C-string literal*** (`const char[]` type)*.* The characters are stored in an *array* of bytes, terminated by a `null` byte whose ASCII value is 0. The `null` type, however, functions as a signal for end of the string.
+If you put double quotation marks `" ` around a sequence of characters, you get what is called a ***C string literal*** (`const char[]` type)*.* The characters are stored in an *array* of bytes, terminated by a `null` byte whose ASCII value is 0. The `null` type, however, functions as a signal for end of the string.
 
 That's why `'a'` and `''a''` are actually quite different.
 
 ![3-2](pictures/3-2.png)
 
-The reminder is that character positions in a C string are identified by an *index* that begins at **0** and extends up to one less than the length of the string.
+The character positions in a C string are identified by an *index* that begins at **0** and extends up to one less than the length of the string, just like that in Python.
 
 **C String Functions**
 
@@ -114,7 +116,7 @@ The appropriate way to **assign**, or to copy C-string value is like:
 strcpy(cstr, "world");
 ```
 
-Intuitively, it should be illegal to assign in a longer string like `strcpy(cstr, "student");`, though sometimes it works. 
+Though sometimes it works, it should be forbidden to assign in a longer string like `strcpy(cstr, "student");`.
 
 Here is a practical example:
 
@@ -138,7 +140,9 @@ int main() {
 
 For most compilers, the outputs are `hello`, `6`, `5`; `hello world`, `6` and `11  `respectively. 
 
-The 5th answer is `6`, because the function will return once a `\0` is found. Also, for the 4th there is possibility you will see weird output like `"hello weirdthing"` for *memory overwriting*, especially when hardware resource is extremely restricted.
+The size of the array is always fixed, hence `sizeof` will always return the size as `6`; `strlen()` will return once a `\0` is met, thus we have the answer to be `5` and `11`.
+
+Also, there is possibility you will see weird in 4th output like `"hello weirdthing"` for *memory overwriting*, especially when hardware resource is extremely restricted.
 
 **C-String Libraries**
 
@@ -174,7 +178,7 @@ For libraries supporting C String, we have the `<cctype>` interface (from `type.
 
 As introduced initially, older `char` type is retained in C++ by including `<cctype>` and `<cstring>`. As a newly-designed language, C++ supports a high-level view of strings as *objects*, which is provided in the `<string>` library.
 
-Assume `name`, `", "` and `"hello"` are in *C String* forms in the following example. In this way, there are a few you should be aware about concerning ***concentration*** of strings:
+However, there are a few you should be aware about with ***string concentration*** of strings. Assume `name`, `", "` and `"hello"` are in *C String* forms, and we will illustrate that in the following:
 
 + C++ allows *concentration* with the stream. `name` could either be *C++ String object* or *C String array*.
 
@@ -225,7 +229,7 @@ int main() {
 
 Now we continue with *String Methods*. First I need to emphasize that `c_str` methods could be applied to C++ string, with objects automatically converted into the C String literal.
 
-Recall that Python has both `len(str)` and `str.__len__()`. C++ is an *OOP* language, and behaves exactly the same. As `string` is a class, we have coresponding methods like 
+Recall that Python has both `len(str)` and `str.__len__()`. As C++ is also an *OOP* language, it behaves exactly the same. As `string` is a class, we have coresponding methods like 
 
 ```cpp
 int len = str.length();
@@ -324,6 +328,38 @@ At last there is a conclusion for various `#include` syntax.
 | `#include <string>`    | C++ string library                                           |
 | `#include "cstring.h"` | **Incorrect** unless you've defined your own "cstring.h"     |
 | `#include <cstring.h>` | Likely an **error** even if you've defined your own "cstring.h" |
+
+**Conclusion for initializing a String**
+
+Here are multiple ways to initialize a String:
+
++ C String literal Initialization:
+
+  ```cpp
+  char str1[] = "Hello World";
+  char str2[50] = "Hello World"; // large enough
+  ```
+
++ C String Initialization char by char:
+
+  ```cpp
+  char str3[] = {'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd', '\0'};
+  ```
+
++ Pointer to a C String literal:
+
+  ```cpp
+  const char* str4 = "Hello World";
+  ```
+
++ C++ String Initialization:
+
+  ```cpp
+  std::string str5("Hello World");
+  std::string str6({'H', 'e', 'l', 'l', 'o'}); // "Hello"
+  ```
+
+There are still numerous approaches, like using dynamic allocation with `new`, copying from an existing one with `strcpy`, etc.
 
 ## 3.4 OOP as a Programming Paradigm
 

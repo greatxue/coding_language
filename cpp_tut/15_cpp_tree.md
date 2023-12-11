@@ -1,4 +1,4 @@
-# 15. Trees
+# 15. Tree
 
 *Last Update: 23-11-27*
 

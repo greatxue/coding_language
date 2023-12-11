@@ -1,6 +1,9 @@
 # 1. Introduction to C++
 
+> History of C++, Comparisons, Structure and Syntaxes
+
 *Last Update: 23-11-15*
+
 
 ## 1.1 History of C++
 
@@ -55,7 +58,9 @@ int main() {
 }
 ```
 
-### 1.3.1 The Structure
+### 1.3.1 The Structure of a C++ Program
+
+**Libraries**
 
 ***Libraries*** are collections of previously written tools that perform useful operations.
 
@@ -66,13 +71,35 @@ To instruct the compiler to read the relevant definitions from a header file, we
 #include "mylib.h"
 ```
 
-To ensure that the names defined in different parts do not interfere with one another, C++ segments code into structures called ***namespaces***, each of which keeps track of its own set of names, while the **Standard C++ Libraries** use a namespace called `std`.
+**Namespaces**
 
-Instead of mentioning the namespace name all the time, we may use syntax as the following:
+To ensure that the names defined in different parts do not interfere with one another, C++ segments code into structures called ***namespaces***, each of which keeps track of its own set of names. The **Standard C++ Libraries** use a namespace called `std`.
+
+Instead of mentioning the namespace name all the time, we may use `using`:
 
 ```cpp
 using namespace x;
 using namespace x::name1; // explicitly
+```
+
+To declare a namespace, simply use
+
+```cpp
+namespace math {
+    int value;
+    int add_one() {
+        return value + 1;
+    }
+}
+```
+
+To use instances inside the namespace, we should apply the `::` operator:
+
+```cpp
+int main() {
+    math::value = 5;
+    math::add_one();
+}
 ```
 
 **Preprocessor directives**
@@ -198,7 +225,7 @@ The most common ***operators*** in C++ are the ones that specify arithmetic comp
 
 + The `-` operator can also appear as a *unary operator*, as in the expression `-x`, which denotes the negative of `x`.
 
-If an expression contains more than one operator, C++ uses ***precedence rules*** to determine the order of evaluation. Anyway, ***parentheses*** may be used to change the order of operations. 
+If an expression contains more than one operator, C++ uses ***precedence rules*** to determine the order of evaluation. Anyway, parentheses `()` may be used to change the order of operations. 
 
 ![1-5](pictures/1-5.png)
 
@@ -252,11 +279,11 @@ x = x + 1;
 
 The operators used with the `boolean` data type fall into two categories: ***relational operators*** and ***logical operators***.
 
-+ Relational operators compare values and produce a `boolean` result:
++ ***Relational operators*** compare values and produce a `boolean` result:
 
   ![1-6](pictures/1-6.png)
 
-+ Also three logical operators:
++ Also three ***logical operators***:
 
   ![1-7](pictures/1-7.png)
 
@@ -381,6 +408,97 @@ If `break` is not included in one case, all statements **following the case** ar
   for (int x = 1; x <= 1024; x *= 2)
   ```
 
+* The `do-while` statement allows us to execute first then checks the condition:
+
+  ```cpp
+  do {
+      statements to be repeated
+  } while (condition);
+  ```
+
+**Keywords for loops**
+
+- **`break` **: The `break` keyword is used to immediately terminate the execution of  a `for`/`while`/`do-while` loop, exiting the currently innermost loop that it is in.
+- **`continue`**: The `continue` keyword is used to skip the remaining part of the current loop iteration and proceed to the next iteration. It only affects the current iteration of the loop, not the entire loop.
+
+### 1.3.5 Preprocessing Directives
+
+Here are preprocessing directives commonly used:
+
++ **`include`**: This directive is used to include the contents of another file into the current file. 
+
+  ```cpp
+  #include <stdio.h>
+  ```
+
++ **`define`**, **`undef`**: Defines or undefines a macro, about instructing the compiler to replace subsequent instances of an identifier with a specific value or code snippet. 
+
+   ```cpp 
+   #define PI 3.14159
+   ```
+
++ **`if/elif/else`**: Used for conditional compilation. It allows code blocks to be compiled only if a certain condition (usually a macro definition) is true.
+
+  ```cpp
+  #if defined(DEBUG)
+  ```
+
++ **`ifdef/ifndef`**: Stands for "if defined/if not defined" and compiles the subsequent code only if the specified macro is defined. 
+
+  ```cpp
+  #ifndef PI
+  ```
+
++ **`endif`**: Ends a conditional block started with `if`, `ifdef`, or `ifndef`.
+
++ **`line`**: Changes the compiler's current line number and filename, useful for error debugging information.
+
++ **`error`**: Generates an error during compilation, and the compilation will stop here.
+
++ **`pragma`**: Additional compiler instructions, the interpretation of which depends on the specific compiler. 
+
+  ```cpp
+  #pragma once
+  ```
+
+### 1.3.6 Error Handling
+
+```cpp
+#include <iostream>
+#include <stdexcept> // Include the standard exceptions library
+
+int divide(int numerator, int denominator) {
+    if (denominator == 0) {
+        throw std::invalid_argument("Denominator cannot be zero."); // Throw an exception
+    }
+    return numerator / denominator;
+}
+
+int main() {
+    int a = 10, b = 0, result;
+
+    try {
+        result = divide(a, b);
+        std::cout << "Result is " << result << std::endl;
+    } catch (const std::invalid_argument& e) {
+        std::cerr << "Caught exception: " << e.what() << std::endl;
+        // Handle the exception, such as attempting a recovery or logging the error
+    } catch (...) {
+        // Catch-all handler for any other types of exceptions
+        std::cerr << "An unknown error occurred!" << std::endl;
+    }
+
+    std::cout << "Program continues after exception handling." << std::endl;
+
+    return 0;
+}
+```
+
+In the `main` function, the `divide` function is called within a `try` block. The `try` block is used to wrap code that might potentially throw an exception.
+
+Immediately following the `try` block are two `catch` blocks: The first  is designed to catch exceptions of the type `std::invalid_argument`,  and the second is a **catch-all handler** (`catch (...)`) for that wasn't caught by the previous `catch` block. 
+
+The `try`-`catch` pair is a typical way to handle errors in C++.
 
 ---
 

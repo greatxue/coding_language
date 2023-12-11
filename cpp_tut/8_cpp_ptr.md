@@ -1,5 +1,7 @@
 # 8. Pointers & Arrays
 
+> The structure of memory, Pointers, Arrays
+
 *Last Update: 23-10-16*
 
 ## 8.1 The structure of memory
@@ -49,7 +51,7 @@ In classical architectures, the stack and heap grow toward each other to *maximi
 
 **Sizes of the Fundamental Types**
 
-The memory space required to represent a value depends on the *type* of value. Although there remains some flexibility                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         , the following sizes are typical:
+The memory space required to represent a value depends on the *type* of value. Although there remains some flexibility, the following sizes are typical:
 
 |        Size         |    Datatypes     |
 | :-----------------: | :--------------: |
@@ -83,13 +85,37 @@ A variable in C++ could be envisioned as a box capable of storing a value. Each 
 
 The *address* and *type* of a named variable are fixed. The value changes whenever you *assign* a new value to the variable.
 
-Any expression that refers to an internal memory location capable of storing data is called an ***lvalue***, which can appear on the left side of an assignment statement in C++:
+**Lvalue and Rvalue**
+
+A ***lvalue*** refers to any object of function that has an internal memory location capable of storing data, which can appear on the left side of an assignment statement in C++:
 
 + Every ***lvalue*** is stored somewhere in memory and therefore has an address.
 
 + Once it has been declared, the *address* of an lvalue never changes, even though the contents of those memory locations may change.
 
 + The address of an lvalue is **a value of a pointer variable**, which can be stored in memory and manipulated as data.
+
++ Typical examples: variables, element of an array, pointer for dereference, function calls that returns a an rvalue reference.
+
+An ***rvalue*** refers to a temporary object or literal that does not have a persistent storage address, which cannot appear on the left side:
+
++ It typically represents **the value of data**, rather than the identity of data.
++ It can be destroyed or moved after its use. 
++ Typical examples: literals (such as 5, 'a'), results of arithmetic expressions, function calls that return an rvalue reference.
+
+**Left Value Reference** (`&`): 
+
+```cpp
+int& ref = var;
+```
+
+**Right Value Reference** (`&&`): 
+
+(Since C++11) It can only be bound to rvalues that are about to be destroyed, and allows the resources of an object (such as memory) to be "moved" rather than copied. 
+
+```cpp
+int&& rref = 5;
+```
 
 ## 8.2 Pointers
 
@@ -116,20 +142,22 @@ double * px;		// a pointer to a double value
 Point * pptr;		// a pointer to a Point structure
 ```
 
+We also have `void*` which could **point to any type**. Since `void*` does not know the type and size of the data it points to, it cannot be directly dereferenced, but **first cast to specific types of pointers and then deferenced**.
+
 **Pointer Operators**
 
 C++ includes two built-in operators for working with pointers:
 
-+ The address-of operator `&` is written before an *lvalue* and returns the *address* of that variable.
++ The address-of operator `&` is written before an *lvalue*, and returns the *address* of that variable.
 
 + The value-pointed-to operator `*` is written before a pointer expression and returns **the actual value** of a variable to which the pointer points, called ***dereferencing***.
 
 Here is an example:
 
-We Define a pointer variable `px` pointing to a double data, with the address of `x` assigned to `px`; also a double variable `y` getting value from pointer `px`, which is actually the value of `x`.
+We declare a pointer variable `px` pointing to a double data, with the address of `x` assigned to `px`; also a double variable `y` getting value from pointer `px`, which is actually the value of `x`.
 ```cpp
 double x = 2.5; 	
-double * px = &x;	
+double * px = & x;	
 double y = * px;
 ```
 
@@ -143,27 +171,30 @@ Here is a detailed example illustrating **why pointers are dangerous**:
 #include <iostream>
 using namespace std;
 
-int main() {
 /* Here is a diagram:
  *   pi -> i = 1
  *   pd -> d = 2.0
  */
+
+int main() {
     int i = 1;
-    int * pi = &i;
+    int * pi = & i;
     double d = 2.0;
-    double * pd = &d;
-    cout << * pi << endl; // Output: 1
-    cout << * pd << endl; // Output: 2, "default precision" of cout
+    double * pd = & d;
+    cout << * pi << endl;   // Output: 1
+    cout << * pd << endl;   // Output: 2, "default precision" of cout
+   
     int * pi1 = (int *) pd;		
-    cout << * pi1 << endl;   // Output: 0, ERR
+    cout << * pi1 << endl;  // Output: 0, ERR
+    
     double * pd1 = (double *) pi;
-    cout << * pd1 << endl;   // Output: 1.05845e+230, ERR
+    cout << * pd1 << endl;  // Output: 1.05845e+230, ERR
 }
 ```
 
 ### 8.2.1 Call by Pointers
 
-Recall *Call by Reference*, and in this `swap` example we could compare it with ***call by Pointers***:
+In this `swap` example, we could compare *call by reference* with ***call by pointers***:
 
 + Call by Reference: `swap(n1, n2)`
 
@@ -214,7 +245,7 @@ Given a pointer to an object, we need to *deference* the pointers before selecti
 pp.getX(); // ERR
 ```
 
-As `.` takes precedence over `*`, you could not use equivalent syntaxes:
+As `.` takes precedence over `*`, you could not use such **equivalent syntaxes**:
 
 ```cpp
 * pp.get();  // ERR
@@ -224,9 +255,10 @@ As `.` takes precedence over `*`, you could not use equivalent syntaxes:
 These are legal calls of methods:
 
 ```cpp
-pt.getX();
+pt.getX();  // When pt is an object, gently use .
+
 (* pp).getX();
-pp->getX();
+pp->getX(); // when pp is a pointer, gently use ->
 ```
 
 **The Keyword `this`**
@@ -335,6 +367,12 @@ int a[] = {0, 1, 2, 3};
 int * p = a; // &a[0]
 ```
 
+When you write down the array name `a`, it is converted (or "decays") into a pointer to the first element of the array. Therefore, the expressions `&a[0]` and `a` are **the same in value**, both giving the address of the first element of the array.
+
+In C++, this type exists a "pointer to an array of N elements" like `int (*p)[N]`, where `N` is the number of elements in the array. Hence when you take the address of an array like `&a`, what you get is **a pointer to the entire array**.
+
+Here are further conclusions:
+
 |         |                  a                   |           &a            |          &a[0]          |            p            |
 | :-----: | :----------------------------------: | :---------------------: | :---------------------: | :---------------------: |
 |  Type   | array or used as pointer to an `int` |   address of an array   |   address of an `int`   |   pointer to an `int`   |
@@ -355,7 +393,13 @@ C++ supports the old *C Strings*, which is a pointer to a character, which is th
 char* msg = "hello, world";
 ```
 
-Here are two implementations of the C String Functions:
+Understanding the `p++` idiom is important primarily because the same syntax comes up in ***STL iterators***, which are used everywhere in professional code:
+
++ The pointer expression `* p++` is equivalent to `*(p++)`, because ***unary operators*** in C++ are evaluated in right-to-left order.
++ The `*p++` idiom means dereference `p` and return as an lvalue the object to which it currently points, and increment the value of `p` so that the new `p` points to the next element in the array.
++ Be careful with **buffer overflow errors**.
+
+Here are two examples of this idiom:
 
 + C Library function `strlen(cstr)` that returns the length of C-String `cstr`;
 
@@ -390,11 +434,11 @@ Here are two implementations of the C String Functions:
      while (*dst++ = *src++);
   }
   ```
-  Understanding the `p++` idiom is important primarily because the same syntax comes up in ***STL iterators***, which are used everywhere in professional code. Here are brief explanations:
+  + `*src++` **retrieves the current character** pointed to by `src`, and then the `src` pointer **is incremented to move to the next character** in the string, which is the effect of the post-increment operator.
+  + `*dst++ = *src++` assigns the character from `src` to the location pointed to by `dst`, and then the `dst` pointer is also incremented to point to the next location to receive the copy of the next character.
+  + This assignment operation is also the condition for the `while` loop. In C++, the **value** of an assignment expression is that **on the right-hand side**. Therefore, the loop will continue to execute until `*src` is the null character `\0` (ASCII value is 0), which is  `false` in a boolean context marking the loop stop.
   
-  + The pointer expression `* p++` is equivalent to `*(p++)`, because ***unary operators*** in C++ are evaluated in right-to-left order.
-  + The `*p++` idiom means dereference `p` and return as an lvalue the object to which it currently points, and increment the value of `p` so that the new `p` points to the next element in the array.
-  + Be careful with ***buffer overflow errors***.
+  Note that this function does not check the size of the destination array `dst`, so it can lead to **buffer overflow** if `dst` is not large enough to store `src`.
 
 ---
 

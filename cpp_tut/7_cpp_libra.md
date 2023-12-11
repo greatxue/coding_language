@@ -1,4 +1,6 @@
-# Functions & Libraries II
+#   7. Functions & Libraries II
+
+> LIbraries, Implementing Libraries, Case: Designing a Random Number Library
 
 *Last Update: 23-11-18*
 
@@ -76,7 +78,7 @@ void error(std::string msg);
 #endif
 ```
 
-Here are some reminders in the interface:
+Here are some reminders of the *interface*:
 
 + Interfaces require standardized *preprocessor directive definitions* called ***boilerplate***, to ensure that the interface file is read only once during a compilation.
 
@@ -281,9 +283,9 @@ Direction operator++(Direction & dir, int) {
 }
 ```
 
-In C++, constants are by default *static* in the scope of a file, which means they are only accessible within the file they are defined in (also known as translation unit scope). 
+In C++, *constants* are by default *static* in the scope of a file, which means they are only accessible within the file they are defined in (also known as translation unit scope). 
 
-If you want to use a constant defined in one file in other files as well, you need to declare it with the `extern` keyword.
+If you want to use a constant (defined in one file) in other files as well, you need to declare it with the `extern` keyword.
 
 ```cpp
 // in constants.h
@@ -329,7 +331,7 @@ In case the size of the library is too large, we still have ***dynamic libraries
 | FreeBSD          | .so             | .a             | lib            |
 | Linux            | .so             | .a             | lib            |
 
-## 3. Designing a Random Number Library
+## 3. Case: Designing a Random Number Library
 
 Given that true nondeterminism is so difficult to achieve in a computer, libraries such as the `random.h` interface described in this chapter must instead *simulate* randomness by carrying out a deterministic process that satisfies the following criteria, which is said to be **pseudorandom**:
 

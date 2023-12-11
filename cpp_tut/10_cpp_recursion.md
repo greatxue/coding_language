@@ -146,7 +146,7 @@ int binarySearch(string key, Vector<string> & vec, int p1, int p2) {
 
 ### 10.3.1 The Tower of Hanoi
 
-You should transfer the disks from one needle to another according to the fixed and immutable laws, which require that only one disk at a time and there is no smaller disk below it.
+You should transfer the disks from one needle to another according to the fixed and immutable laws, which require that **only one disk at a time** and there is **no smaller disk below it**.
 
 ![10-2](pictures/10-2.png)
 
@@ -161,7 +161,7 @@ Here are core elements within the problem:
 
 The problem could be solved by dividing it into these three steps:
 
-+ Move the entire stack consisting of the top $(n-1)$ disks from spire A to spire C with the help of B.
++ Move the entire stack consisting of the top $(n-1)$ disks from spire A to spire C, with the help of B.
 + Move the bottom disk from spire A to spire B.
 + Move the stack of $(n-1)$ disks from spire C to spire B with the help of A.
 
@@ -188,7 +188,7 @@ int main() {
 
 **Generating Subsets**
 
-This problem is difficult to solve without using recursion, as the strategy requires exploring a solution space that doubles in size each time.
+This problem is difficult to solve without using recursion, as the strategy requires exploring a solution space that **doubles in size** each time.
 
 The recursive solution to this problem tries to find a solution that *includes* a particular element of the set and then tries to find a solution that *excludes* that element. This strategy is often called the ***inclusion-exclusion pattern***.
 
@@ -274,13 +274,7 @@ Set<string> generatePermutations(string str) {
 
 ### 10.3.3 Graphical Recursion
 
-**Mondrian Paintings**
-
-In graphical recursion, sometimes there seems to be no simple cases to be solved. Instead, there would be some stopping criteria to terminate the recursion.
-
-**Fractal Coastline**
-
-It is an application of recursion in graphics like **fractals**, and serves as an exercise. 
+In graphical recursion, sometimes there seems to be no simple cases to be solved. Instead, there would be some stopping criteria to terminate the recursion. Examples could rage from **Mondrian Paintings** to **Fractal Coastline (fractals)**.
 
 ---
 

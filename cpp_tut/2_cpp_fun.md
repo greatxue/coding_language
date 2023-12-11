@@ -1,5 +1,8 @@
 # 2. Functions & Libraries I
 
+
+> Functions in Programming, Functions in C++, Machanics of Calling a Function
+
 *Last update: 23-09-19*
 
 ## 2.1 Functions in Programming
@@ -225,6 +228,18 @@ The `&` could actually be handy if you want to "return" multiple values.
 In fact, a *reference* is a simple reference datatype that is **less powerful but safer** compared to ***pointer*** inherited from C. It can be considered as a new name for an existing object, but **NOT** a copy of the object it refers to.
 
 We will delay the discussion of references until when we have a deeper understanding of pointers. 
+
+**Inline Functions**
+
+```cpp
+inline int max(int x, int y) {
+    return (x > y) ? x : y;
+}
+```
+
+***Inline functions*** in C++ are a special kind of function to enhance the efficiency of the program. During compilation, the compiler **inserts the complete code** of the function body at every place the function is called, instead of making a traditional function call, which is particularly useful for small functions.
+
+Inlining is a suggestion, not a command; the compiler can choose to ignore it.
 
 ---
 

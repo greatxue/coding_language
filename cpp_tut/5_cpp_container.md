@@ -1,5 +1,7 @@
 # 5. Collections
 
+> The collection classes, Classes for clients, Iterating over a collection
+
 *Last Update: 23-11-17*
 
 ## 5.1 The collection classes
@@ -277,7 +279,7 @@ For the iterator order, you could kindly refer to the documentation. In Stanford
 - Iterators for the `Set` class deliver the elements in the order imposed by the standard comparison function for the value type; the `HashSet` class is unordered.
 - Iterators for the `Lexicon` class always deliver words in alphabetical order.
 
-We will discuss more about *STL* in the appendix.
+We will discuss more about *STL* later.
 
 ---
 

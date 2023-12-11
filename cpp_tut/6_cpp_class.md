@@ -1,4 +1,6 @@
-# 6. OOP I: Classes
+# 6. Class
+
+> Data Types in C++, Classes, Case: Rational Numbers
 
 *Last Update: 23-11-18*
 
@@ -32,7 +34,7 @@ An enumerated type can be roughly considered as a subset of `int` with special n
 
 ### 6.1.2 Structures
 
-There are compound values in which the individual components are specified by name, called ***structures***. It creates a *type*, not a *variable*.
+There are compound values in which the individual components are specified by name, called ***structures***. It typically creates a *type*, not a *variable*.
 
 ```cpp
 struct Point {
@@ -48,6 +50,26 @@ Point pt;
 ```
 
 Given the variable `pt`, you can select the individual *fields* or *members* using the dot operator `.` as in `pt.x` and `pt.y`.
+
+### 6.1.3 Casting Operators
+
+In C++, there are four main types of casting operators, which are as follows:
+
++ **`static_cast`** is used for **non-polymorphic** type conversions. It can be used to convert between related types such as from **integers to floating-point types** or **between pointers and their underlying types**. `static_cast` is performed at compile time and does not include runtime type checking.
+
+  ```cpp
+  int x = static_cast<int>(3.14);
+  ```
+
++ **`dynamic_cast`** is primarily used for dealing with **polymorphic** types. It checks type safety at runtime, especially when casting down a class hierarchy. If the conversion fails, `dynamic_cast` returns a null pointer (for pointer types) or throws an exception (for reference types).
+
+  ```cpp
+  Derived* d = dynamic_cast<Derived*>(basePtr);
+  ```
+
++ **`const_cast`**  and **`reinterpret_cast`**: Risky most of the time.
+
+In addition to these explicit type conversions, there is also an ***implicit type conversion***, which is automatically performed by the C++ compiler, such as converting from `int` to `float`.
 
 ## 6.2 Classes
 
@@ -99,7 +121,7 @@ Class definitions typically include one or more ***constructors***, which are us
 
 + The prototype for a constructor has **no return type** and always has **the same name** as the class. 
 
-+ It may or may not take arguments, with the one taking none a **default** constructor.
++ It may or may not take arguments, with the one taking none as a **default** constructor.
 + A single class can have multiple constructors, as a form of *overloading*.
 
 **Initializer List**
@@ -135,65 +157,124 @@ Here is a complete implementation of the `point` class:
 + The `point.h` Interface
 
   ```cpp
+  /*
+   * File: point.h
+   * -------------
+   * This interface exports the Point class, which represents a point
+   * on a two-dimensional integer grid.
+   */
+  
   #ifndef _point_h
   #define _point_h
   
   #include <string>
+  
   class Point {
+  
   public:
-  /* Constructor to create a Point object. */
-    	Point();
-      Point(int xc, int yc);
-  /* Returns the x and y coordinates of the point. */
-      int getX();
-      int getY();
-  /* Returns a string representation of the Point (x, y). */
-      std::string toString();
+    
+  /*
+   * Constructor: Point
+   * Usage: Point origin;
+   *        Point pt(xc, yc);
+   * ------------------------
+   * Creates a Point object.  The default constructor sets the
+   * coordinates to 0; the second form sets the coordinates to
+   * xc and yc.
+   */
+  
+     Point();
+     Point(int xc, int yc);
+  
+  /*
+   * Methods: getX, getY
+   * Usage: int x = pt.getX();
+   *        int y = pt.getY();
+   * -------------------------
+   * These methods returns the x and y coordinates of the point.
+   */
+  
+     int getX();
+     int getY();
+  
+  /*
+   * Method: toString
+   * Usage: string str = pt.toString();
+   * ----------------------------------
+   * Returns a string representation of the Point in the form "(x,y)".
+   * E.g., cout << "pt = " << pt.toString() << endl;
+   */
+  
+     std::string toString();
+  
   private:
-      int x; // x-coordinate
-      int y; // y-coordinate
+  
+     int x;                    /* The x-coordinate */
+     int y;                    /* The y-coordinate */
+  
   };
   
-  /* Overloads the << operator to display Point. */
-  std::ostream & operator<<(std:ostream & os, Point pt);
+  /*
+   * Operator: <<
+   * Usage: cout << pt;
+   * ------------------
+   * Overloads the << operator so that it is able to display Point
+   * values. E.g., cout << "pt = " << pt << endl;
+   */
+  
+  std::ostream & operator<<(std::ostream & os, Point pt);
   
   #endif
+  
   ```
   
 + The `point.cpp` Class
 
   ```cpp
+  /*
+   * File: point.cpp
+   * ---------------
+   * This file implements the point.h interface.
+   */
+  
   #include <string>
   #include "point.h"
   #include "strlib.h"
+  using namespace std;
   
   /* Constructors */
+  
   Point::Point() {
-      x = 0;
-      y = 0;
+     x = 0;
+     y = 0;
   }
-  Point::Point(int x, int y) {
-      x = xc;
-      y = yc;
+  
+  Point::Point(int xc, int yc) {
+     x = xc;
+     y = yc;
   }
   
   /* Getters */
+  
   int Point::getX() {
-      return x;
-  }
-  int Point::getY() {
-      return y;
+     return x;
   }
   
+  int Point::getY() {
+     return y;
+  }
+  
+  /* The toString method and the << operator */
+  
   string Point::toString() {
-      return "(" + std::integerToString(x) + "," + std::integerToString(y) + ")"
+     return "(" + integerToString(x) + "," + integerToString(y) + ")";
   }
   
   ostream & operator<<(ostream & os, Point pt) {
-      return os << pt.toString();
+     return os << pt.toString();
   }
   ```
-
+  
   The Constructors can be simplified to 
 
   ```cpp
@@ -202,13 +283,13 @@ Here is a complete implementation of the `point` class:
     y = yc;
   }
   ```
-
+  
   or the initializer list:
-
+  
   ```cpp
   Point(int xc = 0, int yc = 0): x(xc), y(yc) {}
   ```
-
+  
   However, this approach does not keep the user from calling it with **one** argument.
 
 ### 6.2.2 Overloading Operators
@@ -512,7 +593,13 @@ We will show source codes for reference:
   ```
   
 
-**Either** of them will be more suitable under some circumstances.
+Either of the form, either *class methods* or *free functions*, will be more suitable under some circumstances.
+
+Also some may feel confused  `os` is returned as the reference when *overloading* of the operator `<<`, but it allows for **chaining multiple output operations**. 
+
+```cpp
+std::cout << rat1 << " and " << rat2 << std::endl;
+```
 
 ---
 
