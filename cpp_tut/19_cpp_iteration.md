@@ -81,7 +81,7 @@ int main() {
 
 **The C++ Iterator Hierarchy**
 
-![image-20231130003812942](../../../Library/Application Support/typora-user-images/image-20231130003812942.png)
+<img src="../../../Library/Application Support/typora-user-images/image-20231130003812942.png" alt="image-20231130003812942" style="zoom:50%;" />
 
 **Implementation of iterators**
 
@@ -365,7 +365,7 @@ In this example, the function `main` makes two calls to `plot`:
 
 The `plot` function can call this function supplied by the caller. Such functions are known as ***callback functions***
 
-![image-20231130013858938](../../../Library/Application Support/typora-user-images/image-20231130013858938.png)
+<img src="../../../Library/Application Support/typora-user-images/image-20231130013858938.png" alt="image-20231130013858938" style="zoom: 50%;" />
 
 And the corresponding prototype:
 

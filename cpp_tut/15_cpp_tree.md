@@ -28,7 +28,7 @@ struct TreeNode {
 
 The tree that supports the implementation of the `Map` class is called a ***Binary Search Tree (BST)***.  The idea of ***Binary Search Tree*** is to combine the linked list data structure (for **easier insertion/deletion**) and the binary search algorithm (for **faster search**).
 
-![image-20231123164813489](pictures/15-1.png)
+<img src="pictures/15-1.png" alt="image-20231123164813489" style="zoom: 50%;" />
 
 Each node in a *BST* has exactly two subtrees: a **left** **subtree** that contains all the nodes that come before the current node and a **right** **subtree** after it. Either or both of them may be `NULL`.
 
@@ -113,7 +113,7 @@ void insertNode(Node* & t, string key) {
 
 If the elements enter **in order**, the tree would end up as a single linked list, with the algorithm running $O(N)$ instead of $O(logN)$ time.
 
-![image-20231123190717491](pictures/15-2.png)
+<img src="pictures/15-2.png" alt="image-20231123190717491" style="zoom: 50%;" />
 
 A binary search tree is **balanced** if **the height of its left and right subtrees differ by at most one** and if both of those subtrees are themselves balanced.
 
@@ -242,7 +242,7 @@ And ***heapsort*** is a **comparison-based** sorting algorithm utilizing the *he
 + Although slower in practice than a well-implemented *quicksort*, it has the advantage of **a more favorable worst-case** $O(NlogN)$ runtime.
 + Heapsort is an **in-place** algorithm, but it is **not** a **stable** sort.
 
-![image-20231128084154978](../../../Library/Application Support/typora-user-images/image-20231128084154978.png)![15-4](pictures/15-4.png)
+<img src="../../../Library/Application Support/typora-user-images/image-20231128084154978.png" alt="image-20231128084154978" style="zoom: 33%;" />
 
 Here is a brief illustration:
 

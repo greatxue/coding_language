@@ -36,7 +36,7 @@ class StringMap : public Map<string,string> {
 
 Subclasses have access to the `public` and `protected` (but not `private`) members/methods in the superclass:
 
-![image-20231128093714627](pictures/18-1.png)
+<img src="pictures/18-1.png" alt="image-20231128093714627" style="zoom: 67%;" />
 
 **Overloading vs. Overriding**
 
@@ -164,7 +164,7 @@ D1234
 
 ### 18.1.2 Example of the Graph Abstraction
 
-![image-20231128234716223](pictures/18-2.png)
+<img src="pictures/18-2.png" alt="image-20231128234716223" style="zoom:50%;" />
 
 ```cpp
 /*
@@ -437,7 +437,7 @@ This example is only used to illustrate an initializer list, and generally squar
 
 Multiple Inheritance tends to be dangerous. 
 
-![18-3](pictures/18-3.png)
+<img src="pictures/18-3.png" alt="18-3" style="zoom: 33%;" />
 
 This is "deadly diamond of death", an ambiguity that arises when two classes B and C inherit from A, and class D inherits from both B and C. If there is **a method in A** that **B and C have overridden**, and **D does not override it**, then which version of the method does D inherit: that of B, or that of C? 
 
@@ -603,19 +603,19 @@ and the output
 
 **A Classic UML Diagram** 
 
-![image-20231129004302701](pictures/18-4.png)
+<img src="pictures/18-4.png" alt="image-20231129004302701" style="zoom: 50%;" />
 
 **An alternative UML Diagram**
 
-![18-5](pictures/18-5.png)
+<img src="pictures/18-5.png" alt="18-5" style="zoom:50%;" />
 
 **A Multi-Inheritance UML Diagram**
 
-![18-6](pictures/18-6.png)
+<img src="pictures/18-6.png" alt="18-6" style="zoom:50%;" />
 
 **An improved Multi-Inheritance UML Diagram**
 
-![18-7](pictures/18-7.png)
+<img src="pictures/18-7.png" alt="18-7" style="zoom:50%;" />
 
 ---
 

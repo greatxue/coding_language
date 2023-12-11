@@ -51,7 +51,7 @@ Point pt;
 
 Given the variable `pt`, you can select the individual *fields* or *members* using the dot operator `.` as in `pt.x` and `pt.y`.
 
-### 6.1.3 Casting Operators
+### 6.1.3 Casting Operators (*****)
 
 In C++, there are four main types of casting operators, which are as follows:
 

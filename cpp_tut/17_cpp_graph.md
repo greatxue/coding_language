@@ -566,7 +566,7 @@ The ***page rank algorithm*** gives each page *a rating of its importance*, whic
 + Start with a set of pages.
 + Crawl the web to determine the link structure.
 
-![image-20231129192608273](pictures/17-8.png)
+<img src="pictures/17-8.png" alt="image-20231129192608273" style="zoom:33%;" />
 
 + Assign each page an initial rank of $1/N$.
 
@@ -574,17 +574,17 @@ The ***page rank algorithm*** gives each page *a rating of its importance*, whic
 
   The new page rank for $E$ is $PR(E) = \frac{PR(C)}{3} + \frac{PR(D)}{2} = \frac{0.2}{3} + \frac{0.2}{2} = 0.17$.
 
-![image-20231129192914703](pictures/17-9.png)
+<img src="pictures/17-9.png" alt="image-20231129192914703" style="zoom:33%;" />
 
 + If a page (such as $E$ in the current example) has no outward links, redistribute its rank equally among the other pages in the graph, as users will keep searching if they reach a dead end.
 
   In this graph, 1/4 of $E$’s page rank is distributed to pages $A$, $B$, $C$ and $D$ respectively.
 
-  ![image-20231129193414005](pictures/17-10.png)
+  <img src="pictures/17-10.png" alt="image-20231129193414005" style="zoom:33%;" />
 
 + Repeat this process until the page ranks stabilize.
 
-  ![image-20231129193441508](pictures/17-11.png)
+  <img src="pictures/17-11.png" alt="image-20231129193441508" style="zoom:33%;" />
 
 + In practice, the Page Rank algorithm adds a ***damping factor*** at each stage to model the fact that users stop searching. 
 

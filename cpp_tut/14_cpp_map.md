@@ -178,7 +178,7 @@ There are several strategies to implement the map operations `get` and `put`, wh
   }
   ```
 
-  ![14-1](pictures/14-1.png)
+  <img src="pictures/14-1.png" alt="14-1" style="zoom:50%;" />
 
 The *lookup-table strategy* shows that `get` and `put` operations could run very quickly, even independent of the number of keys in the table, and you can improve performance enormously if you use the key to figure out where to look, which is actually the idea of ***hashing***.
 

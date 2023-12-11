@@ -82,7 +82,7 @@ using namespace x;
 using namespace x::name1; // explicitly
 ```
 
-To declare a namespace, simply use
+(*****) To declare a namespace, simply use
 
 ```cpp
 namespace math {
@@ -281,11 +281,11 @@ The operators used with the `boolean` data type fall into two categories: ***rel
 
 + ***Relational operators*** compare values and produce a `boolean` result:
 
-  ![1-6](pictures/1-6.png)
+  <img src="pictures/1-6.png" alt="1-6" style="zoom: 67%;" />
 
 + Also three ***logical operators***:
 
-  ![1-7](pictures/1-7.png)
+  <img src="pictures/1-7.png" alt="1-7" style="zoom:67%;" />
 
 C++ evaluates the `&&` and `||` operators using a strategy called **short-circuit mode** in which it evaluates the right operand only if it needs to do so. 
 
@@ -408,7 +408,7 @@ If `break` is not included in one case, all statements **following the case** ar
   for (int x = 1; x <= 1024; x *= 2)
   ```
 
-* The `do-while` statement allows us to execute first then checks the condition:
+* The `do-while` statement allows us to execute first then checks the condition (*****):
 
   ```cpp
   do {
@@ -421,7 +421,7 @@ If `break` is not included in one case, all statements **following the case** ar
 - **`break` **: The `break` keyword is used to immediately terminate the execution of  a `for`/`while`/`do-while` loop, exiting the currently innermost loop that it is in.
 - **`continue`**: The `continue` keyword is used to skip the remaining part of the current loop iteration and proceed to the next iteration. It only affects the current iteration of the loop, not the entire loop.
 
-### 1.3.5 Preprocessing Directives
+### 1.3.5 Preprocessing Directives (*****)
 
 Here are preprocessing directives commonly used:
 
@@ -461,7 +461,7 @@ Here are preprocessing directives commonly used:
   #pragma once
   ```
 
-### 1.3.6 Error Handling
+### 1.3.6 Error Handling (*****)
 
 ```cpp
 #include <iostream>

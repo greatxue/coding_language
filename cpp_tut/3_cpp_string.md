@@ -84,7 +84,7 @@ If you put double quotation marks `" ` around a sequence of characters, you get 
 
 That's why `'a'` and `''a''` are actually quite different.
 
-![3-2](pictures/3-2.png)
+<img src="pictures/3-2.png" alt="3-2" style="zoom:50%;" />
 
 The character positions in a C string are identified by an *index* that begins at **0** and extends up to one less than the length of the string, just like that in Python.
 
@@ -329,7 +329,7 @@ At last there is a conclusion for various `#include` syntax.
 | `#include "cstring.h"` | **Incorrect** unless you've defined your own "cstring.h"     |
 | `#include <cstring.h>` | Likely an **error** even if you've defined your own "cstring.h" |
 
-**Conclusion for initializing a String**
+**Conclusion for initializing a String** (*****)
 
 Here are multiple ways to initialize a String:
 

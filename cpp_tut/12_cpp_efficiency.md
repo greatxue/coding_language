@@ -8,7 +8,7 @@ We will implement a **text editor** as an example today. Most editors today foll
 
 Today we will implement a simple **TECO** (Text Editor and COrrector) command-line editor. 
 
-![12-1](pictures/12-1.png)
+<img src="pictures/12-1.png" alt="12-1" style="zoom: 50%;" />
 
 The minimal version of TECO has the following commands:
 
@@ -167,7 +167,7 @@ Conceptually, the simplest strategy for representing the editor buffer is to use
 
 + The data structure for the editor buffer must contain an additional integer variable that indicates **the current position of the cursor**, ranging from 0 up to and including the length of the buffer.
 
-![image-20231130205124935](../../../Library/Application Support/typora-user-images/image-20231130205124935.png)
+<img src="../../../Library/Application Support/typora-user-images/image-20231130205124935.png" alt="image-20231130205124935" style="zoom: 33%;" />
 
 ```cpp
 private:
@@ -452,7 +452,7 @@ In the two-stack implementation of the `EditorBuffer` class, the characters in t
 + The characters before the cursor are stored in a stack called `before` and the characters after the cursor are stored in a stack called `after`. 
 + Characters in each stack are stored so that the ones close to the cursor are near the top of the stack.
 
-![image-20231130205536052](../../../Library/Application Support/typora-user-images/image-20231130205536052.png)
+<img src="../../../Library/Application Support/typora-user-images/image-20231130205536052.png" alt="image-20231130205536052" style="zoom: 50%;" />
 
 ```cpp
 private:

@@ -251,11 +251,11 @@ For ***character sets***, you can represent the inclusion or exclusion of a char
 
 A ***characteristic vector*** is created, to indicate the character value (ASCII codes) with an array of bits. This representation is efficient, as the bits for a characteristic vector are **packed into** a small number of *words* inside the machine and then operate in large chunks.
 
-![16-3](pictures/16-3.png)
+<img src="pictures/16-3.png" alt="16-3" style="zoom: 50%;" />
 
 For a given set {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, it can be indicated a characteristic vector of 10 bits:
 
-![image-20231124211156593](pictures/16-1.png)
+<img src="pictures/16-1.png" alt="image-20231124211156593" style="zoom: 50%;" />
 
 The advantage is that operations `add`, `remove`, and `contains` could be implemented **in constant time**. For example,
 
@@ -362,7 +362,7 @@ cout << hex << -1 << ' '
 
 Computers typically represent each pixel in an image as an `int` in which the 32 bits are interpreted as follows:
 
-![image-20231129021258819](pictures/16-4.png)
+<img src="pictures/16-4.png" alt="image-20231129021258819" style="zoom:50%;" />
 
 Write the code to isolate the red component of a color stored in the integer variable `pixel`:
 

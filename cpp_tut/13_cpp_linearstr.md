@@ -446,7 +446,7 @@ In some ways, the linked-list implementation of a queue is easier to understand 
 + The `enqueue` operation adds a new cell after the one marked by the `tail` pointer and then updates the `tail` pointer so that it continues to indicate the end of the list. 
 + The `dequeue` operation consists of removing the cell addressed by the `head` pointer and returning the value in that cell.
 
-![13-2](pictures/13-2.png)
+<img src="pictures/13-2.png" alt="13-2" style="zoom:50%;" />
 
 Here is the implementation of `queue.h`:
 
@@ -673,7 +673,7 @@ The key to fix the $O(N)$ issue is to eliminate the need for any data motion by 
 + The `enqueue` operation stores the new element at the position marked by the `tail` index and then increments `tail` so that the next element is enqueued into the next slot. 
 + The `dequeue` operation is symmetric. The next value to be dequeued appears at the array position marked by the `head` index. Removing it is then simply a matter of incrementing `head`. 
 
-![13-3](pictures/13-3.png)
+<img src="pictures/13-3.png" alt="13-3" style="zoom:50%;" />
 
 Unfortunately, this strategy typically ends up filling the array space even when the queue itself contains very few elements, and the solution is **to let the elements cycle back to the beginning of the array**. 
 

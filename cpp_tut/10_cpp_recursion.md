@@ -1,5 +1,7 @@
 # 10. Recursion
 
+> Recursive Paradigm, Search Algorithms I, Recursive Cases
+
 *Last Update: 23-11-21*
 
 Recursion is the process of solving a problem by **dividing** it into smaller sub-problems of **the same form**, which is a special kind of *divide and conquer*.
@@ -45,7 +47,7 @@ Here is a most intuitive example to implement the function `fact`:
 
 ![10-1](pictures/10-1.png)
 
-+ *Iteration*-based:
++ *Iteration*-based: Uses a loop to calculate the factorial, efficient and stack-friendly.
 
   ```cpp
   int fact(int n) {
@@ -57,7 +59,7 @@ Here is a most intuitive example to implement the function `fact`:
   }
   ```
 
-+ *Recursion*-based
++ *Recursion*-based: Uses standard recursion, elegant but can cause stack overflow for large input values.
 
   ```cpp
   int fact(int n) {
@@ -66,6 +68,16 @@ Here is a most intuitive example to implement the function `fact`:
      } else {
         return n * fact(n - 1);
      }
+  }
+  ```
+
++ (*****) *Tail Recursion Optimization*: Employs tail recursion to allow compiler optimizations, reducing stack usage and preventing overflow.
+
+  ```cpp
+  int tailRecursiveFact(int n, int accumulator = 1) {
+      if (n == 0)
+          return accumulator;
+      return tailRecursiveFact(n - 1, n * accumulator);
   }
   ```
 
@@ -275,6 +287,7 @@ Set<string> generatePermutations(string str) {
 ### 10.3.3 Graphical Recursion
 
 In graphical recursion, sometimes there seems to be no simple cases to be solved. Instead, there would be some stopping criteria to terminate the recursion. Examples could rage from **Mondrian Paintings** to **Fractal Coastline (fractals)**.
+
 
 ---
 

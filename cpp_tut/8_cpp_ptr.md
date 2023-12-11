@@ -427,7 +427,7 @@ Here are two examples of this idiom:
   }
   ```
 
-+ C Library function `strcpy(dst, src)`, which copies the characters from the string `src` into the character array indicated by `dst`.
++ (*****) C Library function `strcpy(dst, src)`, which copies the characters from the string `src` into the character array indicated by `dst`.
 
   ```cpp
   void strcpy(char * dst, char * src) {

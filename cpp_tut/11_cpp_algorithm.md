@@ -1,4 +1,4 @@
-# 11. Algorithm
+#             11. Algorithm
 
 *Last Update: 23-11-20*
 
@@ -10,7 +10,7 @@ In this approach called ***backtracking algorithms***, there consists of a seque
 
 The most widely known strategy for solving a maze is called the *right-hand rule*, but will be invalid if there are **loops** in the maze surrounding either the starting position or the goal.
 
-![image-20231122105250138](pictures/11-1.png)
+<img src="pictures/11-1.png" alt="image-20231122105250138" style="zoom:50%;" />
 
 It is also possible to solve a maze recursively. A maze is solvable only if it is possible to solve **one of the simpler mazes** that results from shifting the starting location to an adjacent square and taking the current square out of the maze completely.
 
@@ -161,7 +161,7 @@ If you had a *multiprocessor* computer, you could try to solve each of these sub
 
 Refer to **P vs. NP** problem for reference.
 
-![image-20231123091206903](pictures/11-3.png)
+<img src="pictures/11-3.png" alt="image-20231123091206903" style="zoom:50%;" />
 
 **Searching in a Branching Structure**
 
@@ -169,7 +169,7 @@ The primary advantage of using recursion in these problems is that doing so dram
 
 **The N Queen Problem**
 
-![image-20231123155537264](pictures/11-4.png)
+<img src="pictures/11-4.png" alt="image-20231123155537264" style="zoom:33%;" />
 
 Instead of traversing acouss all the possibilities, we try to solve it *recursively*. First we implement the function `solveQueens()`:
 
@@ -278,7 +278,7 @@ int getComputerMove() {
 
 **Game Trees**
 
-![image-20231130193558117](../../../Library/Application Support/typora-user-images/image-20231130193558117.png)
+<img src="../../../Library/Application Support/typora-user-images/image-20231130193558117.png" alt="image-20231130193558117" style="zoom: 50%;" />
 
 Most two-player games have the same basic form: The first player (red) must choose between a set of moves, while the second player (blue) has several responses, then red has further choices, and vice versa.
 
@@ -286,7 +286,7 @@ Most two-player games have the same basic form: The first player (red) must choo
 
 **Best Result at Worst Case:** Suppose that the ratings two turns from now are as shown. From your perspective, the +9 initially looks attractive; but your can’t get there, since the –5 is better for your opponent. The best you can do is choose the move that leads to the –2.
 
-![image-20231130194359925](../../../Library/Application Support/typora-user-images/image-20231130194359925.png)
+<img src="../../../Library/Application Support/typora-user-images/image-20231130194359925.png" alt="image-20231130194359925" style="zoom:50%;" />
 
 For more complex games, it is necessary to **cut off the analysis at some point** and then evaluate the position, **presumably** using some function that looks at a position and returns a `rating` for that position. Positive ratings are good for the player to move; negative ones are bad.
 
@@ -620,3 +620,6 @@ There are still more issues awaiting exploration:
 - Recursive vs. non-recursive
 - Stable vs. unstable
 - Serial vs. parallel
+
+---
+

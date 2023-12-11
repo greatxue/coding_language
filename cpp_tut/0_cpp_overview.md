@@ -6,13 +6,24 @@
 
 ## 0.1 Statements
 
-This note is mainly adapted from what I have recorded from my CSC3002 study. Rather than a complete tutorial (which could be easy to find within the useful materials mentioned below), it works as a listing of C++ knowledge, which could be useful for a general review. For this reason, some comments of the implementation has been removed as well.
+This note is mainly adapted from what I have recorded from my CSC3002 study. Rather than a complete tutorial (which could be easy to find within the useful materials mentioned below), it works as a listing of C++ knowledge, which could be useful for a general review. With these notes, I hope:
 
-Also, in the subpages I extend with some supplement for what is only briefly mentioned in the course. Hope it works as a seed, which broadens the readers' horizon and inspires them for further explorations. 
++ Students could get a linear knowledge of the C++ landscape, instead of slices of topics.
 
-At the end of the note, I will also recommend practice projects with high quality. It will offer a chance for you to apply your knowledge and integrate multiple skills into a fruitful outcome!
++ Students could quickly grasp what would appear in the final examination in a very quick review.
 
-## 0.2 Catalogue 
++ Students could spend more time working with projects, especially for a practical language course like this.
++ Students could learn more about STL, new features of C++ (especially C++11), etc.
+
+With these wishes I drafted this note, which is simplified, precise and conclusive, although it might be too concise. Hence, attendance to lectures or careful reading through the textbook is still a must. The keys for exercises in the textbook has been provided by a former USTF, accessble [here]().
+
+In this or later edition, I will recommend practice projects with high quality. The codes within the course are far from enough, and these high-quality projects with answers will offer a chance for you to apply your knowledge and integrate multiple skills into a fruitful outcome.
+
+Also I extend with some supplement for what is only briefly mentioned in the course. They will be marked with the mark **(*)**, and is provided as a reference for further study.
+
+Hope every one of you have fun with C++!
+
+## 0.2 Core Catalogue 
 
 1. Introduction to C++
 2. Functions & Libraries I
@@ -33,20 +44,21 @@ At the end of the note, I will also recommend practice projects with high qualit
 17. Graph
 18. Inheritance
 19. Iterator and Functional Programming
+20. *More...*
 
 ## 0.3 Useful Materials
 
 Here are some materials I find useful during my study:
 
-* Stanford CS106L: Mainly focus on [Course-reader](https://web.stanford.edu/class/cs106l/full_course_reader.pdf).
+* Stanford CS106L: Mainly focus on [Course-reader](https://web.stanford.edu/class/cs106l/full_course_reader.pdf). Though a bit old-fashioned, it is still a good reader (provided in 2010), which is detailed enough for a clear understanding.
 
-* Stanford CS106X:  [Videos](https://www.youtube.com/watch?v=pOyyGQU_ErA&list=PLoCMsyE1cvdVmbGH6Jp-9twXPbi5J_IBT&index=1) from 2017 Autumn, and [resources](https://web.stanford.edu/class/cs106x/index.html) from 2019 Autumn.
+* Stanford CS106X: If you insist to make use of the materials, these are accessible:  [videos](https://www.youtube.com/watch?v=pOyyGQU_ErA&list=PLoCMsyE1cvdVmbGH6Jp-9twXPbi5J_IBT&index=1) from 2017 Autumn, and [resources](https://web.stanford.edu/class/cs106x/index.html) from 2019 Autumn. If you do not have sufficient time, just read our textbook!
 
-* *Programming Abstractions in C++*: Accessed [here](https://web.stanford.edu/class/cs106x/res/reader/CS106BX-Reader.pdf).
+* *Programming Abstractions in C++*: Our textbook,  accessible [here](https://web.stanford.edu/class/cs106x/res/reader/CS106BX-Reader.pdf).
 
-* *C++ Primer*: Accessed [here](https://zhjwpku.com/assets/pdf/books/C++.Primer.5th.Edition_2013.pdf).
+* *C++ Primer*: A classic C++ manual, accessible [here](https://zhjwpku.com/assets/pdf/books/C++.Primer.5th.Edition_2013.pdf).
 
-* Official C/C++ reference: Accessed [here](https://en.cppreference.com/w/).
+* Official C/C++ reference: I always use it as a dictionary, which is accesseible [here](https://en.cppreference.com/w/).
 
 ## 0.4 Notation
 
@@ -56,17 +68,19 @@ Here are notations and symbols with specific meanings:
 + **Bold**: Highlights key content.
 + ***Bold Italics***: Emphasizes crucial concepts that involve specific terminology, especially when introduced for the first time.
 + [Hyperlink](https://cplusplus.com/): Directs to external resources or references.
-+ Bug icon: Indicates the presence of a bug.
++ Bug icon (temporarily `ERR`): Indicates the presence of a bug.
 
 ## 0.5 Acknowledgements
 
-This note is heavily reliant on [Prof. HUANG, Rui](https://sse.cuhk.edu.cn/en/faculty/huangrui)'s course: **CSC3002 (C/C++ Programming)**, offered at The Chinese University of Hong Kong (Shenzhen). In the process of writing, I have also referred to materials like Stanford CS106L, official C++ documents and other references.
+This note is heavily reliant on [Prof. HUANG, Rui](https://sse.cuhk.edu.cn/en/faculty/huangrui)'s course: **CSC3002 (C/C++ Programming)**, offered at The Chinese University of Hong Kong (Shenzhen). Also I have referred to materials like Stanford CS106L, official C++ documents and others.
 
-The materials have been kindly reviewed by my good friends like **DONG, Haoze** and **JIN, Zhengda**. Highly appreciate it for their time and devotions.
+Through the writing of the work, I get direct or indirect support from faculties, my **CHEN** and my good friends like **DONG**, **GUO** and **JIN**. Highly appreciate it for their time and devotions.
 
 ## 0.6 Author & License
 
-Edited by [Kevin (Zhongkai) Xue](https://greatxue.cn/). For correspondence, kindly reach out at [*greatxue33@gmail.com*](mailto:greatxue33@gmail.com).
+The **1st** version of the note: ***Course Notes of CSC3002: C/C++ Programming***.
+
+Edited by [Kevin (Zhongkai) Xue](https://greatxue.cn/). For correspondence, kindly reach out at [greatxue33@gmail.com](mailto:greatxue33@gmail.com). 
 
 Please use this under the [**MIT**](https://opensource.org/license/mit/) License. For content with original authors, adhere to their respective licenses.
 

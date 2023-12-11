@@ -394,9 +394,7 @@ void CharStack::deepCopy(const CharStack & src) {
 
 ```
 
-Pay attention: `this` provides **a pointer to the current object**, while `*this` provides **a reference to the object itself**. When you use `this`, you are dealing with a pointer; when you use `*this`, you are dealing with the object itself.
-
-
+Pay attention: `this` provides **a pointer to the current object**, while `*this` provides **a reference to the object itself**. When you use `this`, you are dealing with a pointer; when you use `*this`, you are dealing with the object itself.  
 
 ## 9.4 Unit Testing
 
@@ -477,7 +475,7 @@ int main() {
 }
 ```
 
-**Constant Expression**
+**Constant Expression **(*****)
 
 The `constexpr` is a keyword introduced in the C++11 standard, used to define ***compile-time constant expressions***. It instructs the compiler to compute the value of an expression **at compile time rather than at runtime**, and it can be applied to variables:
 
@@ -532,7 +530,7 @@ int main() {
 }
 ```
 
-## 9.6 Smart Pointers
+## 9.6 Smart Pointers (*****)
 
 In C++, ***smart pointers*** are a category of template classes that provide safer memory management than raw pointers. 
 
@@ -615,7 +613,7 @@ Here are some typical uses of *smart pointers*:
 
   Here, `weakBox` is constructed from a `shared_ptr`, but it **does not** contribute to the **reference count**. When `box` is reset, the `Box` is destroyed even though `weakBox` is still in scope. This is because `weak_ptr` does not control the object's lifetime. The `expired()` method can be used to check if the object is still alive, and `lock()` can be used to create a `shared_ptr` if the object is still there.
 
-## 9.7 Move Semantics
+## 9.7 Move Semantics (*****)
 
 Introduced in C++11, ***move semantics*** is a significant feature that changes the way objects are handled in memory, particularly during object assignment and passing. Move semantics allows **the ownership of resources**, such as dynamically allocated memory, to be transferred from one object to another, which is often more efficient than traditional copy operations.
 

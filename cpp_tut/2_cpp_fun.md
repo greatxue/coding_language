@@ -173,7 +173,9 @@ When you invoke a function, the following actions occur:
 + **Return Statement**: Computes return value, substituting it in place of the function call.
 + **Stack Frame Discard**: Discards function's stack frame and returns control to the caller.
 
-![2-2](pictures/2-2.png)Under this machanism, global `n1` and `n2` remain the initial values after execution.
+<img src="pictures/2-2.png" alt="2-2" style="zoom:33%;" />
+
+Under this machanism, global `n1` and `n2` remain the initial values after execution.
 
 ```cpp
 void swap(int x, int y) {
@@ -229,7 +231,7 @@ In fact, a *reference* is a simple reference datatype that is **less powerful bu
 
 We will delay the discussion of references until when we have a deeper understanding of pointers. 
 
-**Inline Functions**
+**Inline Functions** (*****)
 
 ```cpp
 inline int max(int x, int y) {
@@ -239,7 +241,7 @@ inline int max(int x, int y) {
 
 ***Inline functions*** in C++ are a special kind of function to enhance the efficiency of the program. During compilation, the compiler **inserts the complete code** of the function body at every place the function is called, instead of making a traditional function call, which is particularly useful for small functions.
 
-Inlining is a suggestion, not a command; the compiler can choose to ignore it.
+*Inlining* is a suggestion, not a command; the compiler can choose to ignore it.
 
 ---
 
