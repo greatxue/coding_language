@@ -31,7 +31,7 @@ Except for the simpliest *linear recursion*, we still have ***mutual recursion**
 bool isOdd(unsigned int n) {
    return !isEven(n);
 }
-
+ 
 bool isEven(unsigned int n) {
    if (n == 0) {
       return true;
@@ -44,8 +44,6 @@ bool isEven(unsigned int n) {
 **`fact` Function**
 
 Here is a most intuitive example to implement the function `fact`:
-
-![10-1](pictures/10-1.png)
 
 + *Iteration*-based: Uses a loop to calculate the factorial, efficient and stack-friendly.
 
@@ -287,6 +285,8 @@ Set<string> generatePermutations(string str) {
 ### 10.3.3 Graphical Recursion
 
 In graphical recursion, sometimes there seems to be no simple cases to be solved. Instead, there would be some stopping criteria to terminate the recursion. Examples could rage from **Mondrian Paintings** to **Fractal Coastline (fractals)**.
+
+
 
 
 ---

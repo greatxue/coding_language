@@ -1,5 +1,7 @@
 # 17. Graph
 
+> Graph Representations, Graph Abstraction Strategies, Finding Shortest Paths
+
 *Last Update: 23-11-29*
 
 A ***graph*** consists of a set of **nodes** together with a set of **arcs**. 
@@ -26,19 +28,19 @@ A graph in which there is a path between every pair of nodes is said to be **str
 
 **Graph Representations**
 
-The primary feature that differentiates implementations is the strategy used to represent **connections between nodes**. In practice, the most common strategies are:
+The primary feature that differentiates implementations is the strategy used to represent **connections between $N$ nodes**. In practice, the most common strategies are:
 
 + Storing the connections for each node in an ***adjacency list***.
 
   ![17-2](pictures/17-2.png)
 
-  Although simple and convenient, this representation can be i**nefficient when searching through the list of arcs associated with a node**. This cost, $O(D)$, where $D$ represents the degree of the originating node, becomes more significant in a **dense** graph where $D\rightarrow N$.
+  Although simple and convenient, this representation can be **inefficient when searching through the list of arcs associated with a node**. This cost, $O(D)$, where $D$ represents the degree of the originating node, becomes more significant in ***a dense graph*** where $D\rightarrow N$.
 
 + Storing the connections for the entire graph in an **adjacency matrix**.
 
   ![17-3](pictures/17-3.png)
 
-  Similar to the idea of lookup table, this representation reduces the cost of checking for connections to $O(1)$. But the $O(N^2)$ storage space is inefficient for a **sparse** graph where $D << N$.
+  Similar to the idea of lookup table, this representation reduces the cost of checking for connections to $O(1)$. But the $O(N^2)$ storage space is inefficient for ***a sparse graph*** where $D << N$.
 
 + Storing the connections for each node as a ***set of arcs***. 
 
@@ -59,9 +61,9 @@ The primary feature that differentiates implementations is the strategy used to 
 
 There are three strategies for graph abstraction:
 
-+ Use low-level structures;
-+ Adopt a hybrid strategy;
-+ Define classes for each of the component types. 
++ Use **low-level** structures;
++ Adopt a **hybrid** strategy;
++ **Define classes** for each of the component types. 
 
 ### 17.2.1 Use low-level structures
 
@@ -161,15 +163,15 @@ void visitUsingDFS(Node *node, Set<Node *> & visited) {
 
   If the current node has no unvisited nodes, it will **backtrack to the nearest node** that still has unexplored adjacent nodes.
 
-  ![image-20231129172853491](pictures/17-4.png)
+  <img src="pictures/17-4.png" alt="image-20231129172853491" style="zoom: 50%;" />
 
 + **Breadth-First Search (BFS): Queue-implemented**
 
    BFS proceeds outward from the starting node, visiting the start node, **then all nodes one hop away**, and so on.
 
-  ![image-20231129185227400](pictures/17-5.png)
+  <img src="pictures/17-5.png" alt="image-20231129185227400" style="zoom: 50%;" />
 
-## 17.2.2 Adopt a hybrid strategy
+### 17.2.2 Adopt a hybrid strategy
 
 For graphs, the elements are **nodes** and **arcs**. Both nodes and arcs have some properties closely tied to the graph:
 
@@ -493,7 +495,7 @@ struct SimpleGraph {
 
 ### 17.2.3 Define classes for each component
 
-This design uses the `Node` and `Arc` classes to define the structure. In this model, clients define **subclasses of the supplied types** to particularize the graph data structure to their own application. *Inheritance* is applied.
+This design uses the `Node` and `Arc` classes to define the structure. In this model, clients define **subclasses of the supplied types** to particularize the graph data structure to their own application. *Inheritance* is applied, which will be introduced later.
 
 ```cpp
 class Node;
@@ -538,7 +540,7 @@ The strategy is similar to the BFS with the following additions:
 
 + The algorithm keeps track of all nodes to which the total distance has already been fixed. Distances are **fixed** whenever you **dequeue a path from the priority queue**.
 
-![image-20231129192358407](pictures/17-6.png)
+<img src="pictures/17-6.png" alt="image-20231129192358407" style="zoom:50%;" />
 
 **Kruskal’s Algorithm**
 
@@ -557,7 +559,7 @@ Certainly, let's go over the Kruskal's algorithm in English. This algorithm is u
 
 + **Repeating the Process**: Continue this process until all nodes are connected in a single set without any further possibility of adding an arc without creating a cycle. At this point, you have obtained the *minimum spanning tree*.
 
-![17-7](pictures/17-7.png)
+<img src="pictures/17-7.png" alt="17-7" style="zoom: 50%;" />
 
 **Google’s Page Rank Algorithm**
 
@@ -591,6 +593,8 @@ The ***page rank algorithm*** gives each page *a rating of its importance*, whic
   $PR(A) = \frac{1-d}{N} + d \left( \frac{PR(B)}{L(B)} + \frac{PR(C)}{L(C)} + \frac{PR(D)}{L(D)} + \frac{PR(E)}{N} \right)$
 
 Google’s random surfer is an example of a Markov process, in which a system moves from state to state, based on probability information that shows the likelihood of moving from each state to every other possible state. 
+
+
 
 ---
 

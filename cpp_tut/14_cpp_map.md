@@ -1,5 +1,7 @@
 # 14. Map
 
+> Implementation with vectors, Strategies for Maps, Hash Maps
+
 *Last Update: 23-11-22*
 
 ## 14.1 Implementation with vectors
@@ -7,12 +9,12 @@
 The `Map` class is a generalization of what provides an association between a ***key*** and a ***value***. 
 
 ```cpp
-Map<key type, value type> map;
+Map<key_type, value_type> map;
 ```
 
-The type for the keys stored in a `Map` must define a natural ordering, usually through a `less` function or `<` operator so that the keys can be **compared** and **ordered**.
+Intuitively, we could implement a `Map` with vectors storing key-value pair. However, the type for the keys stored in a `Map` must define a natural ordering, usually through a `less` function or `<` operator so that the keys can be **compared** and **ordered**.
 
-+ Now here is an example of `stringmap.h`:
++ With this intuition, we set up an example of `stringmap.h`:
 
   ```cpp
   /*
@@ -90,12 +92,12 @@ The type for the keys stored in a `Map` must define a natural ordering, usually 
   
      int findKey(const std::string & key) const;
   
-  };
+  }
   
   #endif
   ```
   
-+ Here is the detailed implementation `stringmap.cpp`:
++ Here is the detailed implementation within `stringmap.cpp`:
 
   ```cpp
   /*
@@ -155,18 +157,28 @@ The type for the keys stored in a `Map` must define a natural ordering, usually 
 
 ## 14.2 Strategies for Maps
 
-There are several strategies to implement the map operations `get` and `put`, which include:
+Now we rethink about our vector implementation, sincr there could be several strategies to implement the method like `get` and `put`. These strategies include:
 
-+ **Linear Search:** Keep track of all the key/value pairs in a vector. Both operations run in $O(N)$ time.
++ **Linear Search:** 
 
-+ **Binary Search:** Keep the vector sorted by the key, and apply binary search. 
+  Keeping track of all the key-value pairs in a vector requires operations run in $O(N)$ time.
+
++ **Binary Search:** 
+
+  Keep the vector sorted by the key, and apply binary search. 
 
   + `get` runs in $O(logN)$ time, as the steps for searching has been cut half;
 
   + `put` runs in $O(N)$ time, as in the worst time you need to adjust elements in the whole vector.
 
-+ **Table lookup strategy**: An $O(1)$ strategy, though at the cost of the memeory space.
++ **Table lookup strategy**: 
 
+  Recall the time-spacece tradeoff, we use a map to reduce the complexity of serching  $O(1)$, at the cost of the memeory space:
+  
+  <img src="pictures/14-1.png" alt="14-1" style="zoom: 50%;" />
+  
+  Here is the corresponding implementation:
+  
   ```cpp
   string getStateName(string key, Grid<string> & grid) {
      char row = key[0] - 'A';
@@ -178,27 +190,25 @@ There are several strategies to implement the map operations `get` and `put`, wh
   }
   ```
 
-  <img src="pictures/14-1.png" alt="14-1" style="zoom:50%;" />
-
-The *lookup-table strategy* shows that `get` and `put` operations could run very quickly, even independent of the number of keys in the table, and you can improve performance enormously if you use the key to figure out where to look, which is actually the idea of ***hashing***.
+The *lookup-table strategy* shows that `get` and `put` operations could run very quickly, even independent of the number of keys in the table. In this idea of ***hashing***, you can improve performance enormously if you use the key to figure out where to look.
 
 ## 14.3 Hash Maps
 
-The `StringMap` class implemented using the hashing strategy is called a ***hash map*** or ***hash table***.
+The `StringMap` class implementation using the hashing strategy is called a ***hash map*** or ***hash table***.
 
-The implementation requires the existence of a free function (called a ***hash function***) that transforms a key into a non-negative integer (called a ***hash code***). The *hash code* should be one-to-one hence **unique** for each `key`, or it will cause *collision* problem.
+The implementation requires the existence of a free function (called a ***hash function***) that transforms a key into a non-negative integer (called a ***hash code***). Ideally, the hash code should be one-to-one hence **unique** for each `key`, or it will cause *collision* problem. 
 
 To achieve the **high level of efficiency** that hashing offers, a hash function must follow:
 
-+ The function must be inexpensive to compute.
++ The function must be **inexpensive to compute**.
 
-+ The function should distribute keys uniformly cross the integer range to minimize *collisions*.
++ The function should distribute keys **uniformly cross the integer range** to minimize *collisions*.
 
-Here is one implementation of the *djb2* algorithm:
+Here is one implementation of the *djb2* hash algorithm:
 
 ```cpp
-const int HASH_SEED = 5381; /* Starting point for first cycle */
-const int HASH_MULTIPLIER = 33; /* Multiplier for each cycle */
+const int HASH_SEED = 5381;     			   /* Starting point for first cycle */
+const int HASH_MULTIPLIER = 33; 				 /* Multiplier for each cycle */
 const int HASH_MASK = unsigned(-1) >> 1; /* Largest positive integer */
 
 /*
@@ -223,37 +233,16 @@ int hashCode(const string & str) {
 }
 ```
 
-**The Bucket Hashing Strategy**
+However, the collision seems hard to avoid considering the wide-range of hash code. One common strategy to solve this issue is to **store the key with same hash code in one "bucket"**.
 
-One common strategy for implementing a map is to **use the hash code for each key to select an index into an array**.
+![14-2](pictures/14-2.png)
 
-The entire array is viewed as a collection of ***buckets***, each containing all keys with the same hash code. To locate the bucket a key belongs to, **the hash code is converted into a bucket index**.
+With this guidance we finish the private part of `StringMap.h`:
 
 ```cpp
-int index = hashCode(key) % nBuckets;
-```
-
-Since there are usually **more hash codes than the number of buckets**, different keys may end up with the same hash code, leading them to be placed in the same bucket, known as *collisions*:
-
-+ **Separate Chaining**: To resolve collisions, each bucket can point to a *linked list*, where each node contains a key/value pair. When collisions occur, key/value pairs with the same hash code are **added to the linked list** corresponding to that bucket.
-+ **Open Addressing**: Another strategy to resolve collisions is open addressing. If a key's hash code corresponds to a bucket that is already occupied, the algorithm will find **the next empty bucket** to store the key/value pair.
-
-**Rehash**
-
-The ratio of the number of keys to the number of buckets is called the ***load factor*** of the map. Because a map achieves  $O(1)$ performance only if the load factor is small, the library implementation of `HashMap` **increases** the number of buckets when the map **becomes too full**, which is called ***rehashing***.
-
-$O(1)$ is achieved on average, and the worst case is still $O(N)$.
-
-Here is part of the entire `StringMap`:
-
-+ Private Section of the `StringMap` Class:
-
-  ```cpp
-  /* Private section */
+private:
   
-  private:
-  
-  /* Type definition for cells in the bucket chain */
+	 /* Type definition for cells in the bucket chain */
   
      struct Cell {
         std::string key;
@@ -275,9 +264,33 @@ Here is part of the entire `StringMap`:
   
      StringMap(const StringMap & src) { }
      StringMap & operator=(const StringMap & src) { return *this; }
-  ```
-  
-+ The `stringmap.cpp` Implementation:
+```
+
+  Here we need to further emphasise a few:
+
+  + **`Cell* *buckets` syntax:** As an array name, `bucket` is **the const pointer** pointing to the first element of the array, then `*buckets` is the value of the first element. As the `bucket` stores poiters to the corresponding buckets (represented by *linked list*), the type of `*buckets` is `Cell*`.
+
+  + **Making copying illegal:** To avoid the *deep copy* of the entire map, the copy constructor and the assignment oprator are left blank or returning itself, which in fact forbids copying the whole structure.
+
+The entire private array is viewed as a collection of **buckets**, each containing all keys with the same hash code. To locate the bucket a key belongs to, **the wide-range hash code could be converted into a limited bucket index** using `%`.
+
+```cpp
+int index = hashCode(key) % nBuckets;
+```
+
+Then how to organize multiple keys within one bucket? We come up with two technics:
+
++ **Separate Chaining**: To resolve collisions, each bucket can point to a *linked list*, where each node contains a key/value pair. When collisions occur, key/value pairs with the same hash code are **added to the end of that linked list** corresponding to that bucket.
+
++ **Open Addressing**: Another strategy to resolve collisions is open addressing. If a key's hash code corresponds to a bucket that is already occupied, the algorithm will find **the next empty bucket** to store the key/value pair.
+
+  **Rehash** is also applied within the *open addressing* version. A map achieves  $O(1)$ performance only if the ratio of the number of keys to the number of buckets (the ***load factor***) is small, thus the library implementation **increases the number of buckets** (rehash) when the map **becomes too full**.
+
+With these technics, $O(1)$ could be achieved on average, though the worst case is still $O(N)$.
+
+Here is the implementation:
+
++ **Linked-list version** of `stringMap.cpp`:
 
   ```cpp
   /*
@@ -370,12 +383,163 @@ Here is part of the entire `StringMap`:
   }
   ```
 
-To further implement the `HashMap` class:
++ **Open-addressing version** of `stringMap.cpp` (only showing differences):
+
+  ```cpp
+  /*
+   * Implementation notes: put
+   * -------------------------
+   * The put method calls insertKey to search the bucket array for a matching
+   * key.  If a key already exists, put simply resets the value field.  If no
+   * matching key is found, put adds a new entry in the first free slot.
+   */
+  
+  void StringMap::put(const string & key, const string & value) {
+     if ((double) count / nBuckets > REHASH_THRESHOLD) {
+        rehash(2 * nBuckets + 1);
+     }
+     int index = insertKey(key);
+     buckets[index].value = value;
+  }
+  
+  /*
+   * Implementation notes: remove
+   * ----------------------------
+   * This implementation is tricky because removing one key can make later
+   * keys inaccessible.  This implementation finds the first key that could
+   * have gone in this position (if any) and moves it to this space, repeating
+   * that process until an empty entry is found.  A much simpler but less
+   * efficient strategy is to rehash after every deletion.
+   */
+  
+  void StringMap::remove(const string & key) {
+     int index = findKey(key);
+     if (index != -1) {
+        buckets[index].occupied = false;
+        count--;
+        int toFill = index;
+        while (true) {
+           index = (index + 1) % nBuckets;
+           if (!buckets[index].occupied) return;
+           if (insertKey(buckets[index].key) == toFill) {
+              buckets[toFill].value = buckets[index].value;
+              buckets[index].occupied = false;
+              toFill = index;
+           }
+        }
+     }
+  }
+  
+  void StringMap::clear() {
+     for (int i = 0; i < nBuckets; i++) {
+        buckets[i].occupied = false;
+     }
+     count = 0;
+  }
+  
+  int StringMap::getNBuckets() {
+     return nBuckets;
+  }
+  
+  /* 
+   * Implementation notes: rehash
+   * ----------------------------
+   * The rehash method iterates over the existing key-value pairs, entering
+   * them into a new table.
+   */
+  
+  void StringMap::rehash(int newNBuckets) {
+      KeyValuePair *newBuckets = new KeyValuePair[newNBuckets];
+  
+      for (int i = 0; i < newNBuckets; i++) {
+          newBuckets[i].occupied = false;
+      }
+  
+      KeyValuePair *oldBuckets = buckets;
+      int oldNBuckets = nBuckets;
+  
+      buckets = newBuckets;
+      nBuckets = newNBuckets;
+      count = 0;
+  
+      for (int i = 0; i < oldNBuckets; i++) {
+          if (oldBuckets[i].occupied) {
+              put(oldBuckets[i].key, oldBuckets[i].value);
+          }
+      }
+  
+      delete[] oldBuckets;
+  }
+  
+  
+  /*
+   * Private method: findKey
+   * Usage: int index = findKey(key);
+   * --------------------------------
+   * This private method looks for a key in the buckets array.  If the
+   * key is found, findKey returns its index.  If no match is found, the
+   * findKey returns -1.
+   */
+  
+  int StringMap::findKey(const string & key) const {
+     int hash = hashCode(key);
+     int bucket = hash % nBuckets;
+  
+     for (int i = 0; i < nBuckets; i++) {
+         int index = (bucket + i) % nBuckets;
+         if (!buckets[index].occupied) {
+             return -1;
+         }
+         else if (buckets[index].key == key) {
+             return index;
+         }
+     }
+     return -1;
+  }
+  
+  /*
+   * Private method: insertKey
+   * Usage: int index = insertKey(key);
+   * ----------------------------------
+   * This private method is identical to findKey except that it inserts the
+   * key in the correct place if it is not already in the table.
+   */
+  
+  int StringMap::insertKey(const string & key) {
+      int hash = hashCode(key);
+      int bucket = hash % nBuckets;
+  
+      for (int i = 0; i < nBuckets; i++) {
+          int index = (bucket + i) % nBuckets;
+          if (!buckets[index].occupied) {
+              buckets[index].key = key;
+              buckets[index].occupied = true;
+              count++;
+              return index;
+          } else if (buckets[index].key == key) {
+              return index;
+          }
+      }
+  
+      error("Insufficient space in hash table");
+      return -1;
+  }
+  ```
+  Here I will emphasize even more:
+  + The `put` method checks whether it is necessary to **enlarge the table size** (rehash) when adding elements.
+  + The `rehash` method is used to dynamically **adjust the size of the hash table**, maintaining good performance and minimizing collisions.
+  + The implementation of the `remove` method is complex, as directly removing an element can **disrupt the search path** for other elements in the hash table. To avoid this issue, the code employs a strategy of moving subsequent elements forward.
+
+**Generalization**
+
+This rough implementation of `StringMap` could still be further generalized as a `HashMap` class:
 
 + The `key` type must be **assignable** so that the code can store copies of the `key`s in the cells.
-+ The `key` type must **support the comparison operator** `==` so that the code can tell whether two `key`s are identical.
++ The `key` type must **support the comparison operator** `==` so that the code can tell whether two keys are identical.
 + At the time the template for `HashMap` is expanded for a specific `key` type defined by the client other than the built-in types, a special version of the `hashCode` function must also be provided.
 
-Also kindly refer to STL `map<>` and `unordered_map<>` for more information.
+Also kindly refer to STL `map<>` and `unordered_map<>` for more information: The former is implemented using *balanced binary tree*, while the latter is implemented using *hash approach*.
+
+
 
 ---

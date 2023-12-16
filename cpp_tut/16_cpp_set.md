@@ -1,17 +1,19 @@
 # 16. Set
 
+> Expanding the Set Interface, Implementation Strategies for Sets, Bitwise Operators
+
 *Last Update: 23-11-28*
 
 A ***set*** is an unordered collection of distinct values.
 
-The easiest way to implement the `Set` class is to build it out of the `Map` class. 
+The easiest way to implement the `Set` class is to build it out of the `Map` class, while the `bool` type could be used to mark the existence:
 
 ```cpp
 private:
    Map<ValueType, bool> map;         
 ```
 
-## 16.1 Expanding the set interface
+## 16.1 Expanding the Set Interface
 
 Today we will consider the high-level operations of *union,* *intersection*, *difference,* *subset* and *equality*. 
 
@@ -163,7 +165,7 @@ void Set<ValueType>::clear() {
  * Method: first
  * Usage: ValueType value = set.first();
  * ------------------------------
- * Returns the first element of the.
+ * Returns the first element of the set.
  */
 template <typename ValueType>
 ValueType Set<ValueType>::first() {
@@ -174,7 +176,7 @@ ValueType Set<ValueType>::first() {
  * Implementation notes: isSubsetOf
  * --------------------------------
  * The implementation of the high-level functions does not require knowledge
- * of the underlying representation
+ * of the underlying representation.
  */
 
 template <typename ValueType>
@@ -224,9 +226,9 @@ Set<ValueType> Set<ValueType>::operator+(const ValueType & value) const {
 }
 ```
 
-## 16.2 Implementation strategies for sets
+## 16.2 Implementation Strategies for Sets
 
-Modern library systems adopt either of two strategies for implementing sets:
+Modern library systems adopt such strategies for implementing generic sets:
 
 + **Hash tables:** Sets implemented as hash tables are **extremely efficient**, offering average $O(1)$ performance for adding or testing. The primary disadvantage is that IT do not support **ordered iteration**.
 
@@ -238,11 +240,9 @@ Modern library systems adopt either of two strategies for implementing sets:
 
   **Application:** STL `unordered_set` class
 
-**Sets and Efficiency**
+However, clients using sets **for particular types** often have much more efficient data structures than binary trees:
 
-Clients using Sets for particular types often have much more efficient data structures than binary trees:
-
-+ If the element type was `string` and then use a `Lexicon` (*DAWG*) instead of a binary search tree, and the resulting implementation would be far more efficient. 
++ If the element type was `string` and then use a `Lexicon` (*Directed Acyclic Word Graph, DAWG*) instead of a binary search tree, and the resulting implementation would be far more efficient. 
 + Another type of common sets is `Set<char>`, which comes up if you want to specify a set of delimiter characters for a scanner. 
 
 **Character Sets**
@@ -251,7 +251,7 @@ For ***character sets***, you can represent the inclusion or exclusion of a char
 
 A ***characteristic vector*** is created, to indicate the character value (ASCII codes) with an array of bits. This representation is efficient, as the bits for a characteristic vector are **packed into** a small number of *words* inside the machine and then operate in large chunks.
 
-<img src="pictures/16-3.png" alt="16-3" style="zoom: 50%;" />
+<img src="pictures/16-3.png" alt="16-3" style="zoom: 10%;" />
 
 For a given set {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, it can be indicated a characteristic vector of 10 bits:
 
@@ -306,7 +306,7 @@ The bitwise NOT operator `~` takes a single operand x and returns a value that h
 
 You can use the bitwise NOT operator to create a **mask** in which you mark the bits you want to eliminate as opposed to the ones you want to preserve.
 
-The `~` operator creates the **complement** of a set. To compute the set difference operation, apply `A&(~B)`.
+The `~` operator creates the **complement** of a set. To compute the *set difference* operation, apply `A&(~B)`.
 
 **The Shift Operators**
 
@@ -324,7 +324,7 @@ C++ defines two operators that have the effect of shifting the bits in a word by
 
 **Two’s Complement**
 
-The sum of a $N$-bit number and its two's complement is $2^N$. Another way of finding the two's complement is **inverting the digits and adding one**.
+In binary representation, the sum of a $N$-bit number and its two's complement is $2^N$. Another way of finding the two's complement is **inverting the binary digits and adding one**.
 
 | 0    | 000  |
 | ---- | ---- |
@@ -336,12 +336,15 @@ The sum of a $N$-bit number and its two's complement is $2^N$. Another way of fi
 | −2   | 110  |
 | −1   | 111  |
 
+The binary two's complement system is the standard way for computers to **represent signed integers**, allowing for the same arithmetic operations to be used for both positive and negative numbers. The main advantage of two's complement is that it **simplifies the arithmetic logic in hardware**, as subtraction can be performed through the addition of two's complements, and **overflow** is handled naturally. Moreover, two's complement representation supports **a symmetrical range of values** and **simplifies the representation and computation of negative numbers**.
+
 Here are two examples of bitwise operation:
 
 ```cpp
 int a = 5;
 int b = 10;
 cout << (a&&b) << ' ' << (a&b) << endl;
+
 // 1 0
 ```
 
@@ -399,8 +402,9 @@ void clearBit(CharacteristicVector & cv, int k) {
    }
    cv.words[k / BITS_PER_LONG] &= ~createMask(k);
 }
-
 ```
+
+
 
 ---
 

@@ -318,7 +318,7 @@ Here is the organization of the *stream*:
 
 which is slightly different from the hierarchies:
 
-![6-3](pictures/6-3.png)
+<img src="pictures/6-3.png" alt="6-3" style="zoom:50%;" />
 
 **Dynamic Libraries**
 
@@ -513,6 +513,8 @@ void initRandomSeed() {
    }
 }
 ```
+
+
 
 ---
 

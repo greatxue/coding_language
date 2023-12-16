@@ -1,7 +1,7 @@
 # 2. Functions & Libraries I
 
 
-> Functions in Programming, Functions in C++, Machanics of Calling a Function
+> Functions in Programming, Functions in C++, Machanics of Calling a Function, Lambda Expressions
 
 *Last update: 23-09-19*
 
@@ -242,6 +242,63 @@ inline int max(int x, int y) {
 ***Inline functions*** in C++ are a special kind of function to enhance the efficiency of the program. During compilation, the compiler **inserts the complete code** of the function body at every place the function is called, instead of making a traditional function call, which is particularly useful for small functions.
 
 *Inlining* is a suggestion, not a command; the compiler can choose to ignore it.
+
+## 2.4 Lambda Expressions **(*)**
+
+C++11 introduced ***Lambda expressions***, providing a convenient way to define **anonymous** functions, ideal for scenarios where a function is **used briefly** and **exactly once**. Widely used in modern C++, especially with STL algorithms, function objects, and event handling.
+
+```cpp
+[ capture_clause ] ( parameters ) -> return_type {
+    // function body
+}
+```
+Here are its components:
+
++ **Capture Clause `[capture_clause]`**: Specifies how Lambda can access variables from its enclosing scope (by value or reference).
+
++ **Parameters `(parameters)`**: Similar to normal function parameters. Can be empty.
+
++ **Return Type `-> return_type`** (Optional for obvious ones): Specifies the return type. 
+
+Here are some detailed examples:
+
+```cpp
+// No Parameters, No Return Value:
+[]() {
+    std::cout << "Hello, Lambda!" << std::endl;
+}
+
+// With Parameters:
+[](int a, int b) {
+    return a + b;
+}
+
+// Capture by Value:
+int x = 10;
+[x]() {
+    std::cout << x << std::endl;
+}
+
+// Capture by Reference:
+int x = 10;
+[&x]() {
+    std::cout << x << std::endl;
+}
+
+// Capture All by Value:
+int x = 10, y = 20;
+[=]() {
+    std::cout << x << ", " << y << std::endl;
+}
+
+// Capture All by Reference:
+int x = 10, y = 20;
+[&]() {
+    std::cout << x << ", " << y << std::endl;
+}
+```
+
+
 
 ---
 

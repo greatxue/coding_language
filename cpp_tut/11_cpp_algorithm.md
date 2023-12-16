@@ -1,4 +1,6 @@
-#             11. Algorithm
+# 11. Algorithm
+
+> Backtracking Algorithms, The Minimax Algorithm, Algorithmic Analysis & Sorting I
 
 *Last Update: 23-11-20*
 
@@ -143,7 +145,7 @@ bool solveMaze(Maze & maze, Point start) {
    maze.markSquare(start);
    for (Direction dir = NORTH; dir <= WEST; dir++) {
       if (!maze.wallExists(start, dir)) {
-         if (solveMaze(maze, (start, dir))) {
+         if (solveMaze(maze, move(start, dir))) {
             return true;
          }
       }
@@ -152,6 +154,20 @@ bool solveMaze(Maze & maze, Point start) {
    return false;
 }
 ```
+
+We will go through the key function `solveMaze` to illustrate the algorithm behind:
+
++ **Check for Boundary Reach:** If the `start` point is outside the maze, it indicates an exit has been found, hence return `true`.
+
++ **Avoid Revisiting:** If the `start` point is already marked, it means it has been visited before. To avoid repeatedly entering dead ends, return `false`.
+
++ **Mark the Current Position:** Mark the `start` point as visited.
+
++ **Try All Directions:** For each direction (North, East, South, West), if there is no wall in that direction, move in that direction and recursively call `solveMaze`.
+
++ **Check for a Solution:** If the recursive call returns `true`, it means an exit has been found, and the current function should also return `true`.
+
++ **Backtracking:** If all directions have been tried and no exit is found, unmark the current position and return `false`.
 
 **Recursion and Concurrency**
 
@@ -171,26 +187,30 @@ The primary advantage of using recursion in these problems is that doing so dram
 
 <img src="pictures/11-4.png" alt="image-20231123155537264" style="zoom:33%;" />
 
-Instead of traversing acouss all the possibilities, we try to solve it *recursively*. First we implement the function `solveQueens()`:
+Instead of traversing across all the possibilities, we could implement operations within **rows** and **columns** using *iteration* and *recursion*, by interpreting the rule as follows:
+
++ **One queen per row:** This is ensured by iterating over each row with the `for` loop.
++ **One queen per column:** This is ensured by the recursive call to `solveQueens` with the incremented `nPlaced` parameter. Each level of recursion represents moving to the next column.
+
+Then we implement the function `solveQueens()` and `main()`:
 
 ```cpp
 bool solveQueens(Grid<char> & board, int nPlaced = 0) {
    int n = board.numRows();
-   if (nPlaced == n) return true;
-   for (int row = 0; row < n; row++) {
-      if (queenIsLegal(board, row, nPlaced)) {
+   if (nPlaced == n) return true; // return true if it is completed
+   // loop to place the queen on each row 
+   for (int row = 0; row < n; row++) { 
+     if (queenIsLegal(board, row, nPlaced)) {
          board[row][nPlaced] = 'Q';
-         if (solveQueens(board, nPlaced + 1)) return true;
+         // return true if true for sub-recursive call of the next column
+         if (solveQueens(board, nPlaced + 1)) return true; 
+         // erase the current one if false in sub-recursive call
          board[row][nPlaced] = ' ';
       }
    }
    return false;
 }
-```
 
-Then we implement the `main()` function:
-
-```cpp
 int main() {
    int n = getInteger("Enter size of board: ");
    Grid<char> board(n, n);
@@ -210,13 +230,13 @@ int main() {
 
 ## 11.2 The Minimax Algorithm
 
-Here we take a simple game called *Nim*. The game begins with a pile of coins between two players. The starting number of coins can vary, and each player takes one, two, or three coins from the pile in the center, while the player who takes the last coin loses.
+Here we take a simple game called *Nim*. The game begins with a pile of coins between two players, while the starting number of coins can vary. Each player takes **one, two, or three** coins from the pile and the player who takes the last coin loses.
 
 The essential insight behind the Nim program is bound up in the following **mutually recursive** definitions:
 
-+ A **good move** is one that leaves your opponent in a bad position: You find yourself with either two, three or four coins on the table.
++ **A good move:** The one that leaves your opponent in a bad position: You find yourself with either **two, three or four** coins on the table.
 
-+ A **bad position** is one that offers no good moves: You find yourself with just one coin on the table.
++ **A bad position:** The one that offers no good moves with just **one** coin on the table.
 
 The implementation of the Nim game is really just a translation of these definitions into code:
 
@@ -278,15 +298,15 @@ int getComputerMove() {
 
 **Game Trees**
 
-<img src="../../../Library/Application Support/typora-user-images/image-20231130193558117.png" alt="image-20231130193558117" style="zoom: 50%;" />
+<img src="pictures/11-5.png" alt="11-5" style="zoom:50%;" />
 
 Most two-player games have the same basic form: The first player (red) must choose between a set of moves, while the second player (blue) has several responses, then red has further choices, and vice versa.
 
 **The Minimax Algorithm**
 
-**Best Result at Worst Case:** Suppose that the ratings two turns from now are as shown. From your perspective, the +9 initially looks attractive; but your can’t get there, since the –5 is better for your opponent. The best you can do is choose the move that leads to the –2.
+**Best Result at Worst Case:** Suppose that the ratings two turns from now are as shown. From your perspective, the +9 initially looks attractive; but your can’t get there, since the –5 is better for your smart opponent. The best you can do is choose the move that leads to the –2.
 
-<img src="../../../Library/Application Support/typora-user-images/image-20231130194359925.png" alt="image-20231130194359925" style="zoom:50%;" />
+<img src="pictures/11-6.png" alt="11-6" style="zoom: 33%;" />
 
 For more complex games, it is necessary to **cut off the analysis at some point** and then evaluate the position, **presumably** using some function that looks at a position and returns a `rating` for that position. Positive ratings are good for the player to move; negative ones are bad.
 
@@ -294,17 +314,17 @@ Instead of choosing the one with the highest rating as you control only half the
 
 Recursion has further applications on Games, like *Deep Blue* and *AlphaGo*.
 
-## 11.3 Algorithmic Analysis
+## 11.3 Algorithmic Analysis & Sorting I
 
 Of all the algorithmic problems, the one with the broadest practical impact is certainly the ***sorting problem***, which is the problem of arranging the elements of an array or a vector in order.
 
-![image-20231130195601012](../../../Library/Application Support/typora-user-images/image-20231130195601012.png)
+![11-7](pictures/11-7.png)
 
 ### 11.3.1 Selection Sort and Efficiency
 
 Of the many sorting algorithms, the easiest one to describe is ***selection sort***:
 
-```coo
+```cpp
 void sort(Vector<int> & vec) {
    int n = vec.size();
    for (int lh = 0; lh < n; lh++) {
@@ -319,7 +339,7 @@ void sort(Vector<int> & vec) {
 }
 ```
 
-Here is the decomposition version:
+If you find the above hard to understand, then there is the decomposition version:
 
 ```cpp
 /*
@@ -340,7 +360,7 @@ Here is the decomposition version:
  */
 
 void sort(Vector<int> & vec) {
-   for ( int lh = 0 ; lh < vec.size() ; lh++ ) {
+   for (int lh = 0 ; lh < vec.size() ; lh++ ) {
       int rh = findSmallest(vec, lh, vec.size() - 1);
       swap(vec[lh], vec[rh]);
    }
@@ -355,7 +375,7 @@ void sort(Vector<int> & vec) {
 
 int findSmallest(Vector<int> & vec, int p1, int p2) {
    int smallestIndex = p1;
-   for ( int i = p1 + 1 ; i <= p2 ; i++ ) {
+   for (int i = p1 + 1 ; i <= p2 ; i++ ) {
       if (vec[i] < vec[smallestIndex]) smallestIndex = i;
    }
    return smallestIndex;
@@ -383,6 +403,7 @@ One strategy is to measure the actual time it takes to run for arrays of differe
 ```cpp
 #include <time.h>
 /* time_t, struct tm, difftime, time, mktime */
+
 int main() {
    Vector<int> vec = createTestVector();
    time_t begin, end;
@@ -393,7 +414,7 @@ int main() {
 }
 ```
 
-Using this strategy (measuring the actual running time) requires some care:
+Using this strategy (measuring the actual running time) could be rough sometimes:
 
 + `time` is often **too rough for accurate measurement**, thus it makes sense to measure several runs together and then divide the total time by the number of repetitions.
 
@@ -411,7 +432,7 @@ In the selection sort implementation, the section of code that is executed most 
 
 Algorithms whose running times increase in proportion to the square of the problem size are said to be ***quadratic***.
 
-![image-20231130200738425](../../../Library/Application Support/typora-user-images/image-20231130200738425.png)
+<img src="pictures/11-8.png" alt="image-20231130200738425" style="zoom:50%;" />
 
 **Big-O Notation**
 
@@ -427,14 +448,16 @@ When you write a big-O expression, you should always make the following **simpli
 
 In many cases, you can deduce the computational complexity of a program directly from the structure of the code, while paying attention to the **dominance** part.
 
+**Worst-case & Average-case**
+
 When analysing the computational complexity of a program, you’re usually not interested in the minimum possible time (**Best-case complexity**) but the following two:
 
 + **Worst-case complexity:** The **upper bound** on the computational complexity. 
-+ You can **guarantee** that the performance  will be at least as good as it indicates. The worst case occurs fairly often for many algorithms.
++ You can **guarantee** that the performance  will be at least as good as it indicates. The worst case occurs fairly often for many algorithms, e.g. look for an element but it does not exist.
 
-+ **Average-case complexity:** The **best statistical estimate** of actual performance. The average case is often roughly as bad as the worst case.
++ **Average-case complexity:** The **best statistical estimate** of actual performance. It requires further knowledge, but the average case is often roughly as bad as the worst case.
 
-For linear search: 
+In particular, a linear search has following complexity references: 
 
 + The worse-case complexity is $O(N)$;
 
@@ -455,9 +478,10 @@ The work done at each level is **proportional to the size of the vector**, thus 
 
 The number of levels in the merge sort decomposition is equal to the number of times you can **divide the original vector in half until there is only one element remaining**, and the complexity is therefore $O(N\log N)$.
 
-![kk](../../../Library/Application Support/typora-user-images/image-20231130202644896.png)
+<img src="pictures/11-9.png" alt="11-9" style="zoom: 50%;" />
 
 Here is the implementation:
+
 ```cpp
 /*
  * The merge sort algorithm consists of the following steps:
@@ -542,9 +566,11 @@ Most sorting libraries use some variation of the ***Quicksort algorithm***:
  * In this implementation, sort is a wrapper function that
  * calls quicksort to do all the work.
  */
+
 void sort(Vector<int> & vec) {
    quicksort(vec, 0, vec.size() - 1);
 }
+
 /*
  * Function: quicksort
  * -------------------
@@ -556,6 +582,7 @@ void sort(Vector<int> & vec) {
  * Sorting the subsidiary vectors to the left and right of the
  * boundary ensures that the entire vector is sorted.
  */
+
 void quicksort(Vector<int> & vec, int start, int finish) {
    if (start >= finish) return;
    int boundary = partition(vec, start, finish);
@@ -605,21 +632,19 @@ In practice, Quicksort is even much faster than Merge sort.
 
 ### 11.3.4 More issues
 
-There are still more issues awaiting exploration:
+There are still more issues about this topic. As it is mainy a language course, it will not be discussed in detail here:
 
-- $$ O $$ (bounded above) vs. $$ \Omega $$ (below) vs. $$ \Theta $$ (both)
-  - The worst case of Quicksort is actually both $$ O(N^2) $$ and $$ \Omega(N^2) $$, therefore $$ \Theta(N^2) $$ too.
-  - An upper bound of the worst case is a bound on the running time of the algorithm **on every input**.
+- **More Notiations:** $$ O $$ (bounded above) vs. $$ \Omega $$ (below) vs. $$ \Theta $$ (both)
+  
+  An upper bound of the worst case is a bound on the running time of the algorithm **on every input**. e.g. The worst case of Quicksort is actually $$ \Theta(N^2) $$ as well.
 
-- **Comparison sorting** vs. other sorting
-  - Worst case of any comparison sort is $$ \Omega(N\log N) $$.
+- **Comparison Sorting:** The worst case of any comparison sort is $$ \Omega(N\log N) $$.
+  
+- Other perspectives of sorting algorithms:
 
-- Number of comparisons vs. number of swaps
-- Time complexity vs. space complexity
-- In-place (at most $$ O(1) $$ extra space) vs. not-in-place
-- Recursive vs. non-recursive
-- Stable vs. unstable
-- Serial vs. parallel
+  Number of comparisons vs. number of swaps, time complexity vs. space complexity, in-place (at most $$ O(1) $$ extra space) vs. not-in-place, recursive vs. non-recursive, stable vs. unstable, serial vs. parallel and so on.
+
+
 
 ---
 

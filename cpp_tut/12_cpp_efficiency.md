@@ -1,5 +1,7 @@
 # 12. Efficiency
 
+> The Array Model, The List-based Model, The Two-stack, Efficiency Analysis
+
 A ***computer program*** is a collection of instructions that can be executed by a computer to perform a specific task.
 
 Niklaus Emil Wirth: **Algorithms + Data Structures = Programs**
@@ -51,7 +53,6 @@ void executeCommand(EditorBuffer & buffer, string line) {
         default: cout << "Illegal command" << endl; break;
     }
 }
-
 ```
 
 And the following methods:
@@ -70,6 +71,12 @@ And the following methods:
 We also provide the `buffer.h` interface:
 
 ```cpp
+#include <string>
+
+class Buffer {
+  
+public:
+  
 /*
  * Methods: moveCursorForward, moveCursorBackward
  * Usage: buffer.moveCursorForward();
@@ -137,14 +144,9 @@ We also provide the `buffer.h` interface:
 
    int getCursor() const;
 
-
-
-
-
 }
 
 #endif
-
 ```
 
 Our goal  is to implement the `EditorBuffer` class in three different underlying data structures and to compare the algorithmic efficiency:
@@ -162,12 +164,12 @@ For each model, we’ll analyze the complexity of each of the six fundamental me
 Conceptually, the simplest strategy for representing the editor buffer is to use **an array for the individual characters**.
 
 + To ensure that the buffer can contain an arbitrary amount of text, it is important to allocate the array storage dynamically and to expand the array whenever the buffer runs out of space.
-
 + The array used to hold the characters will contain elements that are allocated but not yet in use, which makes it necessary to distinguish the **allocated size (capacity)** of the array from its **effective size (length)**.
-
 + The data structure for the editor buffer must contain an additional integer variable that indicates **the current position of the cursor**, ranging from 0 up to and including the length of the buffer.
 
-<img src="../../../Library/Application Support/typora-user-images/image-20231130205124935.png" alt="image-20231130205124935" style="zoom: 33%;" />
+<img src="pictures/12-2.png" alt="12-2" style="zoom:33%;" />
+
+With these guidelines we implement the class like this:
 
 ```cpp
 private:
@@ -190,7 +192,7 @@ private:
 
    char *array;          /* Dynamic array of characters     */
    int capacity;         /* Allocated size of that array    */
-   int length;           /* Number of character in buffer   */
+   int length;           /* Number of characters in buffer  */
    int cursor;           /* Index of character after cursor */
 
 /* Private method prototype */
@@ -269,7 +271,7 @@ void EditorBuffer::insertCharacter(char ch) {
 
 void EditorBuffer::deleteCharacter() {
    if (cursor < length) {
-      for (int i = cursor+1; i < length; i++) {
+      for (int i = cursor + 1; i < length; i++) {
          array[i - 1] = array[i];
       }
       length--;
@@ -311,14 +313,17 @@ The list-based model of the `EditorBuffer` class uses pointers to indicate the o
 
 For example, the buffer is modeled conceptually like this:
 
-![dd](../../../Library/Application Support/typora-user-images/image-20231130205340161.png)
+<img src="pictures/12-3.png" alt="dd" style="zoom:67%;" />
 
-It is impossible to represent all of the possible positions by pointing to some cell. If a list contains **five** cells, there are **six** positions for the cursor. 
+It is impossible to represent all of the possible positions by pointing to some cell. If a list contains **five** cells, there have to be **six** positions for the cursor: the beginning of the cell, the intersection of the cells and the end of the cell.
 
-Hence we allocate a ***dummy cell*** at the beginning of the list, and then represent the position of the cursor by pointing to the cell before the insertion point. Thus, if the cursor is between cell `c` and cell `d`, the pointer **cursor** is pointing to `c`. 
+In order to represent the position of the cursor by **pointing to the cell before the insertion point**, we allocate a dummy cell at the beginning of the list. Hence, the pointer `cursor` pointing to `c` represents the actual cursor at the insertion between cell `c` and cell `d`.
+
+With these guidelines we implement the class like this:
 
 ```cpp
 private:
+
 /*
  * Implementation notes
  * --------------------
@@ -452,7 +457,7 @@ In the two-stack implementation of the `EditorBuffer` class, the characters in t
 + The characters before the cursor are stored in a stack called `before` and the characters after the cursor are stored in a stack called `after`. 
 + Characters in each stack are stored so that the ones close to the cursor are near the top of the stack.
 
-<img src="../../../Library/Application Support/typora-user-images/image-20231130205536052.png" alt="image-20231130205536052" style="zoom: 50%;" />
+<img src="pictures/12-4.png" alt="12-4" style="zoom:50%;" />
 
 ```cpp
 private:
@@ -551,21 +556,54 @@ void EditorBuffer::deleteCharacter() {
    }
 }
 
-/* Exercise:
- * string getText() const;
- * int getCursor() const;
+/* 
+ * Implementation notes: getText and getCursor
+ * ---------------------------------------------------------
+ * The getText method should return the entire content of the  
+ * buffer, which requires to traverse the before stack in reverse 
+ * order and then traverse the after stack in forward order.
+ * The getCursor method should return the current position of 
+ * the cursor, by simply returning the size of the before stack.
  */
+
+string getText() const {
+   std::string text;
+   stack<char> temp = before;
+   stack<char> reverse;
+   
+   while (!temp.empty()) {
+      reverse.push(temp.pop());
+   }
+  
+   while (!reverse.empty()) {
+    text.push_back(reverse.pop());
+   }
+  
+   temp = after;
+   
+   while (!temp.empty()) {
+      text += temp.pop();
+   }
+   return text;
+}
+
+int getCursor() const {
+   return before.size();
+}
+
 ```
 
 ## 12.4 Efficiency Analysis
 
-![image-20231130205718070](../../../Library/Application Support/typora-user-images/image-20231130205718070.png)
+Now that we have completed the implementation, we revisited the above with a comparison:
+
+<img src="pictures/12-6.png" alt="12-6" style="zoom:50%;" />
 
 The complexity of the stack-based operations may not be as straightforward as it appears, because it depends on the complexity of the operations of the `CharStack`.
 
-It is possible to reimplement the editor buffer so that all operations run in **constant time** using *doubly linked lists*, which is a **time-space tradeoffs** .
+It is possible to reimplement the editor buffer so that all operations run in **constant time** using *doubly linked lists* This sacrifice of space for time efficiency is an example of the **time-space tradeoff**.
 
-![image-20231130205948026](../../../Library/Application Support/typora-user-images/image-20231130205948026.png)
+<img src="pictures/12-5.png" alt="12-5" style="zoom:50%;" />
 
 **Amortized Analysis**
 
@@ -588,6 +626,8 @@ $$
 $$
 
 The sum in parentheses is always less than two, so the average time of the worse case is constant. If deletion happens, the constant will be even lower.
+
+
 
 ---
 

@@ -10,11 +10,11 @@
 
 Bytes and words can be used to represent integers of different sizes by interpreting the bits as a number in *binary notation*.
 
-![8-1](pictures/8-1.png)
+<img src="pictures/8-1.png" alt="8-1" style="zoom: 50%;" />
 
 There are *octal* (base 8) or *hexadecimal* (base 16) notations as well:
 
-![8-2](pictures/8-2.png)
+<img src="pictures/8-2.png" alt="8-2" style="zoom:50%;" />
 
 Every four *binary* digits can be tranformed to one *hexadecimal* digit, thus the hexadecimal is also of vital importance.
 
@@ -163,7 +163,7 @@ double y = * px;
 
 For a corresponding vivid diagram:
 
-![8-4](pictures/8-4.png)
+<img src="pictures/8-4.png" alt="8-4" style="zoom:50%;" />
 
 Here is a detailed example illustrating **why pointers are dangerous**:
 
@@ -340,14 +340,25 @@ The size of the array specified in the declaration is called the **allocated siz
 
 ### 8.3.2 Pointers and Arrays
 
-In C++, the name of an array is synonymous with a pointer to its first element. For example, when declaring an array
+In C++, the name of an array is synonymous with **a const pointer to its first element**. For example, when declaring an array
 
 ```cpp
 int list[100];
 ```
 
-the C++ compiler treats the name `list` as a pointer to the address `& list[0]`, and `list[i]` is just `*(list+i)`.
-Although an array is often treated as a *pointer*, they are not entirely equivalent. You can assign an array to a pointer (of the same type) but not vice versa, because an array is a **non-modifiable lvalue** (so are ***constant*** variables).
+The C++ compiler treats the name `list` as a pointer to the address `& list[0]`, and `list[i]` is just an alias of `*(list+i)`. Although an array is often treated as a *pointer*, they are not entirely equivalent. You can assign an array to a pointer (of the same type) but not vice versa, because an array is a **non-modifiable lvalue** (so are ***constant*** variables).
+
+There are even more confusing syntaxes concerning the declaration of `p`:
+
++ `int *p` is **a pointer to `int`**
+
++ `int (*p)[2]` is **a pointer to an array of 2 `int`**
+
++ `int* p[10]` is **an array** containing 10 elements, each element is a pointer to `int`.
+
++ `(int*) p[10]` looks for the element with index 10, and convert it to a `int*`, which often raises an *error*.
+
++ `int (*p)[10]` is **a pointer to the entire array of 10 `int`**
 
 When you pass an array to a function, only the *address* of the array is copied into the parameter. This strategy has the effect of **calling by pointer**.
 
@@ -439,6 +450,8 @@ Here are two examples of this idiom:
   + This assignment operation is also the condition for the `while` loop. In C++, the **value** of an assignment expression is that **on the right-hand side**. Therefore, the loop will continue to execute until `*src` is the null character `\0` (ASCII value is 0), which is  `false` in a boolean context marking the loop stop.
   
   Note that this function does not check the size of the destination array `dst`, so it can lead to **buffer overflow** if `dst` is not large enough to store `src`.
+  
+  
 
 ---
 

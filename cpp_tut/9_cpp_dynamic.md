@@ -326,9 +326,23 @@ For a better understanding, we implement a `CharStack` Class using dynamic alloc
 
 From the codes above, there are two which deserves paying attention to:
 
-+ **`array` and `oldArray`:**  In the code, `array` is the **original** character array pointer, and `oldArray` is a **backup** pointer used to save the original address of `array`. When you reallocate memory for `array` (using `new`), `array` will point to the new memory address, while `oldArray` still points to the original memory address.
++ **`array` and `oldArray`:**  
 
-+ **Here `++i` and `i++` are quite different:** `array[count++] = ch;` first **stores** the value `ch` at the current position in `array` (specified by the `count` index) and then *increments* `count` by 1, while `return array[--count];` first *decrements* `count` by 1 and then **returns** the value of `array` at that position.
+  In the code, `array` is the **original** character array pointer, and `oldArray` is a **backup** pointer used to save the original address of `array`. 
+
+  When you reallocate memory for `array` (using `new`), `array` will point to the new memory address, while `oldArray` still points to the original memory address.
+
++ **Here `++i` and `i++` are quite different:** 
+
+  The syntax`array[count++] = ch` first **stores** the value `ch` at the current position in `array` (specified by the `count` index) and then *increments* `count` by 1;
+
+  The syntax `return array[--count]` first *decrements* `count` by 1 and then **returns** the value of `array` at that position.
+
++ **The `clear()` method: **By setting `count` to 0, the `clear()` function essentially indicates that there are no longer any elements in the stack. 
+
+  If `count` is 0, no `pop` operations will occur, meaning that the stack is considered "empty", although the physical memory may still retain the previous data until the destructor is called. 
+
+  This is fine for storing static memory types like `char`, but if storing pointers to dynamic structures, it could lead to memory leaks.
 
 ## 9.3 Copying Objects
 
@@ -395,6 +409,20 @@ void CharStack::deepCopy(const CharStack & src) {
 ```
 
 Pay attention: `this` provides **a pointer to the current object**, while `*this` provides **a reference to the object itself**. When you use `this`, you are dealing with a pointer; when you use `*this`, you are dealing with the object itself.  
+
+**Making Copying Illegal**
+
+For the implementation of some data structures like `StringMap`, these two could be left blank intentionally to forbid *deep copy*:
+
+```cpp
+StringMap(const StringMap & src) {
+  // intentionally left blank
+}
+
+StringMap & operator=(const StringMap & src) {
+  return *this; 
+}
+```
 
 ## 9.4 Unit Testing
 
@@ -644,6 +672,8 @@ private:
 ```
 
 *Move semantics* need to be used in conjunction with `std::move(temp)`. It converts `temp` into a right-value reference, **allowing the *move constructor* rather than the *copy constructor*** to be called when returning `temp`. This means that resources are transferred instead of creating a duplicate, which can improve efficiency and reduce memory usage.
+
+
 
 ---
 

@@ -1,5 +1,7 @@
 # 18. Inheritance
 
+> Simple Inheritance, Multiple Inheritance
+
 *Last Update: 23-11-29*
 
 ## 18.1 Simple Inheritance
@@ -47,9 +49,39 @@ In C++, *polymorphism* is represented in two types:
 
 In Python, defining a subclass method automatically overrides the definition of that method in its superclass (no explicit marking is needed). 
 
-If you leave out the **virtual** keyword, the compiler for C++ determines which version of a method to call based on **how the object is declared** and **not on how the object is constructed**. 
+If you leave out the `virtual` keyword, the compiler for C++ determines which version of a method to call based on **how the object is declared** and **not on how the object is constructed**. 
 
-If a pointer is declared as the superclass but pointed to the subclass, and a method is called using this pointer, the superclass method will be called if it’s non-`virtual`, but the overridden method in the subclass will be called if it’s marked as `virtual` in the superclass.
+```cpp
+class Base {
+public:
+    void nonVirtualMethod() { /* Base */ }
+};
+
+class Derived : public Base {
+public:
+    void nonVirtualMethod() { /* Derived */ }
+};
+
+Base* ptr = new Derived();
+ptr->nonVirtualMethod();  // Base::nonVirtualMethod
+```
+
+If a pointer is declared as the superclass but pointed to the subclass, and a method is called using this pointer, the superclass method will be called if it’s non-`virtual`, but **the overridden method in the subclass** will be called if it’s marked as `virtual` in the superclass.
+
+```cpp
+class Base {
+public:
+    virtual void virtualMethod() { /* Base */ }
+};
+
+class Derived : public Base {
+public:
+    void virtualMethod() override { /* Derived */ }
+};
+
+Base* ptr = new Derived();
+ptr->virtualMethod();  // Derived::virtualMethod
+```
 
 **Virtual methods and Abstract classes**
 
@@ -73,7 +105,7 @@ In Python, it is always legal to assign an object of a subclass to a variable de
 
 To avoid slicing, one approach is to define *private* versions of the **copy constructor** and **assignment operator** so that copying objects in that inheritance hierarchy is prohibited (just like the stream class hierarchy in C++).
 
-However, it is always legal to assign *pointers* to objects, as all pointers are of the same size. Then we use pointers rather than objects themselves.
+However, it is always legal to assign *pointers* to objects, as all pointers are of the same size. Then we **use pointers rather than objects themselves**.
 
 ```cpp
 // ERR!
@@ -98,7 +130,20 @@ The designers of the C++ libraries made different choices in different situation
 + **The collection classes** are implemented as **independent** classes that do not form an inheritance hierarchy. 
 + **The stream classes**, by contrast, **form a sophisticated hierarchy** but do not allow assignment and copying. In each case, the designers chose to keep the details of memory management hidden from the client.
 
-Here is an example:
+This code followed defines four classes: `A`, `B`, `C`, and `D`, where `A` is the base class, and `B`, `C`, and `D` are its derived classes. Each class includes a `display()` function that outputs the class name and the values of some member variables.
+
+- Class `A` has an integer member `a` and a `display()` function.
+- Class `B`, inheriting from `A`, adds an integer member `b` and overrides the `display()` function.
+- Class `C`, inheriting from `B`, adds an integer member `c` and overrides the `display()` function, where the `display()` function is declared as a virtual function.
+- Class `D`, inheriting from `C`, adds an integer member `d` and overrides the `display()` function.
+
+In the `main()` function, objects of these four classes are created, and their respective `display()` functions are called. Then, through object assignment and pointer operations, the concepts of polymorphism and object slicing are demonstrated.
+
+- Objects `oA`, `oB`, `oC`, `oD` are created and call their respective `display()` methods.
+- `oA = oB;` This line performs object slicing, where only the `A` part of `B` is copied to `oA`, so `oA.display()` still calls the `display()` method of class `A`.
+- `oC = oD;` When `oD` is assigned to `oC`, object slicing occurs. This means that only the `C` part of `oD` is copied to `oC`. Since this copying process is based on the `C` type, the `display()` method in `oC` remains the one defined in the `C` class.
+- `A* pA = &oB;` creates a pointer of type `A` pointing to `oB`. Since `A`'s `display()` method is not virtual, `pA->display()` calls the `display()` method of class `A`.
+- `C* pC = &oD;` creates a pointer of type `C` pointing to `oD`. Here, since `C`'s `display()` method is a virtual function, `pC->display()` calls the overridden `display()` method of class `D`.
 
 ```cpp
 class A {
@@ -131,7 +176,7 @@ public:
 
 int main() {
     A oA;
-    oA.display();
+    oA.display(); 
     B oB;
     oB.display();
     C oC;
@@ -139,13 +184,13 @@ int main() {
     D oD;
     oD.display();
     oA = oB;
-    oA.display();
+    oA.display(); // A::display()
     oC = oD;
-    oC.display();
+    oC.display(); // C::display()
     A* pA = &oB;
-    pA->display();
+    pA->display(); // A::display()
     C* pC = &oD;
-    pC->display();
+    pC->display(); // D::display()
 }
 ```
 
@@ -441,6 +486,19 @@ Multiple Inheritance tends to be dangerous.
 
 This is "deadly diamond of death", an ambiguity that arises when two classes B and C inherit from A, and class D inherits from both B and C. If there is **a method in A** that **B and C have overridden**, and **D does not override it**, then which version of the method does D inherit: that of B, or that of C? 
 
+This code followed defines four classes: `A`, `B`, `C`, and `D`, where `A` is the base class, and `B`, `C`, and `D` are its derived classes. Each class includes a `display()` function that outputs the class name and the values of some member variables. 
+
++ **Class A**: Has an integer member `a` and a `display()` function. 
++ **Class B**: Inherits from `A`. Adds an integer member `b` and overrides the `display()` function. 
++ **Class C**: Inherits from `A`. Adds an integer member `c` and overrides the `display()` function. 
++ **Class D**: Inherits from both `B` and `C`. Adds an integer member `d` and overrides the `display()` function.
+
+In the `main()` function, objects of these four classes are created, and their respective `display()` functions are called. 
+
++ `display()` method is not virtual, `pA->display()` calls the `display()` method of class `A`. However, this will raise an error for member collision and pointer type conversion (2 `A` objects in `D`, one from `B` and another from `C`)
++ `B* pB = &oD;`: Creates a pointer of type `B` pointing to `oD`. Since `B` inherits from `A`, `pB->display()` calls the overridden `display()` method in `B`, which has been part of class `D`.
++ `C* pC = &oD;`: Creates a pointer of type `C` pointing to `oD`. Similarly, `pC->display()` calls the overridden `display()` method in `C`, which has been part of class `D`.
+
 ```cpp
 class A {
 public:
@@ -484,9 +542,9 @@ int main() {
     pA->display();
     */
     B* pB = &oD;
-    pB->display();
+    pB->display(); // B::display()
     C* pC = &oD;
-    pC->display();
+    pC->display(); // C::display()
 }
 ```
 
@@ -505,37 +563,11 @@ What’s the output if `display()` is `virtual` in `A` or `B` or `C`?
 
 **Virtual Inheritance**
 
-Different languages have different ways of dealing with these problems of multiple inheritance. C++ by default follows each inheritance path separately, so a D object would actually contain two separate A objects, and uses of A's members have to be properly qualified.
+Different languages have different ways of dealing with these problems of multiple inheritance. C++ by default **follows each inheritance path separately**, so a D object would actually contain two separate A objects, and uses of A's members have to be properly qualified.
 
 If the inheritance from A to B and the inheritance from A to C are both marked `virtual`, C++ takes special care to only create one A object, and uses of A's members work correctly. 
 
 In the stream hierarchy, `ios` is a virtual base of both `istream` and `ostream`.
-
-```cpp
-class A {
-public:
-    virtual void doSomething();
-};
-
-class B : virtual public A {
-public:
-    void doSomething() override; // overide: C++11, B's version
-};
-
-class C : virtual public A {
-public:
-    void doSomething() override; // C's version
-};
-
-class D : public B, public C {
-public:
-    void useMethod() {
-        B::doSomething(); // Call B's version
-        C::doSomething(); // Call C's version
-    }
-};
-
-```
 
 Here is an example:
 
@@ -570,24 +602,25 @@ public:
 
 int main() {
     A oA;
-    oA.display();
+    oA.display(); 
     B oB;
-    oB.display();
+    oB.display(); 
     C oC;
-    oC.display();
+    oC.display(); 
     D oD;
-    oD.display();
-    A* pA = &oD;
-    pA->display();
+    oD.display(); 
+    A* pA = &oD; 
+    pA->display(); // A::display()
     B* pB = &oD;
-    pB->display();
+    pB->display(); // B::display()
     C* pC = &oD;
-    pC->display();
+    pC->display(); // C::display()
 }
-
 ```
 
-and the output
+
+
+Here's the corresponding output
 
 ```txt
 1
@@ -616,6 +649,8 @@ and the output
 **An improved Multi-Inheritance UML Diagram**
 
 <img src="pictures/18-7.png" alt="18-7" style="zoom:50%;" />
+
+
 
 ---
 

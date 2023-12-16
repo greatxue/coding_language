@@ -601,5 +601,7 @@ Also some may feel confused  `os` is returned as the reference when *overloading
 std::cout << rat1 << " and " << rat2 << std::endl;
 ```
 
+
+
 ---
 

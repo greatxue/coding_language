@@ -1,5 +1,7 @@
 # 13. Linear Structures
 
+> Technics for Linear Structures, Implementation of Linear Structures, Type Deduction
+
 *Last Update: 23-11-21*
 
 First we recap what we have implemented as `CharStack` Class:
@@ -35,7 +37,7 @@ First we recap what we have implemented as `CharStack` Class:
   private:
      char *array;          
      int capacity; /* allocated size of the array */
-     int count; 	 /* crt count of chars pushed */
+     int count; 	 /* crt count of chars pushed   */
   
   /* Private function prototypes */
      void expandCapacity();
@@ -122,7 +124,7 @@ int main () {
 }
 ```
 
-Actually, C++ can help you generate the overloading **automatically**.
+In this case between `int` and `double`, C++ can help you generate the overloading version **automatically**.
 
 **Templates**
 
@@ -133,9 +135,7 @@ template <typename placeholder>
 template <typename placeholder1, typename placeholder2>
 ```
 
-The `placeholder` is an identifier that is used to stand for a specific type, and `typename` can also be a **class**.
-
-Pay attention that a template is not a class or a function. It is a “pattern” that the compiler uses to generate **a generic collection** of classes or functions. 
+The `placeholder` is an identifier that is used to stand for a specific type, and `typename` can also be a **struct** or **class**. However, the template itself is not a class or a function. It is a “pattern” that the compiler uses to generate **a generic collection** of classes or functions.
 
 + Here is an example:
   ```cpp
@@ -185,7 +185,9 @@ Stack<ValueType>::Stack() {
 }
 ```
 
-Because of the restrictions of C++ compilers, the implementations of the methods **need to be included** as part of the `stack.h` header, even though the details are not of interest to most clients. You could gently *comment* them.
+Because of compile's restrictions, the implementations of the methods **need to be included** as part of the `stack.h` header, even though the details are not of interest to most clients. 
+
+You could implement it in the `.inl` file and include it within the `.h` file,or simply comment to specify the implementation section.
 
 Here is the complete implementation:
 
@@ -427,7 +429,7 @@ void Stack<ValueType>::expandCapacity() {
 
 It is also possible to implement stacks **using the list structure**. The top of the stack is the first element in the list and each additional item appears one cell further down. We will delve into the detail when we implement the **list-based queue**.
 
-![13-1](pictures/13-1.png)
+<img src="pictures/13-1.png" alt="13-1" style="zoom:50%;" />
 
 The implementation of the **list-based stack** is much simpler than the corresponding code for the **list-based queue**, as
 
@@ -954,6 +956,62 @@ However, it is even more difficult to maintain that level of separation as the i
 
 + C++ even allows class definitions to include the bodies of the methods not only in the `.h` file, but directly **within the classes**, hence the `template` keyword appears only once and the `::` tags could be eliminated.
 
-In the latest C++ standard updates, there are other ways to avoid combining code and prototypes, even for the template definitions. These techincs include *Concept* and *Module*, and might be intruduced in the subpages.
+In the latest C++ standard updates, there are other ways to avoid combining code and prototypes, even for the template definitions, including technics like *Concept* and *Module*.
+
+## 13.3 Type Deduction **(*)**
+
+C++11 introduced two key features for type deduction: `auto` and `decltype`. These features simplify type declarations, especially when dealing with complex types or templates.
+
+**`auto` keyword**
+
+```cpp
+auto variable_name = initializer;
+```
+
+Here are cases where they are often used:
+
++ STL Iterators:
+
+  ```cpp
+  std::vector<int> vec = {1, 2, 3, 4, 5};
+  auto it = vec.begin(); // Iterator type automatically deduced
+  ```
+
++ Range-based loops:
+
+  ```cpp
+  for (auto element : vec) {
+      // element's type is deduced to be int
+  }
+  ```
+
+**`declatype` keyword**
+
+```cpp
+decltype(expression) variable_name;
+```
+
+Here are cases where they are applied:
+
++ When you need to know the type of an expression without actually executing that expression. 
+
+  ```cpp
+  std::vector<int> vec;
+  decltype(vec.begin()) it; // std::vector<int>::iterator
+  ```
+
++ In template programming, especially when used in conjunction with `decltype(auto)`, it is used for precisely deducing return types.
+
+  ```cpp
+  template<typename T, typename U>
+  auto add(T t, U u) -> decltype(t + u) {
+      return t + u;
+  }
+  ```
+
+With these characteristics, you could better handle with codes of complex data structures.
+
+
 
 ---
+
