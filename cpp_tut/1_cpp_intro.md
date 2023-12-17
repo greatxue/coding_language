@@ -1,6 +1,6 @@
 # 1. Introduction to C++
 
-> History of C++, Comparisons, Structure and Syntaxes
+> History of C++, Comparisons, Structure and Syntaxes, Preprocessing Directives, Error Handling
 
 *Last Update: 23-11-15*
 
@@ -11,7 +11,7 @@ Here we have a brief review of the development of coding languages:
 
 ![1-1](pictures/1-1.png)
 
-The C++ programming language was developed by Bjarne Stroustrup at Bell Labs since 1979, as an extension of the C language.
+The C++ programming language was developed by Bjarne Stroustrup at **Bell Labs** since 1979, as an extension of the C language.
 
 C++ was initially standardized in 1998 by the International Organization for Standardization (ISO) as C++98, which was then amended by the following standards like C++03 and C++11, etc.
 
@@ -42,7 +42,7 @@ We will apply C++98 in most of the material, and occasionally refer to features 
 
 + In general, *interpreted* programs run slower than the *compiled* programs.
 
-   **Java** is a compiled programming language, but its source code is compiled to an intermediate binary form called *bytecode*. The bytecode is then executed by a Java Virtual Machine (JVM), which supports different systems. 
+  **Java** is a compiled programming language, but its source code is compiled to an intermediate binary form called *bytecode*. The bytecode is then executed by a Java Virtual Machine (JVM), which supports different systems. 
 
 ## 1.3 Structure and Syntaxes
 
@@ -73,14 +73,9 @@ To instruct the compiler to read the relevant definitions from a header file, we
 
 **Namespaces**
 
-To ensure that the names defined in different parts do not interfere with one another, C++ segments code into structures called ***namespaces***, each of which keeps track of its own set of names. The **Standard C++ Libraries** use a namespace called `std`.
+A ***namespace*** is a mechanism used to organize identifiers (such as functions, classes, variables, etc) in the global scope into a named scope, thereby **reducing the possibility of global naming conflicts**, with each of which keeping track of its own set of names. 
 
-Instead of mentioning the namespace name all the time, we may use `using`:
-
-```cpp
-using namespace x;
-using namespace x::name1; // explicitly
-```
+The **Standard C++ Libraries** use a namespace called `std` by default.
 
 (*****) To declare a namespace, simply use
 
@@ -100,6 +95,13 @@ int main() {
     math::value = 5;
     math::add_one();
 }
+```
+
+Instead of mentioning the namespace name all the time, we may use `using`:
+
+```cpp
+using namespace x;
+using namespace x::name1; // explicitly
 ```
 
 **Preprocessor directives**
@@ -124,11 +126,11 @@ A ***function*** is a named section of code that performs a specific operation.
 
 Every C++ program must contain a function with the name `main` to call other functions, which specifies the starting point for the computation and the end of execution when `return`.
 
-A declaration of the function called a ***function prototype*** must appear before the `main` function, to comply with the “declare-before-use” rule.
+A declaration of the function called a ***function prototype*** must appear before the `main` function, to comply with the “declare-before-use” rule. It is written directly before `main()` sometimes, or in the header file then included in.
 
 **Comments**
 
-A ***comment*** is text that is ignored by the compiler but nonetheless conveys information about the source code.
+A ***comment*** is text that is ignored by the compiler but nonetheless conveys information about the source code. It could exist anywhere where blank space takes no effect.
 
 + Multi-line comments:
 
@@ -149,16 +151,18 @@ A ***comment*** is text that is ignored by the compiler but nonetheless conveys 
 
 **Data Types**
 
-A ***data type*** is defined by a domain with values and operations:
+A ***data type*** is a combination of the representation defined by a domain with values and operations:
 
-+ A set of values that belong to that type
++ A set of values that belong to that type.
 + A set of operations, which defines the behavior of that type.
 
 Although many data types are represented using object classes or other compound structures (more details later), C++ defines a set of ***primitive types*** to represent simple data, like `int`, `double`, `bool` and `char`.
 
 **Variables**
 
-A ***variable*** is a named *address* for storing a type of value. In C++, you must *declare* a variable before you can use it. 
+A ***variable*** is just a named *address* for storing a type of value. 
+
+In C++ or other static-based language, you must declare a variable before you can use it.
 
 ```cpp
 type name = value;
@@ -166,18 +170,18 @@ type name = value;
 
 Here are some rules for the naming of variables:
 
-+ Variable name is case sensitive, and should avoid *reserved words*.
++ Variable name is **case sensitive**, and should **avoid** *reserved words* as follows.
 
-+ The name must start with a letter or the underscore character (_).
++ The name must **start with a letter or the underscore character (_)**.
 
 + All other characters in the name must be letters, digits, or the underscore. No spaces or other special characters are permitted in names.
 
-![1-3](pictures/1-3.png)
+<img src="pictures/1-3.png" alt="1-3" style="zoom:150%;" />
 
 There is a *scope* and an *extent* for the variables:
 
-+ The ***scope*** of a variable describes where in a program's text the variable may be used
-+ The ***extent*** (or ***lifetime***) describes when a variable has a (meaningful) value in a program's execution.
++ The ***scope*** of a variable describes where in a program's text **the variable may be accessible**.
++ The ***extent*** (or ***lifetime***) describes when a variable **has a (meaningful) value** in a program's execution.
 
 Here are 3 types of variables different in ther scopes and extents:
 
@@ -197,7 +201,7 @@ Unlike a *variable*, which is a placeholder for a value that can be updated as t
   const double PI = 3.14159265358979323846;
   ```
 
-+ The `constant` exists only in the file where it is created. To the contrary, the way to define in the *directive* will hold it valid throughout execution:
++ The `constant` exists **only in the file** where it is created. To the contrary, the way to define in the *directive* will take effect **in compile-time**, and hold it valid throughout execution:
 
   ```cp
   #define PI 3.14159265358979323846
@@ -227,7 +231,7 @@ The most common ***operators*** in C++ are the ones that specify arithmetic comp
 
 If an expression contains more than one operator, C++ uses ***precedence rules*** to determine the order of evaluation. Anyway, parentheses `()` may be used to change the order of operations. 
 
-![1-5](pictures/1-5.png)
+<img src="pictures/1-5.png" alt="1-5" style="zoom:150%;" />
 
 **Division and Type Casts**
 
@@ -289,7 +293,7 @@ The operators used with the `boolean` data type fall into two categories: ***rel
 
 C++ evaluates the `&&` and `||` operators using a strategy called **short-circuit mode** in which it evaluates the right operand only if it needs to do so. 
 
-One of the advamtages is to prevent execution errors. If `n` were 0 in the earlier example, evaluating `x % n` would cause a “division by zero” error:
+One of the advamtages is to prevent execution errors: If `n` were 0 in the earlier example, evaluating `x % n` would cause a “division by zero” error. However, once `n != 0` is false, the whole expression will return false.
 
 ```cpp
 n != 0 && x % n == 0
@@ -361,6 +365,8 @@ There is also a shortcut named `?:` operator.
 max = (x > y) ? x : y;
 ```
 
+The the kind of story is like: Is x larger than y? If it is, then `max = x`; else `max = y`.
+
 **`switch` Statements**
 
 It provides a convenient syntax for choosing among a set of possible paths:
@@ -379,7 +385,9 @@ switch (expression) {
 }
 ```
 
-If `break` is not included in one case, all statements **following the case** are also executed, until a `break` is reached or the end of the switch block.
+Intuitively, if no cases is satisfied, the branch will fall to `default`.
+
+If `break` is not included in one case, all statements **following the case** are also executed, until a `break` is reached or the end of the switch block. It is always a good habit to conclude a `break` at the end.
 
 **`for` statements and `while` statements**
 
@@ -418,10 +426,10 @@ If `break` is not included in one case, all statements **following the case** ar
 
 **Keywords for loops**
 
-- **`break` **: The `break` keyword is used to immediately terminate the execution of  a `for`/`while`/`do-while` loop, exiting the currently innermost loop that it is in.
-- **`continue`**: The `continue` keyword is used to skip the remaining part of the current loop iteration and proceed to the next iteration. It only affects the current iteration of the loop, not the entire loop.
+- **`break` **: The `break` keyword is used to **immediately terminate the execution** of  a `for`/`while`/`do-while` loop, exiting the currently innermost loop that it is in.
+- **`continue`**: The `continue` keyword is used to **skip the remaining part of the current loop iteration and proceed to the next iteration**. It only affects the current iteration of the loop, not the entire loop.
 
-### 1.3.5 Preprocessing Directives (*****)
+## 1.4 Preprocessing Directives (*****)
 
 Here are preprocessing directives commonly used:
 
@@ -461,7 +469,9 @@ Here are preprocessing directives commonly used:
   #pragma once
   ```
 
-### 1.3.6 Error Handling (*****)
+## 1.5 Error Handling (*****)
+
+Here we will brief introduce technics handling errors.
 
 ```cpp
 #include <iostream>

@@ -8,6 +8,11 @@
 
 ### 18.1.1 Inheritance Strategies
 
+The designers of the C++ libraries made different choices in different situations.
+
++ **The collection classes** are implemented as **independent** classes that do not form an inheritance hierarchy. 
++ **The stream classes**, by contrast, **form a sophisticated hierarchy** but do not allow assignment and copying. In each case, the designers chose to keep the details of memory management hidden from the client.
+
 **Class Hierarchies**
 
 Much of the power of modern object-oriented languages comes from the fact that they support **class hierarchies** between the ***subclass*** and the ***superclass***:
@@ -40,52 +45,48 @@ Subclasses have access to the `public` and `protected` (but not `private`) membe
 
 <img src="pictures/18-1.png" alt="image-20231128093714627" style="zoom: 67%;" />
 
+Here maybe we need to explain `protected` in greater details:
+
++ **Inside the class:** Protected members are accessible within the interior of the class they belong to, just like private members. 
++ **Derived classes:** Unlike private members, protected members are **accessible within derived classes**. This means that a base class's protected members can be accessed by any of its direct or indirect subclasses. 
++ **Outside the class:** Different from public members, protected members cannot be directly accessed by class objects. In other words, outside of the class, these members behave like private members.
+
+**Calling Superclass Constructors**
+
+In the example above, we have some new findings. When you call the constructor for an object, the constructor ordinarily calls the ***default constructor*** for the superclass, which is the one that takes no arguments.
+
+You can call a different version of the superclass constructor by adding an initializer list to the constructor header, which is the second form of the initializer list.
+
+```cpp
+class GSquare : public GRect {
+   GSquare(double x, double y, double size)
+                  : GRect(x, y, size, size) {
+      /* Empty */
+   }
+};
+```
+
+This example is only used to illustrate an initializer list, and generally square should not be a subclass of rectangle.
+
+### 18.1.2 Polymorphism Representation
+
 **Overloading vs. Overriding**
 
-In C++, *polymorphism* is represented in two types:
+In C++, the *polymorphism* is reflected in two types, both static and dynamic ones:
 
-+ **Static/Compile-time polymorphism: ** *Overloading* is about multiple functions/operators/methods of the same name but different signatures and possibly different implementations.
-+ **Dynamic /Run-time polymorphism: ** *Overriding* is about multiple methods of the same signature but different implementations defined in different classes connected through inheritance.
++ ***Overloading*** is about multiple functions/operators/methods of the same name but different signatures and possibly different implementations. It is a reflection of **static/compile-time polymorphism**.
 
-In Python, defining a subclass method automatically overrides the definition of that method in its superclass (no explicit marking is needed). 
++ ***Overriding*** is about multiple methods of the same signature but different implementations defined in different classes connected through inheritance. It is a reflection of **dynamic/run-time polymorphism**.
 
-If you leave out the `virtual` keyword, the compiler for C++ determines which version of a method to call based on **how the object is declared** and **not on how the object is constructed**. 
-
-```cpp
-class Base {
-public:
-    void nonVirtualMethod() { /* Base */ }
-};
-
-class Derived : public Base {
-public:
-    void nonVirtualMethod() { /* Derived */ }
-};
-
-Base* ptr = new Derived();
-ptr->nonVirtualMethod();  // Base::nonVirtualMethod
-```
-
-If a pointer is declared as the superclass but pointed to the subclass, and a method is called using this pointer, the superclass method will be called if it’s non-`virtual`, but **the overridden method in the subclass** will be called if it’s marked as `virtual` in the superclass.
-
-```cpp
-class Base {
-public:
-    virtual void virtualMethod() { /* Base */ }
-};
-
-class Derived : public Base {
-public:
-    void virtualMethod() override { /* Derived */ }
-};
-
-Base* ptr = new Derived();
-ptr->virtualMethod();  // Derived::virtualMethod
-```
+In Python, defining a subclass method automatically overrides the definition of that method in its superclass (no explicit marking is needed). In C++, things become somehow complex.
 
 **Virtual methods and Abstract classes**
 
-In the superclass hierarchy, the method *overridden* differently in each subclass is a ***virtual method***. Once a method is declared as a virtual method, it becomes virtual in every subclass (thus no keyword `virtual` needed).
+In the superclass hierarchy, the method *overridden* differently in each subclass is a ***virtual method***. Once a method is declared as a virtual method, it becomes virtual in every subclass, thus the keyword `virtual` is not a must.
+
+**(*)** Each class that uses virtual functions (or is derived from a class that uses virtual functions) has its own *virtual function table*, and every object of a class with virtual functions has a hidden a *vptr*.
+
+The concept of a pure virtual function is to **specify an interface in the base class without providing an implementation**, forcing the derived class to provide an implementation. If the base class has already provided an implementation, then the function is no longer a pure virtual function. 
 
 Any method that is always implemented by a concrete subclass is indicated by including `= 0` before the `;` on the prototype line, to mark the definition of a ***pure virtual method***.
 
@@ -97,11 +98,73 @@ class Employee {
 
 Because of the *pure virtual method*, an ***abstract class*** could never be instantiated, but instead serves as a common superclass for other ***concrete classes*** corresponding to actual objects. If its subclasses also fail to implement those virtual methods, they will become *concrete classes* as well.
 
-If we declare a pointer of an abstract class, it will later be used to **point to an object of a concrete subclass** inheriting from the abstract superclass, and thus is a representation of *polymorphism* (instead of the *hiding* behaviour corresponding to a non-`virtual` one.
+If we declare a pointer of **a class with virtual methods**, it could later be used to **point to an object of a  subclass** inheriting from it, and thus is the core of *polymorphism*. Using `->`, the pointer could invoke the method of that in the concrete subclass.
+
+```cpp
+class Base {
+public:
+   virtual void virtualMethod() { /* Base */ }
+};
+
+class Derived : public Base {
+public:
+   void virtualMethod() { /* Derived */ }
+};
+
+Base* ptr = new Derived();
+ptr->virtualMethod();  // Derived::virtualMethod
+
+Base* ptr = new Base();
+ptr->virtualMethod();  // Base::virtualMethod
+```
+
+If the class with virtual methods is an abstract class, it will behave exactly the same.
+
+```cpp
+class Base {
+public:
+   virtual void virtualMethod() = 0；
+};
+
+class Derived : public Base {
+public:
+   void virtualMethod() { /* Derived */ }
+};
+
+Base* ptr = new Derived();
+ptr->virtualMethod();  // Derived::virtualMethod
+
+Base* ptr = new Base();
+ptr->virtualMethod();  // ERR
+```
+
+FIf we declare a pointer of an abstract class, it could later be used to **point to an object of a concrete subclass** inheriting from the abstract superclass, and thus is the core of *polymorphism*. Using `->`, the pointer could invoke the method of that in the concrete subclass.
+
+However, for a non-`virtual` one with *hiding* behaviour, 
+
+```cpp
+class Base {
+public:
+   void nonVirtualMethod() { /* Base */ }
+};
+
+class Derived : public Base {
+public:
+   void nonVirtualMethod() { /* Derived */ }
+};
+
+Base* ptr = new Derived();
+ptr->nonVirtualMethod();  // Base::nonVirtualMethod
+
+Base* ptr = new Derived();
+ptr->nonVirtualMethod();  // Base::nonVirtualMethod
+```
+
+**(*)** In case you get frustrated, C++11 provides a keyword `override` to check if it really overrides in the compile time.
 
 **Slicing problem**
 
-In Python, it is always legal to assign an object of a subclass to a variable declared to be its superclass. When similar operations happen in C++, it throws away any *fields* in the assigned object that don’t fit into the superclass by default, which is called ***slicing***. 
+Maybe you havve noticed we always use pointers above. In Python, it is always legal to assign an object of a subclass to a variable declared to be its superclass. When similar operations happen in C++, it **throws away any fields in the assigned object that don’t fit into the superclass by default**, which is called ***slicing***. 
 
 To avoid slicing, one approach is to define *private* versions of the **copy constructor** and **assignment operator** so that copying objects in that inheritance hierarchy is prohibited (just like the stream class hierarchy in C++).
 
@@ -123,27 +186,26 @@ for (Employee *ep : payroll) {
 }
 ```
 
-**Practical Implementation**
+### 18.1.3 Examples for `virtual` methods
 
-The designers of the C++ libraries made different choices in different situations.
-
-+ **The collection classes** are implemented as **independent** classes that do not form an inheritance hierarchy. 
-+ **The stream classes**, by contrast, **form a sophisticated hierarchy** but do not allow assignment and copying. In each case, the designers chose to keep the details of memory management hidden from the client.
+**Dynamic Example**
 
 This code followed defines four classes: `A`, `B`, `C`, and `D`, where `A` is the base class, and `B`, `C`, and `D` are its derived classes. Each class includes a `display()` function that outputs the class name and the values of some member variables.
 
 - Class `A` has an integer member `a` and a `display()` function.
 - Class `B`, inheriting from `A`, adds an integer member `b` and overrides the `display()` function.
-- Class `C`, inheriting from `B`, adds an integer member `c` and overrides the `display()` function, where the `display()` function is declared as a virtual function.
+- Class `C`, inheriting from `B`, adds an integer member `c` and overrides the `display()` function, where the `C::display()` function is declared as a virtual function.
 - Class `D`, inheriting from `C`, adds an integer member `d` and overrides the `display()` function.
 
 In the `main()` function, objects of these four classes are created, and their respective `display()` functions are called. Then, through object assignment and pointer operations, the concepts of polymorphism and object slicing are demonstrated.
 
 - Objects `oA`, `oB`, `oC`, `oD` are created and call their respective `display()` methods.
-- `oA = oB;` This line performs object slicing, where only the `A` part of `B` is copied to `oA`, so `oA.display()` still calls the `display()` method of class `A`.
-- `oC = oD;` When `oD` is assigned to `oC`, object slicing occurs. This means that only the `C` part of `oD` is copied to `oC`. Since this copying process is based on the `C` type, the `display()` method in `oC` remains the one defined in the `C` class.
-- `A* pA = &oB;` creates a pointer of type `A` pointing to `oB`. Since `A`'s `display()` method is not virtual, `pA->display()` calls the `display()` method of class `A`.
-- `C* pC = &oD;` creates a pointer of type `C` pointing to `oD`. Here, since `C`'s `display()` method is a virtual function, `pC->display()` calls the overridden `display()` method of class `D`.
+- `oA = oB;`  performs object slicing, where only the `A` part of `B` is copied to `oA`, so `oA.display()` still calls the `display()` method of class `A`.
+- `oC = oD;` where object slicing occurs again. This means that only the `C` part of `oD` is copied to `oC`. Since this copying process is based on the `C` type, the `C::display()` method will take effect though it is `virtual`.
+- `A* pA = &oB;` creates a pointer of type `A` pointing to `oB`. Since `A::display()` method is not virtual, `pA->display()` calls the `display()` method of class `A`.
+- `C* pC = &oD;` creates a pointer of type `C` pointing to `oD`. Here, since `C::display()` method is a virtual function, `pC->display()` calls the overridden `D::display()` method.
+
+With this example you could better understand how *dynamic binding* functions.
 
 ```cpp
 class A {
@@ -194,7 +256,7 @@ int main() {
 }
 ```
 
-and the output:
+Hence we have the output:
 
 ```txt
 A1
@@ -207,274 +269,36 @@ A1
 D1234
 ```
 
-### 18.1.2 Example of the Graph Abstraction
+**Chain Example**
 
-<img src="pictures/18-2.png" alt="image-20231128234716223" style="zoom:50%;" />
-
-```cpp
-/*
- * File: gobjects.h
- * ----------------
- * This file defines a simple hierarchy of graphical objects.
- */
-
-#ifndef _gobjects_h
-#define _gobjects_h
-
-#include <string>
-#include "gwindow.h"
-
-/*
- * Class: GObject
- * --------------
- * This class is the root of the hierarchy and encompasses all objects
- * that can be displayed in a window.  Clients will use pointers to
- * a GObject rather than the GObject itself.
- */
-
-class GObject {
-
-public:
-/*
- * Method: setLocation
- * Usage: gobj->setLocation(x, y);
- * -------------------------------
- * Sets the x and y coordinates of gobj to the specified values.
- */
-
-   void setLocation(double x, double y);
-
-/*
- * Method: move
- * Usage: gobj->move(dx, dy);
- * --------------------------
- * Adds dx and dy to the coordinates of gobj.
- */
-
-   void move(double x, double y);
-
-/*
- * Method: setColor
- * Usage: gobj->setColor(color);
- * -----------------------------
- * Sets the color of gobj.
- */
-
-   void setColor(std::string color);
-
-/*
- * Abstract method: draw
- * Usage: gobj->draw(gw);
- * ----------------------
- * Draws the graphical object on the GraphicsWindow specified by gw.
- * This method is implemented by the specific GObject subclasses.
- */
-
-   virtual void draw(GWindow & gw) = 0;
-
-protected:
-
-/* The following methods and fields are available to the subclasses */
-
-   GObject();                        /* Superclass constructor         */
-   std::string color;                /* The color of the object        */
-   double x, y;                      /* The coordinates of the object  */
-
-};
-
-/*
- * Subclass: GLine
- * ---------------
- * The GLine subclass represents a line segment on the window.
- */
-
-class GLine : public GObject {
-
-public:
-
-/*
- * Constructor: GLine
- * Usage: GLine *lp = new GLine(x1, y1, x2, y2);
- * ---------------------------------------------
- * Creates a line segment that extends from (x1, y1) to (x2, y2).
- */
-
-   GLine(double x1, double y1, double x2, double y2);
-
-/* Prototypes for the overridden virtual methods */
-
-   virtual void draw(GWindow & gw);
-
-private:
-   double dx;                      /* Horizontal distance from x1 to x2    */
-   double dy;                      /* Vertical distance from y1 to y2      */
-
-};
-
-class GRect : public GObject {
-
-public:
-
-/*
- * Constructor: GRect
- * Usage: GRect *rp = new GRect(x, y, width, height);
- * --------------------------------------------------
- * Creates a rectangle of the specified size and upper left corner at (x, y).
- */
-
-   GRect(double x, double y, double width, double height);
-
-/*
- * Method: setFilled
- * Usage: rp->setFilled(flag);
- * ---------------------------
- * Indicates whether the rectangle is filled.
- */
-
-   void setFilled(bool flag);
-
-   virtual void draw(GWindow & gw);
-
-private:
-   double width, height;           /* Dimensions of the rectangle          */
-   bool filled;                    /* True if the rectangle is filled      */
-
-};
-
-class GOval : public GObject {
-
-public:
-
-/*
- * Constructor: GOval
- * Usage: GOval *op = new GOval(x, y, width, height);
- * --------------------------------------------------
- * Creates an oval inscribed in the specified rectangle.
- */
-
-   GOval(double x, double y, double width, double height);
-
-/*
- * Method: setFilled
- * Usage: op->setFilled(flag);
- * ---------------------------
- * Indicates whether the oval is filled.
- */
-
-   void setFilled(bool flag);
-
-   virtual void draw(GWindow & gw);
-
-private:
-   double width, height;           /* Dimensions of the bounding rectangle */
-   bool filled;                    /* True if the oval is filled           */
-
-};
-
-/*
- * Implementation notes: GObject class
- * -----------------------------------
- * The constructor for the superclass sets all graphical objects to BLACK,
- * which is the default color.
- */
-
-GObject::GObject() {
-   setColor("BLACK");
-}
-
-void GObject::setLocation(double x, double y) {
-   this->x = x;
-   this->y = y;
-}
-
-void GObject::move(double dx, double dy) {
-   x += dx;
-   y += dy;
-}
-
-void GObject::setColor(string color) {
-   this->color = color;
-}
-
-/*
- * Implementation notes: GLine class
- * ---------------------------------
- * The constructor for the GLine class has to change the specification
- * of the line from the endpoints passed to the constructor to the
- * representation that uses a starting point along with dx/dy values.
- */
-
-GLine::GLine(double x1, double y1, double x2, double y2) {
-   this->x = x1;
-   this->y = y1;
-   this->dx = x2 - x1;
-   this->dy = y2 - y1;
-}
-
-void GLine::draw(GWindow & gw) {
-   gw.setColor(color);
-   gw.drawLine(x, y, x + dx, y + dy);
-}
-
-GRect::GRect(double x, double y, double width, double height) {
-   this->x = x;
-   this->y = y;
-   this->width = width;
-   this->height = height;
-   filled = false;
-}
-
-void GRect::setFilled(bool flag) {
-   filled = flag;
-}
-
-void GRect::draw(GWindow & gw) {
-   gw.setColor(color);
-   if (filled) {
-      gw.fillRect(x, y, width, height);
-   } else {
-      gw.drawRect(x, y, width, height);
-   }     
-}
-
-GOval::GOval(double x, double y, double width, double height) {
-   this->x = x;
-   this->y = y;
-   this->width = width;
-   this->height = height;
-   filled = false;
-}
-
-void GOval::setFilled(bool flag) {
-   filled = flag;
-}
-
-void GOval::draw(GWindow & gw) {
-   gw.setColor(color);
-   if (filled) {
-      gw.fillOval(x, y, width, height);
-   } else {
-      gw.drawOval(x, y, width, height);
-   }     
-}
-```
-
-**Calling Superclass Constructors**
-
-When you call the constructor for an object, the constructor ordinarily calls the ***default constructor*** for the superclass, which is the one that takes no arguments.
-
-You can call a different version of the superclass constructor by adding an initializer list to the constructor header, which is the second form of the initializer list.
+Inheritance of the virtual methods is **like a chain**. Once some method in the chain is not `virtual`, the dynamic binding will stop there. Here is a further illustration:
 
 ```cpp
-class GSquare : public GRect {
-   GSquare(double x, double y, double size)
-                  : GRect(x, y, size, size) {
-      /* Empty */
-   }
+class A {
+public:
+    virtual void display() { /* ... */ }
 };
-```
 
-This example is only used to illustrate an initializer list, and generally square should not be a subclass of rectangle.
+class B : public A {
+public:
+    void display() { /* ... */ } // Not using virtual
+};
+
+class C : public B {
+public:
+    virtual void display() { /* ... */ } // Even using virtual
+};
+
+A* pA;
+B* pB;
+C oC;
+
+pA = &oC;
+pB = &oC;
+
+pA->display(); // B::display()
+pB->display(); // B::display()
+```
 
 ## 18.2 Multiple Inheritance
 
@@ -486,7 +310,13 @@ Multiple Inheritance tends to be dangerous.
 
 This is "deadly diamond of death", an ambiguity that arises when two classes B and C inherit from A, and class D inherits from both B and C. If there is **a method in A** that **B and C have overridden**, and **D does not override it**, then which version of the method does D inherit: that of B, or that of C? 
 
-This code followed defines four classes: `A`, `B`, `C`, and `D`, where `A` is the base class, and `B`, `C`, and `D` are its derived classes. Each class includes a `display()` function that outputs the class name and the values of some member variables. 
+Different languages have different ways of dealing with these problems of multiple inheritance. In C++ it by default **follows each inheritance path separately**, so a D object would actually contain two separate A objects, and uses of A's members have to be properly qualified. Though this could be solved by specifying `B::method_1` and `C::method_2` , it could still be tedious for even more problems:
+
++ **Increased Complexity**: Diamond inheritance increases the complexity of the class structure, making the code more difficult to understand and maintain.
+
++ **Constructor and Destructor Issues**: In a diamond inheritance structure, the constructor and destructor of the base class may be called multiple times, which can lead to problems with resource management.
+
+Before we solve the issue, we still go trough an example. The following code defines four classes: `A`, `B`, `C`, and `D`, where `A` is the base class, and `B`, `C`, and `D` are its derived classes. 
 
 + **Class A**: Has an integer member `a` and a `display()` function. 
 + **Class B**: Inherits from `A`. Adds an integer member `b` and overrides the `display()` function. 
@@ -496,8 +326,8 @@ This code followed defines four classes: `A`, `B`, `C`, and `D`, where `A` is th
 In the `main()` function, objects of these four classes are created, and their respective `display()` functions are called. 
 
 + `display()` method is not virtual, `pA->display()` calls the `display()` method of class `A`. However, this will raise an error for member collision and pointer type conversion (2 `A` objects in `D`, one from `B` and another from `C`)
-+ `B* pB = &oD;`: Creates a pointer of type `B` pointing to `oD`. Since `B` inherits from `A`, `pB->display()` calls the overridden `display()` method in `B`, which has been part of class `D`.
-+ `C* pC = &oD;`: Creates a pointer of type `C` pointing to `oD`. Similarly, `pC->display()` calls the overridden `display()` method in `C`, which has been part of class `D`.
++ `B* pB = &oD;` creates a pointer of type `B` pointing to `oD`, and `pB->display()` calls the overridden `B::display()` method in `B`.
++ `C* pC = &oD;` creates a pointer of type `C` pointing to `oD`, and `pC->display()` calls the overridden `C::display()` method in `C`.
 
 ```cpp
 class A {
@@ -524,7 +354,7 @@ class D: public B, public C {
 public:
     int d = 4;
     void display() {
-        cout /* ERR: << a */ << b << c << d << endl;
+        cout /* ERR: << a (multiple a) */ << b << c << d << endl;
     }
 };
 
@@ -537,9 +367,9 @@ int main() {
     oC.display();
     D oD;
     oD.display();
-    /*ERR:
+    /*ERR: Multiple display()
     A* pA = &oD;
-    pA->display();
+    pA->display();   
     */
     B* pB = &oD;
     pB->display(); // B::display()
@@ -559,17 +389,15 @@ and the output
 13
 ```
 
-What’s the output if `display()` is `virtual` in `A` or `B` or `C`?
-
 **Virtual Inheritance**
 
-Different languages have different ways of dealing with these problems of multiple inheritance. C++ by default **follows each inheritance path separately**, so a D object would actually contain two separate A objects, and uses of A's members have to be properly qualified.
+Then we introduce the concept of ***virtual inheritance***.
 
-If the inheritance from A to B and the inheritance from A to C are both marked `virtual`, C++ takes special care to only create one A object, and uses of A's members work correctly. 
+With virtual inheritance, the derived class D will have **only one** shared instance of class A, even though it is inherited via two different paths (B and C). This shared instance ensures that **there is a single set of base class member variables**, preventing duplication and inconsistency, allowing the derived class D to interact with the base class A's members as if it had inherited them directly.
 
-In the stream hierarchy, `ios` is a virtual base of both `istream` and `ostream`.
+Practically in the stream hierarchy, `ios` is a virtual base of both `istream` and `ostream`.
 
-Here is an example:
+Here is another example:
 
 ```cpp
 class A {
@@ -618,8 +446,6 @@ int main() {
 }
 ```
 
-
-
 Here's the corresponding output
 
 ```txt
@@ -634,17 +460,25 @@ Here's the corresponding output
 
 ### 18.2.2 stream hierarchy
 
+Here are multiple thoughts of the stream hierarchy, with the last one implemented in STL.
+
 **A Classic UML Diagram** 
 
 <img src="pictures/18-4.png" alt="image-20231129004302701" style="zoom: 50%;" />
+
+
 
 **An alternative UML Diagram**
 
 <img src="pictures/18-5.png" alt="18-5" style="zoom:50%;" />
 
+
+
 **A Multi-Inheritance UML Diagram**
 
 <img src="pictures/18-6.png" alt="18-6" style="zoom:50%;" />
+
+
 
 **An improved Multi-Inheritance UML Diagram**
 

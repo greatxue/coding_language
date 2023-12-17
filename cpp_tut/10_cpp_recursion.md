@@ -25,7 +25,7 @@ if (test for a simple case) {
 }
 ```
 
-Except for the simpliest *linear recursion*, we still have ***mutual recursion*** cases, where one function calls another, which calls another, which eventually circles back around to the original function:
+There exists a non-linear ***mutual recursion*** cases, where one function calls another simutaneously, and eventually circles back around to the original function:
 
 ```cpp
 bool isOdd(unsigned int n) {
