@@ -180,7 +180,7 @@ Here are some rules for the naming of variables:
 
 There is a *scope* and an *extent* for the variables:
 
-+ The ***scope*** of a variable describes where in a program's text **the variable may be accessible**.
++ The ***scope*** of a variable describes where in a program's text **the variable may be visible**.
 + The ***extent*** (or ***lifetime***) describes when a variable **has a (meaningful) value** in a program's execution.
 
 Here are 3 types of variables different in ther scopes and extents:
@@ -232,6 +232,12 @@ The most common ***operators*** in C++ are the ones that specify arithmetic comp
 If an expression contains more than one operator, C++ uses ***precedence rules*** to determine the order of evaluation. Anyway, parentheses `()` may be used to change the order of operations. 
 
 <img src="pictures/1-5.png" alt="1-5" style="zoom:150%;" />
+
+The comma `,` nearly has the lowest priority. It means evaluating several but reserving only the last.
+
+```cpp
+int cat = 12, 13; // cat = 13
+```
 
 **Division and Type Casts**
 
@@ -291,12 +297,19 @@ The operators used with the `boolean` data type fall into two categories: ***rel
 
   <img src="pictures/1-7.png" alt="1-7" style="zoom:67%;" />
 
-C++ evaluates the `&&` and `||` operators using a strategy called **short-circuit mode** in which it evaluates the right operand only if it needs to do so. 
+C++ evaluates the `&&` and `||` operators using a strategy called **short-circuit mode** in which it evaluates the right operand only if it needs to do so, totally different from mathematical ones.
 
 One of the advamtages is to prevent execution errors: If `n` were 0 in the earlier example, evaluating `x % n` would cause a “division by zero” error. However, once `n != 0` is false, the whole expression will return false.
 
 ```cpp
 n != 0 && x % n == 0
+```
+
+Hence totally different:
+
+```cpp
+test_3() || (test_1() && test_2())
+test_3() || test_1() && test_2()
 ```
 
 ### 1.3.4 Statements
@@ -429,7 +442,7 @@ If `break` is not included in one case, all statements **following the case** ar
 - **`break` **: The `break` keyword is used to **immediately terminate the execution** of  a `for`/`while`/`do-while` loop, exiting the currently innermost loop that it is in.
 - **`continue`**: The `continue` keyword is used to **skip the remaining part of the current loop iteration and proceed to the next iteration**. It only affects the current iteration of the loop, not the entire loop.
 
-## 1.4 Preprocessing Directives (*****)
+## 1.4 Preprocessing Directives
 
 Here are preprocessing directives commonly used:
 
@@ -469,7 +482,7 @@ Here are preprocessing directives commonly used:
   #pragma once
   ```
 
-## 1.5 Error Handling (*****)
+## 1.5 Error Handling
 
 Here we will brief introduce technics handling errors.
 

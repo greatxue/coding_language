@@ -6,7 +6,7 @@
 
 ## 4.1 Introduction
 
-Actually, there had been multiple functions for streams in `<cstdio>` from C standard library, like `printf` with *specifiers*, which is out-of-scope of the text.  
+Actually, there had been multiple functions for input and output in `<cstdio>` from C standard library.
 
 ```cpp
 #include <cstdio>
@@ -18,20 +18,23 @@ int main() {
    char c = 'a';
    int i = 1;
    double d = 3.14159265358979323846;
-   /* C style, acceptable in C++ */
+   
+  /* C style, acceptable in C++ */
    printf("This is a character: %c\n", c);
    printf("This is an integer: %d\n", i);
    printf("This is a double: %.2f\n", d);  // floating number, with 2 digits reserved
-   /* C++ style */
+   
+  /* C++ style */
    cout << "This is a character: " << c << endl;
    cout << "This is an integer: " << i << endl;
    cout << "This is a double: " << fixed 
         << setprecision(2) << d << endl;   // float, 2 digits
-   return 0;
+   
+  return 0;
 }
 ```
 
-For a standard output in C++, we will introduce *C++ streams* with syntax like`std::cin` and `std::cout`.
+For a standard input and output in C++, we will introduce syntax like`std::cin` and `std::cout`.
 
 Here we introduce the important *object* called a ***stream***. A stream is an *abstraction* (object) that represents an input **source** or output **destination** of characters of indefinite length, on which *input* and *output* operations can be performed, like:
 
@@ -49,20 +52,20 @@ The insertion operator **returns the output stream** as its result. The advantag
 
 C++ allows you to control the output *format* by including items in the output chain called *manipulators* in `<iomanip>`, with common functions like
 
-| Function                | Description                                         |
-| ----------------------- | --------------------------------------------------- |
-| `endl`                  | Moves cursor to the next line.                      |
-| `setw(n)`               | Sets the width of the next value to `n` characters. |
-| `setprecision(digits)`  | Sets how many digits should appear.                 |
-| `setfill(ch)`           | Sets the fill character used to pad values.         |
-| `left`                  | Aligns the value at the left edge of the field.     |
-| `right`                 | Aligns the value at the right edge of the field.    |
-| `fixed`                 | Sets fixed-point output (no scientific notation).   |
-| `scientific`            | Sets scientific-notation output.                    |
-| `showpoint/noshowpoint` | Controls whether a decimal point must appear.       |
-| `showpos/noshowpos`     | Controls appearance of a plus sign.                 |
-| `uppercase/nouppercase` | Controls whether uppercase is used in hex.          |
-| `boolalpha/noboolalpha` | Controls whether bools appear as `true`/`false`.    |
+| Function                | Description                                             |
+| ----------------------- | ------------------------------------------------------- |
+| `endl`                  | Moves cursor to the **next line**.                      |
+| `setw(n)`               | Sets **the width** of the next value to `n` characters. |
+| `setprecision(digits)`  | Sets how many **digits** should appear.                 |
+| `setfill(ch)`           | Sets the **fill character** used to pad values.         |
+| `left`                  | Aligns the value at the **left edge** of the field.     |
+| `right`                 | Aligns the value at the **right edge** of the field.    |
+| `fixed`                 | Sets **fixed-point** output (no scientific notation).   |
+| `scientific`            | Sets **scientific-notation** output.                    |
+| `showpoint/noshowpoint` | Controls whether **a decimal point** must appear.       |
+| `showpos/noshowpos`     | Controls appearance of **a plus sign**.                 |
+| `uppercase/nouppercase` | Controls whether **uppercase is used in hex**.          |
+| `boolalpha/noboolalpha` | Controls whether **bools** appear as `true`/`false`.    |
 
 Here is the example:
 
@@ -103,7 +106,7 @@ The corresponding output is:
 
 For input, C++ includes the `>>` operator, which is called the ***extraction operator***. The `>>` operator is symmetrical to the `<<` operator and reads **formatted data from the stream** on the left **into** the variables that appear on the right.
 
-Here is a critical comparison of *manipulators* concerning `ws`:
+Here is a critical comparison of *manipulators* concerning whitespaces:
 
 ![4-2](pictures/4-2.png)
 
@@ -171,6 +174,7 @@ The following program does not uppercase the first character in a file. As `get`
 #include <string>
 #include <cctype>
 using namespace std;
+
 int main() {
    string filename;
    fstream file;
@@ -179,9 +183,11 @@ int main() {
    cin >> filename;
    
    file.open(filename.c_str());
+  
    file.get(c); // Equivalent: c = file.get();
    c = toupper(c);
    file.put(c);
+  
    file.close();
    
    return 0;
@@ -219,7 +225,7 @@ Also, the effect of `getline` is to store the next line of data from the file in
   istream & getline(istream & is, string & str, char delim); // the boundary between separate
   ```
 
-+ To work with C String, another **overloaded version** is the one from `istream` class, which is `std::stream::getline`
++ To work with C String, another **overloaded version** is the one from `istream` class, which is `std::stream::getline`. It reads in the `char *` pointing to the target, and reads it into an array:
 
   ```cpp
   istream & getline(char * s, streamsize n);
@@ -243,7 +249,7 @@ Given that files and strings are both sequences of characters, we have the follo
 
 + `<fstream>`: Exports several classes that associate a stream **with a file**.
 
-+ The `istringstream` class is the counterpart of `ifstream` and makes it possible to use stream operators to **read data** from a string;
++ The `istringstream` class is the counterpart of `ifstream` and makes it possible to use stream operators to **read data** from a string into the string stream, which choul be converted as `s = ss.str();`.
 
   For output, the `ostringstream` class works very much like `ofstream` except that **the output** is directed to a string rather than a file.
 

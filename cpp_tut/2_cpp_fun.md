@@ -38,6 +38,8 @@ Here are some further explanations:
 
 Specially, a functions that returns `bool` is called a *predicate function*, and the`void` function (which returns no value at all) is called a *procedure* .
 
+***Function signature*** cares only about number and types of the arguments, while `int &x` is considered totally different from `int x`.
+
 **Function Prototype**
 
 A ***function prototype*** is simply the header line of the function followed by a semicolon, before the main function or you actually define it.
@@ -190,11 +192,9 @@ swap(n1, n2);
 
 **Reference Variables**
 
-To bring this value out, could apply ***reference variables*** in C++. 
+To bring this value out, we could apply ***reference variables*** in C++, which could be thought of as an alias for an already existing variable, indicated by a prefix `&` character. 
 
-A *reference variable* could be thought of as an alias for an already existing variable, indicated by a prefix `&` character. 
-
-A reference must be initialized when it is declared, after which it cannot be reassigned.
+A reference must be initialized when it is declared, after which it cannot be reassigned. Hence it could never be `NULL` or something.
 
 ```cpp
 void swap(int & x, int & y) {
@@ -231,7 +231,7 @@ In fact, a *reference* is a simple reference datatype that is **less powerful bu
 
 We will delay the discussion of references until when we have a deeper understanding of pointers. 
 
-**Inline Functions** (*****)
+**Inline Functions** 
 
 ```cpp
 inline int max(int x, int y) {
@@ -243,7 +243,7 @@ inline int max(int x, int y) {
 
 *Inlining* is a suggestion, not a command; the compiler can choose to ignore it.
 
-## 2.4 Lambda Expressions **(*)**
+## 2.4 Lambda Expressions 
 
 C++11 introduced ***Lambda expressions***, providing a convenient way to define **anonymous** functions, ideal for scenarios where a function is **used briefly** and **exactly once**. Widely used in modern C++, especially with STL algorithms, function objects, and event handling.
 

@@ -14,9 +14,9 @@ There are numerous data types provided in C++:
 
 ### 6.1.1 Enumerated types
 
-An enumerated type can be roughly considered as a subset of `int` with special names.
+An enumerated type can be roughly considered as a subset of `int` with special names. It can be automatically promoted to the `int` type, but the **`int` cannot be converted to the enumeration**.
 
-+ It could be automatically assigned by numbers from 0:
++ Default start value is 0, If an element is not declared, It defaults to be previous one plus 1:
 
   ```cpp
   enum Direction { NORTH, EAST, SOUTH, WEST }; 
@@ -31,6 +31,20 @@ An enumerated type can be roughly considered as a subset of `int` with special n
      DIME = 10
   };
   ```
+
+ Enumerations do **not** have **arithmetic operators**, but they do have **assignment operators**.
+
+```cpp
+enum g { red, blue, org };
+g a;
+a = red; 
+a++; 							 // ERR
+a = blue + red; 	 // ERR
+
+int color = blue; 
+a = 3; 					   // ERR: int -> enum
+color = 3 + red;   // enum -> int
+```
 
 ### 6.1.2 Structures
 
@@ -51,7 +65,7 @@ Point pt;
 
 Given the variable `pt`, you can select the individual *fields* or *members* using the dot operator `.` as in `pt.x` and `pt.y`.
 
-### 6.1.3 Casting Operators (*****)
+### 6.1.3 Casting Operators 
 
 In C++, there are four main types of casting operators, which are as follows:
 
@@ -328,8 +342,14 @@ we will have multiple ways to display the value:
 
 Concerning the issues about *passing by reference* `&`:
 
-+ Since stream variables cannot be copied, the `ostream` argument must be passed by *reference*. 
-+ The `<<` operator has a chaining behavior of returning the output stream, it must also return its result by *reference*. 
++ Since stream variables **cannot be copied**, the `ostream` argument must be passed by *reference*. 
+
++ Also some may feel confused  `os` is returned as the reference when *overloading* of the operator `<<`, but it allows for **chaining multiple output operations**. 
+
+  ```cpp
+  std::cout << pt1 << " and " << pt2 << std::endl;
+  ```
+
 
 **Class methods and free functions**
 
@@ -366,6 +386,8 @@ You can define operators for a class either as ***class methods*** or as ***free
   bool operator==(Point p1, Point p2) {
      return p1.getX() == p2.getX() && p1.getY() == p2.getY();
   }
+
+Either of the form, *class methods* or *free functions*, will be more suitable under some circumstances.
 
 ## 6.3 Case: Rational Numbers
 
@@ -592,14 +614,6 @@ We will show source codes for reference:
   }
   ```
   
-
-Either of the form, either *class methods* or *free functions*, will be more suitable under some circumstances.
-
-Also some may feel confused  `os` is returned as the reference when *overloading* of the operator `<<`, but it allows for **chaining multiple output operations**. 
-
-```cpp
-std::cout << rat1 << " and " << rat2 << std::endl;
-```
 
 
 

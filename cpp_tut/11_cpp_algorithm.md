@@ -543,7 +543,7 @@ void merge(Vector<int> & vec, Vector<int> & v1, Vector<int> & v2) {
 | Constant    | $$ O(1) $$        | O(Yeah) Finding elements in a vector using indices |
 | Logarithmic | $$ O(\log N) $$   | O(Nice) Binary search in a sorted vector           |
 | Linear      | $$ O(N) $$        | O(Fine) Summing a vector; linear search            |
-| Log-Linear  | $$ O(N \log N) $$ | O(K) Merge sort                                    |
+| Log-Linear  | $$ O(N \log N) $$ | O(K) Merge sort， Quick sort                       |
 | Quadratic   | $$ O(N^2) $$      | O(Well) Selection sort                             |
 | Cubic       | $$ O(N^3) $$      | O(My) Obvious algorithms for matrix multiplication |
 | Exponential | $$ O(2^N) $$      | O(No) Tower of Hanoi solution                      |

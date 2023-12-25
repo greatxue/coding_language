@@ -109,7 +109,7 @@ An ***rvalue*** refers to a temporary object or literal that does not have a per
 int& ref = var;
 ```
 
-**Right Value Reference** (`&&`): 
+**(*)** **Right Value Reference** (`&&`): 
 
 (Since C++11) It can only be bound to rvalues that are about to be destroyed, and allows the resources of an object (such as memory) to be "moved" rather than copied. 
 
@@ -351,14 +351,9 @@ The C++ compiler treats the name `list` as a pointer to the address `& list[0]`,
 There are even more confusing syntaxes concerning the declaration of `p`:
 
 + `int *p` is **a pointer to `int`**
-
-+ `int (*p)[2]` is **a pointer to an array of 2 `int`**
-
-+ `int* p[10]` is **an array** containing 10 elements, each element is a pointer to `int`.
-
-+ `(int*) p[10]` looks for the element with index 10, and convert it to a `int*`, which often raises an *error*.
-
 + `int (*p)[10]` is **a pointer to the entire array of 10 `int`**
++ `int* p[10]` is **an array** containing 10 elements, each element is a pointer to `int`.
++ `(int*) p[10]` looks for the element with index 10, and convert it to a `int*`, which often raises an *error*.
 
 When you pass an array to a function, only the *address* of the array is copied into the parameter. This strategy has the effect of **calling by pointer**.
 
@@ -438,7 +433,7 @@ Here are two examples of this idiom:
   }
   ```
 
-+ (*****) C Library function `strcpy(dst, src)`, which copies the characters from the string `src` into the character array indicated by `dst`.
++ C Library function `strcpy(dst, src)`, which copies the characters from the string `src` into the character array indicated by `dst`.
 
   ```cpp
   void strcpy(char * dst, char * src) {

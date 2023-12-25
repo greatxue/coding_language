@@ -10,7 +10,7 @@ We will implement a **text editor** as an example today. Most editors today foll
 
 Today we will implement a simple **TECO** (Text Editor and COrrector) command-line editor. 
 
-<img src="pictures/12-1.png" alt="12-1" style="zoom: 50%;" />
+<img src="pictures/12-1.png" alt="12-1" style="zoom: 33%;" />
 
 The minimal version of TECO has the following commands:
 

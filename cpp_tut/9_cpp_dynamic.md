@@ -428,7 +428,7 @@ StringMap & operator=(const StringMap & src) {
 
 One of the most important responsibilities you have as a programmer is to test your code as thoroughly as you can. Thus we adpat **unit test** of the `assert` macro from the `<cassert>` library on the implementation of a stack:
 
-![9-4](pictures/9-4.png)
+<img src="pictures/9-4.png" alt="9-4" style="zoom:150%;" />
 
 Also, there have been comprehensive frameworks like *google tests*, which offers more assertions and test cases options.
 

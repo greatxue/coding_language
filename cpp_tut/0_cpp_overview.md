@@ -19,7 +19,7 @@ With these wishes I drafted this note, which is simplified, precise and conclusi
 
 In this or later edition, I will recommend practice projects with high quality. The codes within the course are far from enough, and these high-quality projects with answers will offer a chance for you to apply your knowledge and integrate multiple skills into a fruitful outcome.
 
-Also I extend with some supplement for what is only briefly mentioned in the course. They will be marked with the mark **(*)**, and is provided as a reference for further study.
+Also I extend with some supplement for what is only briefly mentioned in the course, and is provided as a reference for further study.
 
 Hope every one of you have fun with C++!
 
@@ -82,7 +82,7 @@ The **1st** version of the note: ***Course Notes of CSC3002: C/C++ Programming**
 
 Edited by [Kevin (Zhongkai) Xue](https://greatxue.cn/). For correspondence, kindly reach out at [greatxue33@gmail.com](mailto:greatxue33@gmail.com). 
 
-Please use this under the [**MIT**](https://opensource.org/license/mit/) License. For content with original authors, adhere to their respective licenses.
+Please use this under the [**MIT**](https://opensource.org/license/mit/) License. For contents with original authors, adhere to their respective licenses.
 
 
 

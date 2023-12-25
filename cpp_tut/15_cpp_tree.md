@@ -150,16 +150,7 @@ Here are traversal methods that reach the nodes in the same order known as ***De
      }
   }
   ```
-  The output:
-  ```txt
-  Grumpy
-  Doc
-  Bashful
-  Dopey
-  Sleepy
-  Happy
-  Sneezy
-
+  
 + If you process the current node after the recursive call on the left subtree but before the recursive call on the right subtree, the result is an ***in-order traversal***, which often appears in a good order.
 
   ```cpp
@@ -170,18 +161,6 @@ Here are traversal methods that reach the nodes in the same order known as ***De
         inorderTraversal(t->right);
      }
   }
-  ```
-
-  The output:
-
-  ```cpp
-  Bashful
-  Doc
-  Dopey
-  Grumpy
-  Happy
-  Sleepy
-  Sneezy
   ```
 
 + If you process the current node after completing both recursive calls, the result is a ***post-order** **traversal***. 
@@ -198,17 +177,6 @@ Here are traversal methods that reach the nodes in the same order known as ***De
   }
   ```
 
-  The output:
-  
-  ```cpp
-  Bashful
-  Dopey
-  Doc
-  Happy
-  Sneezy
-  Sleepy
-  Grumpy
-  ```
 
 And level-order traverse works in ***Breadth-First Traversal (BFT)***:
 

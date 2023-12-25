@@ -74,25 +74,27 @@ In C, we can represent strings (sequences of characters), as plain ***arrays*** 
 
 ```cpp
 char cstr[10];
-char cstr[] = "hello";
 char cstr[] = { 'h', 'e', 'l', 'l', 'o', '\0' };
 ```
 
-After definition, we could refer to `cstr` as a ***C-String array***.
+If you put double quotation marks `" ` around a sequence of characters, you get what is called a ***C string literal*** (`const char[]` type). You could even initialize that with a pointer.
 
-If you put double quotation marks `" ` around a sequence of characters, you get what is called a ***C string literal*** (`const char[]` type)*.* The characters are stored in an *array* of bytes, terminated by a `null` byte whose ASCII value is 0. The `null` type, however, functions as a signal for end of the string.
+```cpp
+char cstr[] = "hello";
+char * cstr = "hello";
+```
 
-That's why `'a'` and `''a''` are actually quite different.
+The characters are stored in an *array* of bytes, terminated by a `null` byte whose ASCII value is 0. The `null` type, however, functions as a signal for end of the string. That's why `'a'` and `''a''` are actually quite different.
 
 <img src="pictures/3-2.png" alt="3-2" style="zoom:50%;" />
 
 The character positions in a C string are identified by an *index* that begins at **0** and extends up to one less than the length of the string, just like that in Python.
 
+However, `char msg[] = “Hello, world”;` is something initialized in the stack frame, thus each copy could have really different literals; It is totally different for `char \*msg = “Hello, world”;` as  static data, and remains the same throughout.
+
 **C String Functions**
 
-Now we continue to introduce *C String Functions*. The `<cstring>` (`string.h`) interface offers a lot of functions you can use to operate C strings. 
-
-Though it is in C-style, we could initialize it like
+First, we could initialize strings in C style with a pointer or an array:
 
 ```cpp
 char * cstr;
@@ -102,7 +104,7 @@ char cstr1[] = "world";
 char cstr2[] { "world" }; // available since C++11
 ```
 
-To determine the **length** of a C String `cstr`, we have (`sizeof` as an operator):
+The `<cstring>` (`string.h`) interface offers a lot of functions you can use to operate C strings. To determine the **length** of a C String `cstr`, we have `sizeof` as an operator:
 
 ```cpp
 char cstr[] = "hello";
@@ -110,7 +112,9 @@ int len = strlen(cstr); // human intuition
 int size = sizeof cstr; // actual memory size of x
 ```
 
-The appropriate way to **assign**, or to copy C-string value is like:
+However, when applying `sizeof` on `std::string`, the size is always fixed, which is correlated with its implementation in the heap.
+
+The authentic way to **assign**, or to copy C-string value is like:
 
 ```cpp
 strcpy(cstr, "world");
@@ -146,33 +150,7 @@ Also, there is possibility you will see weird in 4th output like `"hello weirdth
 
 **C-String Libraries**
 
-For libraries supporting C String, we have the `<cctype>` interface (from `type.h`):
-
-| Category            | Function  | Description                   |
-| ------------------- | --------- | ----------------------------- |
-| ***Copying***       |           |                               |
-|                     | `memcpy`  | Copy block of memory          |
-|                     | `memmove` | Move block of memory          |
-|                     | `strcpy`  | Copy string                   |
-|                     | `strncpy` | Copy characters from string   |
-| ***Concatenation*** |           |                               |
-|                     | `strcat`  | Concatenate strings           |
-|                     | `strncat` | Append characters from string |
-| ***Comparison***    |           |                               |
-|                     | `memcmp`  | Compare two blocks of memory  |
-|                     | `strcmp`  | Compare two strings           |
-|                     | `strcoll` | Compare using locale          |
-|                     | `strncmp` | Compare characters of strings |
-|                     | `strxfrm` | Transform using locale        |
-| ***Searching***     |           |                               |
-|                     | `memchr`  | Locate character in memory    |
-|                     | `strchr`  | Locate first occurrence       |
-|                     | `strcspn` | Get span until character      |
-|                     | `strpbrk` | Locate characters in string   |
-|                     | `strrchr` | Locate last occurrence        |
-|                     | `strspn`  | Get span of character set     |
-|                     | `strstr`  | Locate substring              |
-|                     | `strtok`  | Split into tokens             |
+In libraries supporting C String, we have the `<cctype>` interface (from `cctype.h`) for even more.
 
 ### 3.3.2 Using C++ Strings as Abstract Values
 
@@ -193,13 +171,13 @@ However, there are a few you should be aware about with ***string concentration*
   string str = "hello" + ", " + "world"; // ERR
   ```
 
-+ To solve the issue, just convert one *literal* to the *object*:
++ There should be at least one `std::string` on either side. To solve the issue, just convert one *literal* to the *object*, which is convertion from `const char[]` to `std::string`.
 
   ```cpp
   string str = string("hello") + ", " + "world";
   ```
 
-C++ allows classes to redefine certain operators, which is a kind of *overloading*. Here are some other operators:
+C++ allows classes to redefine certain operators, which is a kind of *overloading*. Thus we have some other operators especially for `std::string`:
 
 | Operation     | Description                           |
 | ------------- | ------------------------------------- |
@@ -221,7 +199,7 @@ int main() {
     std::string name2 = "Ray";
     std::cout << "Hello, " << name1 << std::endl;
     std::cout << "Hello, " << name2 << std::endl;
-    std::cout << "Hello, " + name1 << std::endl; // ERR: add a char array with a const char*
+    std::cout << "Hello, " + name1 << std::endl;  // ERR: const char* on both sides
     std::cout << "Hello, " + name2 << std::endl; 
     return 0;
 }
@@ -229,7 +207,7 @@ int main() {
 
 Now we continue with *String Methods*. First I need to emphasize that `c_str` methods could be applied to C++ string, with objects automatically converted into the C String literal.
 
-Recall that Python has both `len(str)` and `str.__len__()`. As C++ is also an *OOP* language, it behaves exactly the same. As `string` is a class, we have coresponding methods like 
+Recall that Python has both `len(str)` and `str.__len__()`. As C++ is also an *OOP* language, it behaves exactly the same. As `std::string` is an object, we have coresponding methods like 
 
 ```cpp
 int len = str.length();
@@ -247,11 +225,11 @@ instead of
 int len = strlen(str); // ERR
 ```
 
-Here we will introduce more useful functions for C++ Strings:
+### 3.3.3 Technics for C++ Strings
 
 **Selecting characters in strings**
 
-The string in C++ is ***mutable***, which is a great difference from Python. Anyway, the `<string>` library offers two machanisms for selecting individual characters:
+ Anyway, the `<string>` library offers two machanisms for selecting individual characters:
 
 ```cpp
 str[index] = 'H'; 	 // won't check if it is in-range
@@ -269,17 +247,13 @@ for (int i = str.length() - 1; i >= 0; i--)
 
 **Modifying Contents of a String**
 
-C++ strings are **mutable**! It allows for methods like
+Different from that of Python, the string in C++ is ***mutable***! It allows for methods like
 
 | Function                        | Description                                               |
 | ------------------------------- | --------------------------------------------------------- |
 | `str.erase(pos, count)`         | Deletes `count` characters from `str` at `pos`            |
 | `str.insert(pos, text)`         | Inserts `text` into `str` at `pos`                        |
 | `str.replace(pos, count, text)` | Replaces `count` characters in `str` with `text` at `pos` |
-
-### 3.3.3 Technics for C++ Strings
-
-**Avoiding the use of destructive operations**
 
 As you have seen initially, Strings in C++ is mutable, thus we need to emphasis more about the philosophy of using that. Among three possible solutions, we could make a comparison:
 
@@ -316,6 +290,8 @@ As you have seen initially, Strings in C++ is mutable, thus we need to emphasis 
   }
   ```
 
+The key behind this technic is to **avoid the use of destructive operations**.
+
 **Conclusion for `#include`**
 
 At last there is a conclusion for various `#include` syntax.
@@ -329,7 +305,7 @@ At last there is a conclusion for various `#include` syntax.
 | `#include "cstring.h"` | **Incorrect** unless you've defined your own "cstring.h"     |
 | `#include <cstring.h>` | Likely an **error** even if you've defined your own "cstring.h" |
 
-**Conclusion for initializing a String** (*****)
+**Conclusion for initializing a String** 
 
 Here are multiple ways to initialize a String:
 
